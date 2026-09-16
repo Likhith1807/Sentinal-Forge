@@ -1,0 +1,11 @@
+{
+  "reportFile": "data/samples/reports/mfa-bypass-003.md",
+  "reportId": "SF-SAMPLE-015",
+  "behaviourId": "mfa-bypass-on-required-account",
+  "requiredFields": ["account_id", "event_type", "mfa_used"],
+  "policyFields": ["policy.mfa_required"],
+  "excludedFields": ["auth_method"],
+  "threshold": null,
+  "timeWindow": null,
+  "note": "auth_method varies (token here) while mfa_used is what matters — same overfitting trap as the login-brute-force held-out report, applied to a different behaviour."
+}

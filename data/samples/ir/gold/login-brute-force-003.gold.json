@@ -1,0 +1,11 @@
+{
+  "reportFile": "data/samples/reports/login-brute-force-003.md",
+  "reportId": "SF-SAMPLE-011",
+  "behaviourId": "repeated-failed-login-then-success",
+  "requiredFields": ["account_id", "event_type", "timestamp"],
+  "policyFields": [],
+  "excludedFields": ["source_ip", "auth_method"],
+  "threshold": { "failureCount": 5 },
+  "timeWindow": { "amount": 2, "unit": "minutes" },
+  "note": "Report explicitly says auth_method is incidental (token here vs password in training reports) — an extractor that includes auth_method as required is over-fitting to the training reports, exactly like the direct-LLM baseline's mfa_used bug in experiments/baselines/direct_llm/README.md."
+}

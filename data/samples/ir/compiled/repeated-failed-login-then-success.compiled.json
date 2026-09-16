@@ -1,0 +1,1 @@
+{"behaviourId": "repeated-failed-login-then-success", "recipe": "SequenceThenTrigger", "groupingKey": "account_id", "timeWindowSeconds": 120, "countEventType": "login_failure", "countThreshold": 5, "triggerEventType": "login_success", "distinctField": null, "distinctThreshold": null, "filterEventType": null, "logField": null, "policyField": null, "comparisonOp": null}

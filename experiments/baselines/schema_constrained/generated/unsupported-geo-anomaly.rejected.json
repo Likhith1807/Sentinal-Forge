@@ -1,0 +1,13 @@
+{
+  "report": "compiler\\test\\fixtures\\unsupported-geo-anomaly.md",
+  "extractedSpec": {
+    "requiredFields": [],
+    "policyFields": [],
+    "behaviourId": "unrecognized:None"
+  },
+  "stage3Status": "rejected",
+  "stage3Notes": [
+    "behaviourId 'unrecognized:None' does not match any known, schema-validated behaviour pattern."
+  ],
+  "generatedAt": "2026-09-16T06:00:09.121518+00:00"
+}

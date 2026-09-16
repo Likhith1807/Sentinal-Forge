@@ -1,0 +1,16 @@
+{
+  "report": "data\\samples\\reports\\mfa-bypass-003.md",
+  "extractedSpec": {
+    "requiredFields": [
+      "event_type",
+      "mfa_used"
+    ],
+    "policyFields": [],
+    "behaviourId": "mfa-bypass-on-required-account"
+  },
+  "stage3Status": "supported",
+  "stage3Notes": [
+    "All requested fields are present and reliably observable."
+  ],
+  "generatedAt": "2026-09-16T06:01:44.262132+00:00"
+}

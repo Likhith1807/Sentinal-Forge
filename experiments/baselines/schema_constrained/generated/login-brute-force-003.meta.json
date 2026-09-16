@@ -1,0 +1,17 @@
+{
+  "report": "data\\samples\\reports\\login-brute-force-003.md",
+  "extractedSpec": {
+    "requiredFields": [
+      "event_type",
+      "account_id",
+      "timestamp"
+    ],
+    "policyFields": [],
+    "behaviourId": "repeated-failed-login-then-success"
+  },
+  "stage3Status": "supported",
+  "stage3Notes": [
+    "All requested fields are present and reliably observable."
+  ],
+  "generatedAt": "2026-09-16T06:00:20.086789+00:00"
+}

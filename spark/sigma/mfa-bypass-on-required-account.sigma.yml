@@ -1,0 +1,20 @@
+title: 'SENTINEL Forge: mfa-bypass-on-required-account'
+name: mfa-bypass-on-required-account_base
+status: experimental
+author: SENTINEL Forge (generated)
+date: '2026-09-16'
+logsource:
+  category: authentication
+detection:
+  selection:
+    event_type: login_success
+    mfa_used: false
+  condition: selection
+fields:
+- mfa_used
+description: "LIMITATION: Sigma's base specification has no mechanism for comparing\
+  \ a log field ('mfa_used') against an external policy/reference table ('mfa_required'\
+  \ in account_policy_reference.json). This rule captures only the log-observable\
+  \ half of the real condition. The policy comparison itself must be implemented via\
+  \ the target SIEM's own lookup-list/enrichment mechanism \u2014 this is a genuine\
+  \ gap in Sigma's format, not an omission in this export."

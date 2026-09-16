@@ -1,0 +1,18 @@
+{
+  "report": "data\\samples\\reports\\concurrent-sessions-003.md",
+  "extractedSpec": {
+    "requiredFields": [
+      "timestamp",
+      "account_id",
+      "event_type",
+      "source_host"
+    ],
+    "policyFields": [],
+    "behaviourId": "concurrent-sessions-different-hosts"
+  },
+  "stage3Status": "supported",
+  "stage3Notes": [
+    "All requested fields are present and reliably observable."
+  ],
+  "generatedAt": "2026-09-16T06:01:03.756403+00:00"
+}

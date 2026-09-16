@@ -1,0 +1,69 @@
+{
+  "behaviourId": "repeated-failed-login-then-success",
+  "description": "Five or more failed sign-ins for an account followed immediately by a success within the same short window.",
+  "attackTechniques": ["T1110", "T1078"],
+  "sourceReport": "SF-SAMPLE-001",
+
+  "entities": [
+    {
+      "name": "account",
+      "type": "account",
+      "provenance": {
+        "kind": "source-span",
+        "reportId": "SF-SAMPLE-001",
+        "text": "the account `svc-backup01`",
+        "charStart": 312,
+        "charEnd": 339
+      }
+    }
+  ],
+
+  "requiredFields": [
+    { "field": "account_id", "provenance": { "kind": "source-span", "reportId": "SF-SAMPLE-001", "text": "for the account `svc-backup01`", "charStart": 300, "charEnd": 331 } },
+    { "field": "event_type", "provenance": { "kind": "source-span", "reportId": "SF-SAMPLE-001", "text": "five consecutive failed sign-in attempts", "charStart": 344, "charEnd": 385 } },
+    { "field": "timestamp", "provenance": { "kind": "source-span", "reportId": "SF-SAMPLE-001", "text": "within a two-minute window", "charStart": 401, "charEnd": 428 } }
+  ],
+
+  "predicates": [
+    { "field": "event_type", "op": "eq", "value": "login_failure",
+      "provenance": { "kind": "source-span", "reportId": "SF-SAMPLE-001", "text": "five consecutive failed sign-in attempts", "charStart": 344, "charEnd": 385 } },
+    { "field": "event_type", "op": "eq", "value": "login_success",
+      "provenance": { "kind": "source-span", "reportId": "SF-SAMPLE-001", "text": "a sixth authentication event for the same account succeeded", "charStart": 460, "charEnd": 522 } }
+  ],
+
+  "sequence": [
+    {
+      "step": "failures",
+      "matches": [{ "field": "event_type", "op": "eq", "value": "login_failure" }],
+      "count": { "op": "gte", "value": 5 },
+      "provenance": { "kind": "analyst-assumption", "note": "Narrative said 'five consecutive failed sign-in attempts'; threshold made explicit and confirmed rather than left as a vague 'repeated'.", "confirmedBy": "lab-analyst-01", "confirmedAt": "2026-09-10T00:00:00Z" }
+    },
+    {
+      "step": "success",
+      "matches": [{ "field": "event_type", "op": "eq", "value": "login_success" }],
+      "count": { "op": "eq", "value": 1 },
+      "provenance": { "kind": "source-span", "reportId": "SF-SAMPLE-001", "text": "a sixth authentication event for the same account succeeded from the same source host", "charStart": 448, "charEnd": 536 }
+    }
+  ],
+
+  "groupingKey": "account_id",
+  "timeWindow": { "amount": 2, "unit": "minutes" },
+  "windowType": "sliding",
+
+  "excludedFields": [
+    {
+      "field": "source_ip",
+      "reason": "Report explicitly flags source_ip as inconsistently populated in this schema; excluded from predicates by analyst decision rather than included and later found unsupported.",
+      "provenance": { "kind": "source-span", "reportId": "SF-SAMPLE-001", "text": "the source IP address field is not consistently populated in this environment's authentication log", "charStart": 900, "charEnd": 1000 }
+    }
+  ],
+
+  "validation": {
+    "status": "supported",
+    "missingFields": [],
+    "notes": [
+      "All required fields (account_id, event_type, timestamp) are present and required in authentication_log_schema.json v1.",
+      "source_ip deliberately excluded from predicates — see excludedFields — so its optional/unreliable status in the schema does not block compilation."
+    ]
+  }
+}

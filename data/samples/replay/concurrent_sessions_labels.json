@@ -1,0 +1,27 @@
+{
+  "description": "Independent ground-truth labels for concurrent_sessions_events.jsonl.",
+  "ruleUnderTest": "concurrent-sessions-different-hosts",
+  "scenarios": [
+    {
+      "scenarioId": "CS-POS",
+      "accountId": "rjones",
+      "description": "Two successes from different hosts, 4 minutes apart.",
+      "expectedAlert": true,
+      "expectedTriggerEventId": "evt-cs02"
+    },
+    {
+      "scenarioId": "CS-NEG-SAMEHOST",
+      "accountId": "tlee",
+      "description": "Two successes 5 minutes apart, but from the SAME host.",
+      "expectedAlert": false,
+      "note": "Tests that the rule keys on distinct hosts, not just repeated success."
+    },
+    {
+      "scenarioId": "CS-NEG-WINDOW",
+      "accountId": "pgarcia",
+      "description": "Two successes from different hosts, but 40 minutes apart — outside the 15-minute window.",
+      "expectedAlert": false,
+      "note": "Time-window precision case, same purpose as B1's scenario E."
+    }
+  ]
+}

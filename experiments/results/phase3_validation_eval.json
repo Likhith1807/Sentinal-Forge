@@ -1,0 +1,155 @@
+[
+  {
+    "case": "requires source_ip (known-unreliable field)",
+    "expected": "rejected",
+    "actual": "rejected",
+    "match": true,
+    "notes": [
+      "'source_ip' exists in the log schema but is annotated observability=unreliable (Frequently absent for internal-network sessions in this environment. NOT in the required list on purpose \u2014 see docs/schema/authentication-log-schema.md.) \u2014 a rule must not depend on it."
+    ]
+  },
+  {
+    "case": "Phase 0 canonical IR (B1, SF-SAMPLE-001)",
+    "expected": "supported",
+    "actual": "supported",
+    "match": true,
+    "notes": [
+      "All requested fields are present and reliably observable."
+    ]
+  },
+  {
+    "case": "gold: SF-SAMPLE-013 (concurrent-sessions-different-hosts)",
+    "expected": "supported",
+    "actual": "supported",
+    "match": true,
+    "notes": [
+      "All requested fields are present and reliably observable."
+    ]
+  },
+  {
+    "case": "gold: SF-SAMPLE-011 (repeated-failed-login-then-success)",
+    "expected": "supported",
+    "actual": "supported",
+    "match": true,
+    "notes": [
+      "All requested fields are present and reliably observable."
+    ]
+  },
+  {
+    "case": "gold: SF-SAMPLE-015 (mfa-bypass-on-required-account)",
+    "expected": "supported",
+    "actual": "supported",
+    "match": true,
+    "notes": [
+      "All requested fields are present and reliably observable."
+    ]
+  },
+  {
+    "case": "gold: SF-SAMPLE-012 (password-spray-across-accounts)",
+    "expected": "supported",
+    "actual": "supported",
+    "match": true,
+    "notes": [
+      "All requested fields are present and reliably observable."
+    ]
+  },
+  {
+    "case": "gold: SF-SAMPLE-014 (service-account-interactive-auth)",
+    "expected": "supported",
+    "actual": "supported",
+    "match": true,
+    "notes": [
+      "All requested fields are present and reliably observable."
+    ]
+  },
+  {
+    "case": "classical -> SF-SAMPLE-013",
+    "expected": "supported",
+    "actual": "supported",
+    "match": true,
+    "notes": [
+      "All requested fields are present and reliably observable."
+    ]
+  },
+  {
+    "case": "transformer -> SF-SAMPLE-013",
+    "expected": "supported",
+    "actual": "supported",
+    "match": true,
+    "notes": [
+      "All requested fields are present and reliably observable."
+    ]
+  },
+  {
+    "case": "classical -> SF-SAMPLE-011",
+    "expected": "supported",
+    "actual": "supported",
+    "match": true,
+    "notes": [
+      "All requested fields are present and reliably observable."
+    ]
+  },
+  {
+    "case": "transformer -> SF-SAMPLE-011",
+    "expected": "supported",
+    "actual": "supported",
+    "match": true,
+    "notes": [
+      "All requested fields are present and reliably observable."
+    ]
+  },
+  {
+    "case": "classical -> SF-SAMPLE-015",
+    "expected": "supported",
+    "actual": "supported",
+    "match": true,
+    "notes": [
+      "All requested fields are present and reliably observable."
+    ]
+  },
+  {
+    "case": "transformer -> SF-SAMPLE-015",
+    "expected": "supported",
+    "actual": "supported",
+    "match": true,
+    "notes": [
+      "All requested fields are present and reliably observable."
+    ]
+  },
+  {
+    "case": "classical -> SF-SAMPLE-012",
+    "expected": "supported",
+    "actual": "supported",
+    "match": true,
+    "notes": [
+      "All requested fields are present and reliably observable."
+    ]
+  },
+  {
+    "case": "transformer -> SF-SAMPLE-012",
+    "expected": "supported",
+    "actual": "supported",
+    "match": true,
+    "notes": [
+      "All requested fields are present and reliably observable."
+    ]
+  },
+  {
+    "case": "classical -> SF-SAMPLE-014",
+    "expected": "supported",
+    "actual": "supported",
+    "match": true,
+    "notes": [
+      "All requested fields are present and reliably observable."
+    ]
+  },
+  {
+    "case": "transformer -> SF-SAMPLE-014",
+    "expected": "supported",
+    "actual": "supported",
+    "match": true,
+    "notes": [
+      "All requested fields are present and reliably observable."
+    ]
+  }
+]

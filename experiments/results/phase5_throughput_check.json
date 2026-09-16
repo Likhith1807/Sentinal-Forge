@@ -1,0 +1,9 @@
+{
+  "datasetEventCount": 48,
+  "runsPerBehaviour": 10,
+  "meanLatencyMs": 503.19464399999976,
+  "p50LatencyMs": 436.9924,
+  "p95LatencyMs": 1136.3518,
+  "approxThroughputEventsPerSec": 95.39052247940862,
+  "caveat": "Measured on a 48-event dataset on one local machine (local[*]) - a real number for the data that exists, not a production-scale benchmark."
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sentinel-forge/account-policy-reference/v1",
+  "description": "Static identity/policy context, joined against authentication_log.account_id. Deliberately incomplete — see docs/schema/account-policy-reference.md.",
+  "records": [
+    { "account_id": "svc-backup01", "account_type": "service", "expected_auth_method": "password",    "mfa_required": false },
+    { "account_id": "jdoe",         "account_type": "human",   "expected_auth_method": "password",    "mfa_required": false },
+    { "account_id": "msmith",       "account_type": "human",   "expected_auth_method": "token",       "mfa_required": true },
+    { "account_id": "svc-web02",    "account_type": "service", "expected_auth_method": "password",    "mfa_required": false },
+    { "account_id": "svc-db03",     "account_type": "service", "expected_auth_method": "password",    "mfa_required": false },
+    { "account_id": "alice",        "account_type": "human",   "expected_auth_method": "password",    "mfa_required": true },
+    { "account_id": "bob",          "account_type": "human",   "expected_auth_method": "password",    "mfa_required": true },
+    { "account_id": "carol",        "account_type": "human",   "expected_auth_method": "password",    "mfa_required": true },
+    { "account_id": "dave",         "account_type": "human",   "expected_auth_method": "password",    "mfa_required": true },
+    { "account_id": "erin",         "account_type": "human",   "expected_auth_method": "password",    "mfa_required": true },
+    { "account_id": "rjones",       "account_type": "human",   "expected_auth_method": "password",    "mfa_required": true },
+    { "account_id": "svc-etl05",    "account_type": "service", "expected_auth_method": "certificate", "mfa_required": false },
+    { "account_id": "cfinance",     "account_type": "human",   "expected_auth_method": "password",    "mfa_required": true }
+  ],
+  "notesOnOmissions": [
+    "attacker-probe (used in the B1 replay set) is intentionally absent — it is not a provisioned account.",
+    "contractor-x9 (used in the B5 replay set) is intentionally absent — it exercises the 'account not in policy reference' rejection path, distinct from a missing log-schema field."
+  ]
+}

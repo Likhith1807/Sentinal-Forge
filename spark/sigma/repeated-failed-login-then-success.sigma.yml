@@ -1,0 +1,55 @@
+title: repeated-failed-login-then-success (counted event)
+name: repeated-failed-login-then-success_failures
+status: experimental
+author: SENTINEL Forge (generated)
+date: '2026-09-16'
+logsource:
+  category: authentication
+detection:
+  selection:
+    event_type: login_failure
+  condition: selection
+---
+title: repeated-failed-login-then-success (trigger event)
+name: repeated-failed-login-then-success_trigger
+status: experimental
+author: SENTINEL Forge (generated)
+date: '2026-09-16'
+logsource:
+  category: authentication
+detection:
+  selection:
+    event_type: login_success
+  condition: selection
+---
+title: repeated-failed-login-then-success (threshold on counted event)
+status: experimental
+author: SENTINEL Forge (generated)
+date: '2026-09-16'
+name: repeated-failed-login-then-success_failure_count
+correlation:
+  type: event_count
+  rules:
+  - repeated-failed-login-then-success_failures
+  group-by:
+  - account_id
+  timespan: 120s
+  condition:
+    gte: 5
+---
+title: 'SENTINEL Forge: repeated-failed-login-then-success'
+status: experimental
+author: SENTINEL Forge (generated)
+date: '2026-09-16'
+description: "Best-effort Sigma composition: 5+ login_failure events, followed by\
+  \ a login_success event, for the same account_id, within 120s. Chains a correlation\
+  \ rule as the input to another correlation rule (per Sigma's correlation spec) \u2014\
+  \ validate against a real Sigma backend before production use."
+correlation:
+  type: temporal_ordered
+  rules:
+  - repeated-failed-login-then-success_failure_count
+  - repeated-failed-login-then-success_trigger
+  group-by:
+  - account_id
+  timespan: 120s

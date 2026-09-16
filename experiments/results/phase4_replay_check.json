@@ -1,0 +1,19 @@
+[
+  {"behaviourId":"repeated-failed-login-then-success","scenarioId":"A","expected":"true","actual":"true","pass":true},
+  {"behaviourId":"repeated-failed-login-then-success","scenarioId":"B","expected":"false","actual":"false","pass":true},
+  {"behaviourId":"repeated-failed-login-then-success","scenarioId":"C","expected":"false","actual":"false","pass":true},
+  {"behaviourId":"repeated-failed-login-then-success","scenarioId":"D","expected":"false","actual":"false","pass":true},
+  {"behaviourId":"repeated-failed-login-then-success","scenarioId":"E","expected":"false","actual":"false","pass":true},
+  {"behaviourId":"repeated-failed-login-then-success","scenarioId":"F","expected":"true","actual":"true","pass":true},
+  {"behaviourId":"password-spray-across-accounts","scenarioId":"SPRAY-POS","expected":"true","actual":"true","pass":true},
+  {"behaviourId":"password-spray-across-accounts","scenarioId":"SPRAY-NEG","expected":"false","actual":"false","pass":true},
+  {"behaviourId":"concurrent-sessions-different-hosts","scenarioId":"CS-POS","expected":"true","actual":"true","pass":true},
+  {"behaviourId":"concurrent-sessions-different-hosts","scenarioId":"CS-NEG-SAMEHOST","expected":"false","actual":"false","pass":true},
+  {"behaviourId":"concurrent-sessions-different-hosts","scenarioId":"CS-NEG-WINDOW","expected":"false","actual":"false","pass":true},
+  {"behaviourId":"service-account-interactive-auth","scenarioId":"SA-POS","expected":"alert","actual":"alert","pass":true},
+  {"behaviourId":"service-account-interactive-auth","scenarioId":"SA-NEG-COMPLIANT","expected":"no_alert","actual":"no_alert","pass":true},
+  {"behaviourId":"service-account-interactive-auth","scenarioId":"SA-NEG-NO-POLICY","expected":"insufficient_context","actual":"insufficient_context","pass":true},
+  {"behaviourId":"mfa-bypass-on-required-account","scenarioId":"MFA-POS","expected":"alert","actual":"alert","pass":true},
+  {"behaviourId":"mfa-bypass-on-required-account","scenarioId":"MFA-NEG-COMPLIANT","expected":"no_alert","actual":"no_alert","pass":true},
+  {"behaviourId":"mfa-bypass-on-required-account","scenarioId":"MFA-NEG-NO-POLICY","expected":"insufficient_context","actual":"insufficient_context","pass":true}
+]

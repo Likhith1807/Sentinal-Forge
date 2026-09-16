@@ -1,0 +1,103 @@
+[
+  {
+    "case": "SF-SAMPLE-011",
+    "behaviourId": "repeated-failed-login-then-success",
+    "requiredFields": [
+      "account_id",
+      "event_type",
+      "timestamp"
+    ],
+    "policyFields": [],
+    "stage3Verdict": "supported",
+    "stage3Notes": [
+      "All requested fields are present and reliably observable."
+    ],
+    "gateOnOutcome": "supported -> code generated",
+    "gateOffOutcome": "supported -> code generated (same as gate ON)",
+    "ablationChangesOutcome": false
+  },
+  {
+    "case": "SF-SAMPLE-012",
+    "behaviourId": "password-spray-across-accounts",
+    "requiredFields": [
+      "timestamp",
+      "account_id",
+      "source_host",
+      "event_type"
+    ],
+    "policyFields": [],
+    "stage3Verdict": "supported",
+    "stage3Notes": [
+      "All requested fields are present and reliably observable."
+    ],
+    "gateOnOutcome": "supported -> code generated",
+    "gateOffOutcome": "supported -> code generated (same as gate ON)",
+    "ablationChangesOutcome": false
+  },
+  {
+    "case": "SF-SAMPLE-013",
+    "behaviourId": "concurrent-sessions-different-hosts",
+    "requiredFields": [
+      "event_type",
+      "source_host",
+      "timestamp",
+      "account_id"
+    ],
+    "policyFields": [],
+    "stage3Verdict": "supported",
+    "stage3Notes": [
+      "All requested fields are present and reliably observable."
+    ],
+    "gateOnOutcome": "supported -> code generated",
+    "gateOffOutcome": "supported -> code generated (same as gate ON)",
+    "ablationChangesOutcome": false
+  },
+  {
+    "case": "SF-SAMPLE-014",
+    "behaviourId": "service-account-interactive-auth",
+    "requiredFields": [
+      "event_type",
+      "auth_method",
+      "account_id"
+    ],
+    "policyFields": [],
+    "stage3Verdict": "supported",
+    "stage3Notes": [
+      "All requested fields are present and reliably observable."
+    ],
+    "gateOnOutcome": "supported -> code generated",
+    "gateOffOutcome": "supported -> code generated (same as gate ON)",
+    "ablationChangesOutcome": false
+  },
+  {
+    "case": "SF-SAMPLE-015",
+    "behaviourId": "mfa-bypass-on-required-account",
+    "requiredFields": [
+      "event_type",
+      "mfa_used"
+    ],
+    "policyFields": [
+      "policy.mfa_required"
+    ],
+    "stage3Verdict": "supported",
+    "stage3Notes": [
+      "All requested fields are present and reliably observable."
+    ],
+    "gateOnOutcome": "supported -> code generated",
+    "gateOffOutcome": "supported -> code generated (same as gate ON)",
+    "ablationChangesOutcome": false
+  },
+  {
+    "case": "ADVERSARIAL-geo-anomaly",
+    "behaviourId": "unrecognized:None",
+    "requiredFields": [],
+    "policyFields": [],
+    "stage3Verdict": "rejected",
+    "stage3Notes": [
+      "behaviourId 'unrecognized:None' does not match any known, schema-validated behaviour pattern."
+    ],
+    "gateOnOutcome": "REJECTED -> no code generated",
+    "gateOffOutcome": "code generated regardless of verdict",
+    "ablationChangesOutcome": true
+  }
+]

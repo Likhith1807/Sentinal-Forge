@@ -1,0 +1,11 @@
+{
+  "reportFile": "data/samples/reports/concurrent-sessions-003.md",
+  "reportId": "SF-SAMPLE-013",
+  "behaviourId": "concurrent-sessions-different-hosts",
+  "requiredFields": ["account_id", "event_type", "timestamp", "source_host"],
+  "policyFields": [],
+  "excludedFields": [],
+  "threshold": { "successCount": 2 },
+  "timeWindow": { "amount": 15, "unit": "minutes" },
+  "note": "event_type here means login_success specifically, not failures — this behaviour needs no failed attempts at all."
+}

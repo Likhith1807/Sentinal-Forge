@@ -1,0 +1,8 @@
+{
+  "report": "data\\samples\\reports\\concurrent-sessions-001.md",
+  "provider": "groq",
+  "model": "openai/gpt-oss-120b",
+  "generatedAt": "2026-09-16T04:35:52.320615+00:00",
+  "promptTemplate": "experiments\\baselines\\direct_llm\\prompt_template.md",
+  "schemaProvidedButNotValidated": true
+}

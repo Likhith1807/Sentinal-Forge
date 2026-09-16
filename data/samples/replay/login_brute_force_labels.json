@@ -1,0 +1,50 @@
+{
+  "description": "Independent ground-truth labels for login_brute_force_events.jsonl, kept separate from the log data itself — matching how Stage 5 replay evaluation compares compiled-rule output against independently labelled events, not against labels baked into the log.",
+  "ruleUnderTest": "repeated-failed-login-then-success",
+  "scenarios": [
+    {
+      "scenarioId": "A",
+      "accountId": "svc-backup01",
+      "description": "Exactly the canonical example from SF-SAMPLE-001: 5 failures in 95s, then a success.",
+      "expectedAlert": true,
+      "expectedTriggerEventId": "evt-a06",
+      "note": "Primary positive case — this is the scenario the report and the hand-written IR both describe."
+    },
+    {
+      "scenarioId": "B",
+      "accountId": "jdoe",
+      "description": "Only 2 failures before success — below the 5-failure threshold.",
+      "expectedAlert": false,
+      "note": "Tests that the threshold is enforced, not just 'any failure before success'."
+    },
+    {
+      "scenarioId": "C",
+      "accountId": "attacker-probe",
+      "description": "6 failures, no subsequent success at all.",
+      "expectedAlert": false,
+      "note": "Tests that a rule requiring the 'success' step does not fire on failures alone — this is a real brute-force attempt that simply didn't (yet) succeed, and is intentionally out of scope for this specific behaviour."
+    },
+    {
+      "scenarioId": "D",
+      "accountId": "msmith",
+      "description": "A single successful login with no preceding failures.",
+      "expectedAlert": false,
+      "note": "Baseline legitimate-login case."
+    },
+    {
+      "scenarioId": "E",
+      "accountId": "svc-web02",
+      "description": "5 failures, but spread across 10 minutes, then a success — only the last failure falls inside the 2-minute window before the success.",
+      "expectedAlert": false,
+      "note": "Edge case that specifically tests time-window precision, not just threshold counting. A rule that counts failures without windowing would incorrectly alert here."
+    },
+    {
+      "scenarioId": "F",
+      "accountId": "svc-db03",
+      "description": "5 failures in 60s, then a success — same shape as scenario A, different account.",
+      "expectedAlert": true,
+      "expectedTriggerEventId": "evt-f06",
+      "note": "Second positive case, to confirm the rule generalises across accounts rather than being keyed to svc-backup01 specifically."
+    }
+  ]
+}

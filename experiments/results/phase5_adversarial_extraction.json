@@ -1,0 +1,93 @@
+[
+  {
+    "fixture": "contradictory-threshold",
+    "classical": {
+      "behaviourId": "repeated-failed-login-then-success",
+      "requiredFields": [
+        "account_id",
+        "event_type",
+        "timestamp"
+      ],
+      "policyFields": [],
+      "threshold": {
+        "successCount": 10
+      },
+      "timeWindow": {
+        "amount": 2,
+        "unit": "minutes"
+      }
+    },
+    "transformer": {
+      "behaviourId": "repeated-failed-login-then-success",
+      "requiredFields": [
+        "event_type",
+        "timestamp",
+        "account_id"
+      ],
+      "policyFields": [],
+      "threshold": {
+        "failureCount": 10
+      },
+      "timeWindow": {
+        "amount": 2,
+        "unit": "minutes"
+      }
+    }
+  },
+  {
+    "fixture": "alarming-tone-benign-facts",
+    "classical": {
+      "behaviourId": "service-account-interactive-auth",
+      "requiredFields": [
+        "account_id",
+        "event_type",
+        "mfa_used"
+      ],
+      "policyFields": [
+        "policy.mfa_required"
+      ],
+      "threshold": null,
+      "timeWindow": null
+    },
+    "transformer": {
+      "behaviourId": "mfa-bypass-on-required-account",
+      "requiredFields": [
+        "event_type",
+        "mfa_used"
+      ],
+      "policyFields": [
+        "policy.mfa_required"
+      ],
+      "threshold": null,
+      "timeWindow": null
+    }
+  },
+  {
+    "fixture": "synonym-substitution",
+    "classical": {
+      "behaviourId": "repeated-failed-login-then-success",
+      "requiredFields": [
+        "timestamp"
+      ],
+      "policyFields": [],
+      "threshold": null,
+      "timeWindow": null
+    },
+    "transformer": {
+      "behaviourId": "repeated-failed-login-then-success",
+      "requiredFields": [
+        "event_type",
+        "account_id",
+        "timestamp"
+      ],
+      "policyFields": [],
+      "threshold": {
+        "failureCount": 5
+      },
+      "timeWindow": {
+        "amount": 2,
+        "unit": "minutes"
+      }
+    }
+  }
+]

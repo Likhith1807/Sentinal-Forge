@@ -1,0 +1,43 @@
+{
+  "n": 5,
+  "rows": [
+    {
+      "report": "SF-SAMPLE-013",
+      "agreement": 1.0,
+      "transformerF1": 1.0,
+      "classicalF1": 1.0,
+      "fullAgreement": true
+    },
+    {
+      "report": "SF-SAMPLE-011",
+      "agreement": 1.0,
+      "transformerF1": 1.0,
+      "classicalF1": 1.0,
+      "fullAgreement": true
+    },
+    {
+      "report": "SF-SAMPLE-015",
+      "agreement": 0.5,
+      "transformerF1": 0.857,
+      "classicalF1": 0.857,
+      "fullAgreement": false
+    },
+    {
+      "report": "SF-SAMPLE-012",
+      "agreement": 1.0,
+      "transformerF1": 1.0,
+      "classicalF1": 1.0,
+      "fullAgreement": true
+    },
+    {
+      "report": "SF-SAMPLE-014",
+      "agreement": 0.75,
+      "transformerF1": 0.857,
+      "classicalF1": 1.0,
+      "fullAgreement": false
+    }
+  ],
+  "pearsonR": 0.919,
+  "disagreementFlagsExactlyTheImperfectCases": true,
+  "caveat": "n=5, held-out set \u2014 a real signal on the data available, not a claim of general statistical significance."
+}

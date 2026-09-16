@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sentinel-forge/authentication-log-schema/v1",
+  "title": "Authentication Log Schema (v1)",
+  "description": "The one documented security-log schema for SENTINEL Forge's initial scope. See docs/schema/authentication-log-schema.md for the annotated, human-readable version.",
+  "type": "object",
+  "required": ["event_id", "timestamp", "account_id", "event_type", "source_host", "auth_method", "mfa_used"],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "description": "Unique per event, collector-assigned."
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Event time, UTC, millisecond precision."
+    },
+    "account_id": {
+      "type": "string",
+      "description": "Username or service-account identifier. Default grouping key."
+    },
+    "event_type": {
+      "type": "string",
+      "enum": ["login_success", "login_failure"]
+    },
+    "source_host": {
+      "type": "string",
+      "description": "Hostname or IP of the originating machine."
+    },
+    "source_ip": {
+      "type": ["string", "null"],
+      "description": "Frequently absent for internal-network sessions in this environment. NOT in the required list on purpose — see docs/schema/authentication-log-schema.md.",
+      "observability": "unreliable"
+    },
+    "auth_method": {
+      "type": "string",
+      "enum": ["password", "token", "certificate"]
+    },
+    "mfa_used": {
+      "type": "boolean"
+    },
+    "session_id": {
+      "type": ["string", "null"],
+      "description": "Present only on login_success events."
+    }
+  }
+}

@@ -1,0 +1,26 @@
+title: concurrent-sessions-different-hosts (base event)
+name: concurrent-sessions-different-hosts_base
+status: experimental
+author: SENTINEL Forge (generated)
+date: '2026-09-16'
+logsource:
+  category: authentication
+detection:
+  selection:
+    event_type: login_success
+  condition: selection
+---
+title: 'SENTINEL Forge: concurrent-sessions-different-hosts'
+status: experimental
+author: SENTINEL Forge (generated)
+date: '2026-09-16'
+correlation:
+  type: value_count
+  rules:
+  - concurrent-sessions-different-hosts_base
+  group-by:
+  - account_id
+  timespan: 900s
+  condition:
+    field: source_host
+    gte: 2

@@ -1,0 +1,245 @@
+{
+  "classical": {
+    "system": "classical",
+    "perReport": [
+      {
+        "report": "SF-SAMPLE-013",
+        "goldBehaviour": "concurrent-sessions-different-hosts",
+        "predBehaviour": "concurrent-sessions-different-hosts",
+        "behaviourMatch": true,
+        "goldFields": [
+          "account_id",
+          "event_type",
+          "source_host",
+          "timestamp"
+        ],
+        "predFields": [
+          "account_id",
+          "event_type",
+          "source_host",
+          "timestamp"
+        ],
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "provenanceEntries": 6,
+        "provenanceVerified": 6
+      },
+      {
+        "report": "SF-SAMPLE-011",
+        "goldBehaviour": "repeated-failed-login-then-success",
+        "predBehaviour": "concurrent-sessions-different-hosts",
+        "behaviourMatch": false,
+        "goldFields": [
+          "account_id",
+          "event_type",
+          "timestamp"
+        ],
+        "predFields": [
+          "account_id",
+          "event_type",
+          "timestamp"
+        ],
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "provenanceEntries": 6,
+        "provenanceVerified": 6
+      },
+      {
+        "report": "SF-SAMPLE-015",
+        "goldBehaviour": "mfa-bypass-on-required-account",
+        "predBehaviour": "mfa-bypass-on-required-account",
+        "behaviourMatch": true,
+        "goldFields": [
+          "account_id",
+          "event_type",
+          "mfa_used",
+          "policy.mfa_required"
+        ],
+        "predFields": [
+          "account_id",
+          "event_type",
+          "policy.mfa_required"
+        ],
+        "precision": 1.0,
+        "recall": 0.75,
+        "f1": 0.857,
+        "provenanceEntries": 6,
+        "provenanceVerified": 6
+      },
+      {
+        "report": "SF-SAMPLE-012",
+        "goldBehaviour": "password-spray-across-accounts",
+        "predBehaviour": "password-spray-across-accounts",
+        "behaviourMatch": true,
+        "goldFields": [
+          "account_id",
+          "event_type",
+          "source_host",
+          "timestamp"
+        ],
+        "predFields": [
+          "account_id",
+          "event_type",
+          "source_host",
+          "timestamp"
+        ],
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "provenanceEntries": 6,
+        "provenanceVerified": 6
+      },
+      {
+        "report": "SF-SAMPLE-014",
+        "goldBehaviour": "service-account-interactive-auth",
+        "predBehaviour": "service-account-interactive-auth",
+        "behaviourMatch": true,
+        "goldFields": [
+          "account_id",
+          "auth_method",
+          "event_type",
+          "policy.expected_auth_method"
+        ],
+        "predFields": [
+          "account_id",
+          "auth_method",
+          "event_type",
+          "policy.expected_auth_method"
+        ],
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "provenanceEntries": 5,
+        "provenanceVerified": 5
+      }
+    ],
+    "microPrecision": 1.0,
+    "microRecall": 0.947,
+    "microF1": 0.973,
+    "behaviourClassificationAccuracy": 0.8,
+    "provenanceVerificationRate": 1.0
+  },
+  "transformer": {
+    "system": "transformer",
+    "perReport": [
+      {
+        "report": "SF-SAMPLE-013",
+        "goldBehaviour": "concurrent-sessions-different-hosts",
+        "predBehaviour": "concurrent-sessions-different-hosts",
+        "behaviourMatch": true,
+        "goldFields": [
+          "account_id",
+          "event_type",
+          "source_host",
+          "timestamp"
+        ],
+        "predFields": [
+          "account_id",
+          "event_type",
+          "source_host",
+          "timestamp"
+        ],
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "provenanceEntries": 4,
+        "provenanceVerified": 4
+      },
+      {
+        "report": "SF-SAMPLE-011",
+        "goldBehaviour": "repeated-failed-login-then-success",
+        "predBehaviour": "repeated-failed-login-then-success",
+        "behaviourMatch": true,
+        "goldFields": [
+          "account_id",
+          "event_type",
+          "timestamp"
+        ],
+        "predFields": [
+          "account_id",
+          "event_type",
+          "timestamp"
+        ],
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "provenanceEntries": 3,
+        "provenanceVerified": 3
+      },
+      {
+        "report": "SF-SAMPLE-015",
+        "goldBehaviour": "mfa-bypass-on-required-account",
+        "predBehaviour": "mfa-bypass-on-required-account",
+        "behaviourMatch": true,
+        "goldFields": [
+          "account_id",
+          "event_type",
+          "mfa_used",
+          "policy.mfa_required"
+        ],
+        "predFields": [
+          "account_id",
+          "event_type",
+          "mfa_used"
+        ],
+        "precision": 1.0,
+        "recall": 0.75,
+        "f1": 0.857,
+        "provenanceEntries": 4,
+        "provenanceVerified": 4
+      },
+      {
+        "report": "SF-SAMPLE-012",
+        "goldBehaviour": "password-spray-across-accounts",
+        "predBehaviour": "password-spray-across-accounts",
+        "behaviourMatch": true,
+        "goldFields": [
+          "account_id",
+          "event_type",
+          "source_host",
+          "timestamp"
+        ],
+        "predFields": [
+          "account_id",
+          "event_type",
+          "source_host",
+          "timestamp"
+        ],
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "provenanceEntries": 4,
+        "provenanceVerified": 4
+      },
+      {
+        "report": "SF-SAMPLE-014",
+        "goldBehaviour": "service-account-interactive-auth",
+        "predBehaviour": "service-account-interactive-auth",
+        "behaviourMatch": true,
+        "goldFields": [
+          "account_id",
+          "auth_method",
+          "event_type",
+          "policy.expected_auth_method"
+        ],
+        "predFields": [
+          "account_id",
+          "auth_method",
+          "event_type"
+        ],
+        "precision": 1.0,
+        "recall": 0.75,
+        "f1": 0.857,
+        "provenanceEntries": 4,
+        "provenanceVerified": 4
+      }
+    ],
+    "microPrecision": 1.0,
+    "microRecall": 0.895,
+    "microF1": 0.944,
+    "behaviourClassificationAccuracy": 1.0,
+    "provenanceVerificationRate": 1.0
+  }
+}

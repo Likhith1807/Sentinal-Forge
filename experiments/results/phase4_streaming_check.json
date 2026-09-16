@@ -1,0 +1,6 @@
+{"microBatchCount": 4, "alerts": [
+  {"groupKey":"cfinance","triggeringEventId":"evt-mb01","status":"alert"},
+  {"groupKey":"msmith","triggeringEventId":"evt-mb02","status":"no_alert"},
+  {"groupKey":"contractor-x9","triggeringEventId":"evt-mb03","status":"insufficient_context"}
+]
+}

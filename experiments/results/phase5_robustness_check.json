@@ -1,0 +1,4 @@
+{
+  "policySourceUnavailable": {"allDegradedToInsufficientContext": true},
+  "missingRequiredField": {"failsLoudlyAndSpecifically": true, "message": "ExtendedAnalysisException: [UNRESOLVED_COLUMN.WITH_SUGGESTION] A column or function parameter with name `source_host` cannot be resolved. Did you mean one of the following? [`source_ip`, `auth_method`, `event_id`, `source_scenario`, `account_id`].;"}
+}

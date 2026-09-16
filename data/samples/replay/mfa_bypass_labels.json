@@ -1,0 +1,31 @@
+{
+  "description": "Independent ground-truth labels for mfa_bypass_events.jsonl. Uses expectedStatus for the same reason as service_account_auth_labels.json.",
+  "ruleUnderTest": "mfa-bypass-on-required-account",
+  "scenarios": [
+    {
+      "scenarioId": "MFA-POS",
+      "accountId": "cfinance",
+      "eventId": "evt-mb01",
+      "description": "Policy requires MFA; event has mfa_used=false.",
+      "expectedStatus": "alert",
+      "expectedAlert": true
+    },
+    {
+      "scenarioId": "MFA-NEG-COMPLIANT",
+      "accountId": "msmith",
+      "eventId": "evt-mb02",
+      "description": "Policy requires MFA; event has mfa_used=true.",
+      "expectedStatus": "no_alert",
+      "expectedAlert": false
+    },
+    {
+      "scenarioId": "MFA-NEG-NO-POLICY",
+      "accountId": "contractor-x9",
+      "eventId": "evt-mb03",
+      "description": "mfa_used=false, but this account has no entry in account_policy_reference.json.",
+      "expectedStatus": "insufficient_context",
+      "expectedAlert": false,
+      "note": "Same abstention case as SA-NEG-NO-POLICY, deliberately repeated with a different account and behaviour so the evaluation harness can check the system handles it consistently, not just once."
+    }
+  ]
+}
