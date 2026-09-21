@@ -71,7 +71,7 @@ def build(args: argparse.Namespace) -> dict:
     stats = {"attempted": len(jobs), "accepted": 0, "failed": 0, "cached": 0, "tries": collections.Counter(),
              "failureReasons": collections.Counter()}
     if jobs:
-        client = None if all(_cache_key(j[0].family_id, j[3], j[5], args.model) in cache for j in jobs) \
+        client = None if args.cache_only or all(_cache_key(j[0].family_id, j[3], j[5], args.model) in cache for j in jobs) \
             else llm_rewrite.make_client()
 
         lock, done = threading.Lock(), [0]
@@ -81,13 +81,16 @@ def build(args: argparse.Namespace) -> dict:
             key = _cache_key(f.family_id, text, llm_style, args.model)
             if key in cache:
                 return job, key, cache[key], True
+            if args.cache_only:               # reproducible rebuild: never call the API, record what is missing
+                return job, key, {"ok": False, "reason": "not attempted (cache-only)", "tries": 0, "style": llm_style}, True
             result = llm_rewrite.rewrite(
                 client, text=text, spans=spans, thr_expr=render.thr_expression(f), win_expr=render.win_expression(f),
                 entities=f.entities, meta=f.meta, supported=f.supported, style=llm_style,
                 rng=random.Random(key), model=args.model)
             with lock:                      # durable the moment it completes, not in submission order
-                with cache_path.open("a", encoding="utf-8", newline="\n") as log:
-                    log.write(json.dumps({"key": key, "result": result}) + "\n")
+                if result["ok"] or not result["reason"].startswith("api error"):   # transient errors are retried, not cached
+                    with cache_path.open("a", encoding="utf-8", newline="\n") as log:
+                        log.write(json.dumps({"key": key, "result": result}) + "\n")
                 done[0] += 1
                 print(f"  llm {done[0]}/{len(jobs)}: {f.family_id} "
                       f"{'ok' if result['ok'] else 'REJECTED ' + result['reason'][:60]}", flush=True)
@@ -107,11 +110,16 @@ def build(args: argparse.Namespace) -> dict:
                 llm_gold = {**gold, "reportId": llm_id, "excludedFields": kept_excluded, "reportFile": f"data/corpus/reports/{llm_id}.md",
                             "style": result["style"], "tier": "llm-rewrite", "hasParamSection": False,
                             "spans": result["spans"], "derivedFrom": base_id, "llmModel": result["model"],
-                            "llmTries": result["tries"], "fieldSpansAreVerbatimPreserved": True}
+                            "llmTries": result["tries"], "fieldSpansAreVerbatimPreserved": True,
+                            "llmReasoningEffort": result.get("reasoning_effort", "default")}
                 records.append({"id": llm_id, "family": f.family_id, "tier": "llm-rewrite", "text": result["text"],
                                 "gold": llm_gold})
 
     records.sort(key=lambda r: r["id"])
+    current = {r["id"] for r in records}
+    for stale in [*(out / "reports").glob("SFC-*.md"), *(out / "gold").glob("SFC-*.gold.json")]:
+        if stale.name.split(".")[0] not in current:      # left over from an earlier, larger build
+            stale.unlink()
     for r in records:                       # every span must equal the text it labels
         for span in r["gold"]["spans"]:
             assert r["text"][span["start"]:span["end"]] == span["text"], (r["id"], span)
@@ -154,6 +162,9 @@ def build(args: argparse.Namespace) -> dict:
         "llm": {**{k: v for k, v in stats.items() if k not in ("tries", "failureReasons")},
                 "triesHistogram": dict(sorted(stats["tries"].items())),
                 "failureReasons": dict(stats["failureReasons"])},
+        "familiesWithoutLlmVariant": sorted({f.family_id for f in families}
+                                            - {r["family"] for r in records if r["tier"] == "llm-rewrite"})
+                                     if not args.skip_llm else "n/a (--skip-llm)",
         "leakageGatePassed": leak["gate"]["passed"],
         "verificationSampleSize": len(sample_items),
         "goldVerification": "every gold span equals the text at its offsets (asserted at build time); "
@@ -170,6 +181,8 @@ def main(argv=None) -> int:
     ap.add_argument("--families-per-behaviour", type=int, default=20)
     ap.add_argument("--unsupported-families", type=int, default=10)
     ap.add_argument("--skip-llm", action="store_true")
+    ap.add_argument("--cache-only", action="store_true",
+                    help="use cached rewrites only; never call the API (families with no cached rewrite keep only their template report)")
     ap.add_argument("--llm-workers", type=int, default=4)
     ap.add_argument("--model", default=llm_rewrite.DEFAULT_MODEL)
     ap.add_argument("--max-cross-jaccard", type=float, default=0.5)

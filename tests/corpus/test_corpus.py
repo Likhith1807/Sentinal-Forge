@@ -184,11 +184,14 @@ def test_rewrite_guard_rejects_each_kind_of_drift():
         "dropped threshold phrase": text.replace(thr, "a handful of"),
         "dropped window phrase": text.replace(win, "a short time"),
         "invented number": text + " An additional 987 events were seen.",
-        "lost identifier": text.replace(f.entities["acct"], "the user"),
+        # reuses digits already in the original so ONLY the identifier guard can catch it
+        "invented identifier": text + f" Related host FOO-{f.meta['ticket'].split('-')[1]} was also involved.",
         "too short": "Too short.",
     }
     for name, candidate in cases.items():
         assert _check(f, text, spans, candidate)[0] is None, name
+    # dropping a name is harmless (no gold depends on it)
+    assert _check(f, text, spans, "Reworded. " + text.replace(f.entities["acct"], "the user"))[0] is not None
     u = sample_unsupported(4, random.Random(4))
     ut, us, _ = render.render(u, "soc-ticket", random.Random(1), "X-1")
     leak = ut + " This is unsupported by the schema."
@@ -256,10 +259,31 @@ def test_rewrite_retries_after_a_rejected_attempt_and_reports_api_errors():
 
 
 # ----------------------------------------------------------------------------- build end to end (fake LLM)
-def _build(out: Path, skip_llm: bool, model="fake"):
+def _build(out: Path, skip_llm: bool, model="fake", cache_only=False):
     args = argparse.Namespace(out=str(out), seed=42, families_per_behaviour=5, unsupported_families=4,
-                              skip_llm=skip_llm, llm_workers=2, model=model, max_cross_jaccard=0.5, verification_n=6)
+                              skip_llm=skip_llm, cache_only=cache_only, llm_workers=2, model=model,
+                              max_cross_jaccard=0.5, verification_n=6)
     return build.build(args)
+
+
+def test_cache_only_rebuild_never_calls_the_api_and_reports_missing_variants():
+    original = llm_rewrite.make_client
+    llm_rewrite.make_client = lambda: _FakeClient("faithful")
+    try:
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "c"
+            full = _build(out, skip_llm=False)
+            assert full["familiesWithoutLlmVariant"] == []
+            # drop three cached rewrites to simulate an API quota running out mid-build
+            rows = (out / "llm_cache.jsonl").read_text().splitlines()
+            (out / "llm_cache.jsonl").write_text("\n".join(rows[:-3]) + "\n")
+            llm_rewrite.make_client = lambda: (_ for _ in ()).throw(AssertionError("API called in cache-only mode"))
+            partial = _build(out, skip_llm=False, cache_only=True)
+            assert partial["byTier"]["llm-rewrite"] == full["byTier"]["llm-rewrite"] - 3
+            assert len(partial["familiesWithoutLlmVariant"]) == 3
+            assert partial["llm"]["failureReasons"] == {"not attempted (cache-only)": 3}
+    finally:
+        llm_rewrite.make_client = original
 
 
 def test_build_with_fake_llm_produces_two_tiers_consistent_gold_and_a_blind_sample():

@@ -31,7 +31,8 @@ STYLE_DESCRIPTIONS = {
     "runbook": "a runbook entry with a short numbered list of steps",
 }
 GOLD_LABELS = {"threshold", "window_amount", "window_unit", "required_field", "excluded_field", "unavailable_field"}
-LEAK_PATTERN = re.compile(r"unsupported|out[- ]of[- ]scope|not supported|cannot be observed|outside (?:the|what)", re.I)
+_ID_TOKEN = re.compile(r"\b[A-Za-z]+(?:-[A-Za-z]+)*-\d+\b")      # hostnames and ticket ids, e.g. EXT-VPN-12, INC-24936
+LEAK_PATTERN =re.compile(r"unsupported|out[- ]of[- ]scope|not supported|cannot be observed|outside (?:the|what)", re.I)
 DEFAULT_MODEL = os.environ.get("SENTINEL_FORGE_LLM_MODEL", "openai/gpt-oss-120b")
 
 PROMPT = """Rewrite the security incident report below as {style}.
@@ -89,9 +90,10 @@ def validate_rewrite(original: str, rewritten: str, spans: list[dict], phrases: 
     new_numbers = set(re.findall(r"\d+", body)) - set(re.findall(r"\d+", original))
     if new_numbers:
         return None, f"invented numbers: {sorted(new_numbers)[:5]}"
-    lost = [i for i in identifiers if i in original and i not in rewritten]
-    if lost:
-        return None, f"lost identifiers: {lost[:3]}"
+    # Dropping a hostname/ticket is harmless (no gold depends on it); INVENTING one is not.
+    invented = set(_ID_TOKEN.findall(rewritten)) - set(_ID_TOKEN.findall(original))
+    if invented:
+        return None, f"invented identifiers: {sorted(invented)[:3]}"
     if not supported and LEAK_PATTERN.search(rewritten):
         return None, "announces the behaviour is unsupported (label leak)"
 
@@ -124,13 +126,19 @@ def _locate(span: dict, text: str, thr_expr: str | None, win_expr: str | None) -
     return None if idx < 0 else idx
 
 
-def call_model(client, prompt: str, model: str, temperature: float, attempts: int = 6) -> str:
-    """One chat completion with exponential backoff on rate limits / transient errors."""
-    delay = 4.0
+REASONING_EFFORT = "low"     # a rewrite needs no deep reasoning; "default" runs (cache) used the provider default
+
+
+def call_model(client, prompt: str, model: str, temperature: float, attempts: int = 8) -> str:
+    """One chat completion with exponential backoff on rate limits / transient errors.
+
+    Rate limits here are per-minute token caps, so the backoff must be able to outlast a full minute window.
+    """
+    delay = 5.0
     for attempt in range(attempts):
         try:
             response = client.chat.completions.create(
-                model=model, temperature=temperature, max_tokens=1500,
+                model=model, temperature=temperature, max_tokens=1200, reasoning_effort=REASONING_EFFORT,
                 messages=[{"role": "user", "content": prompt}])
             return response.choices[0].message.content or ""
         except Exception as exc:  # noqa: BLE001 - provider errors vary; classify by message
@@ -168,5 +176,5 @@ def rewrite(client, *, text: str, spans: list[dict], thr_expr, win_expr, entitie
         relocated, reason = validate_rewrite(text, candidate, spans, phrases, identifiers, thr_expr, win_expr, supported)
         if relocated is not None:
             return {"ok": True, "text": candidate, "spans": relocated, "tries": attempt, "reason": "",
-                    "model": model, "style": style}
+                    "model": model, "style": style, "reasoning_effort": REASONING_EFFORT}
     return {"ok": False, "reason": reason, "tries": max_tries, "style": style}

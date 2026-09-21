@@ -56,7 +56,8 @@ def evaluate(corpus: Path, split: str) -> dict:
             s["behaviourOk"] += pred.behaviourId == gold["behaviourId"]
             if gold["threshold"]:
                 s["thresholdTotal"] += 1
-                s["thresholdOk"] += (pred.threshold or {}) and next(iter(pred.threshold.values())) == next(iter(gold["threshold"].values()))
+                s["thresholdOk"] += bool(pred.threshold) and (
+                    next(iter(pred.threshold.values())) == next(iter(gold["threshold"].values())))
     out = {}
     for key, s in sorted(slices.items()):
         out[key] = {"reports": s["reports"], "behaviourAccuracy": round(s["behaviourOk"] / s["reports"], 3),
