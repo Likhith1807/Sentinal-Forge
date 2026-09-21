@@ -186,12 +186,14 @@ def analyze(req: AnalyzeRequest):
                     "correct extraction in every held-out case; any disagreement predicted an imperfect one.",
         }
 
-    if req.remove_fields:
-        spec = dict(spec)
-        spec["requiredFields"] = [f for f in spec["requiredFields"] if f not in req.remove_fields]
-        spec["policyFields"] = [f for f in spec["policyFields"] if f not in req.remove_fields]
-
-    validation = stage3.validate(spec)
+    # CORRECTION (found by an independent external review, 2026-09-16): this
+    # previously stripped removed fields OUT OF the spec's own requirements,
+    # which is backwards — it made the detection need less, not the schema
+    # provide less, so unchecking every field still validated as "supported"
+    # on an emptied-out spec. The simulation now does what its own label
+    # says: the spec still needs these fields, but Stage 3 is told they
+    # aren't available, so it can reject for the right reason.
+    validation = stage3.validate(spec, unavailable_fields=set(req.remove_fields or []))
 
     return {
         "reportId": req.report_id,

@@ -1,5 +1,14 @@
 # Stage 3 — Validate the Specification
 
+> **Corrected 2026-09-16** — an independent review found this checker
+> accepted an empty spec, an arbitrary unknown `behaviourId`, and
+> negative/zero threshold and time-window values, all as "supported." All
+> 3 reproduced and fixed; see
+> [`docs/spec/independent-review-corrections.md`](independent-review-corrections.md).
+> The document below was written before that correction and describes the
+> checker's design; the design is still accurate, the earlier
+> implementation of it was incomplete.
+
 `compiler/src/observability_checker.py` takes a spec's `requiredFields` and
 `policyFields` (the shape Phase 2's extractors produce — see
 [`nlp/src/schema_fields.py`](../../nlp/src/schema_fields.py)) and checks

@@ -1,3 +1,8 @@
+> **See [`docs/spec/independent-review-corrections.md`](../docs/spec/independent-review-corrections.md)**
+> — an independent review found the "simulate a field becoming
+> unavailable" control below did the opposite of what it claimed. Fixed;
+> see that file for the reproduction and the fix.
+
 # Phase 6 — Analyst Review Dashboard
 
 A real, running web app — FastAPI backend (`backend/main.py`) + vanilla

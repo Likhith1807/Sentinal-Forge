@@ -5,7 +5,7 @@
     "actual": "rejected",
     "match": true,
     "notes": [
-      "'source_ip' exists in the log schema but is annotated observability=unreliable (Frequently absent for internal-network sessions in this environment. NOT in the required list on purpose \u2014 see docs/schema/authentication-log-schema.md.) \u2014 a rule must not depend on it."
+      "behaviourId None does not match any of the 5 known, schema-validated behaviour patterns: ['concurrent-sessions-different-hosts', 'mfa-bypass-on-required-account', 'password-spray-across-accounts', 'repeated-failed-login-then-success', 'service-account-interactive-auth']."
     ]
   },
   {
@@ -82,11 +82,11 @@
   },
   {
     "case": "classical -> SF-SAMPLE-011",
-    "expected": "supported",
-    "actual": "supported",
+    "expected": "rejected",
+    "actual": "rejected",
     "match": true,
     "notes": [
-      "All requested fields are present and reliably observable."
+      "'source_host' is required by the concurrent-sessions-different-hosts recipe but was never requested by the spec."
     ]
   },
   {
@@ -100,20 +100,20 @@
   },
   {
     "case": "classical -> SF-SAMPLE-015",
-    "expected": "supported",
-    "actual": "supported",
+    "expected": "rejected",
+    "actual": "rejected",
     "match": true,
     "notes": [
-      "All requested fields are present and reliably observable."
+      "'mfa_used' is required by the mfa-bypass-on-required-account recipe but was never requested by the spec."
     ]
   },
   {
     "case": "transformer -> SF-SAMPLE-015",
-    "expected": "supported",
-    "actual": "supported",
+    "expected": "rejected",
+    "actual": "rejected",
     "match": true,
     "notes": [
-      "All requested fields are present and reliably observable."
+      "'account_id' is required by the mfa-bypass-on-required-account recipe but was never requested by the spec."
     ]
   },
   {
@@ -127,11 +127,11 @@
   },
   {
     "case": "transformer -> SF-SAMPLE-012",
-    "expected": "supported",
-    "actual": "supported",
+    "expected": "rejected",
+    "actual": "rejected",
     "match": true,
     "notes": [
-      "All requested fields are present and reliably observable."
+      "'event_type' is required by the password-spray-across-accounts recipe but was never requested by the spec."
     ]
   },
   {
@@ -145,11 +145,11 @@
   },
   {
     "case": "transformer -> SF-SAMPLE-014",
-    "expected": "supported",
-    "actual": "supported",
+    "expected": "rejected",
+    "actual": "rejected",
     "match": true,
     "notes": [
-      "All requested fields are present and reliably observable."
+      "'policy.expected_auth_method' is required by the service-account-interactive-auth recipe but was never requested by the spec."
     ]
   }
 ]
