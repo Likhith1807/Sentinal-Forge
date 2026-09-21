@@ -1,0 +1,17 @@
+{
+  "dataset": "data/generated/scale_1gb",
+  "seed": 42,
+  "events": 36684108,
+  "incidents": 10900,
+  "backgroundKind": "synthetic",
+  "sparkVersion": "3.5.3",
+  "maxHeapMB": 10240,
+  "overallPass": true,
+  "behaviours": [
+    {"behaviourId":"repeated-failed-login-then-success","labels":2000,"passed":2000,"unexpectedAlerts":0,"missingAlerts":0,"truncated":false,"seconds":42.4,"byKind":[{"kind":"boundary-negative","total":250,"passed":250},{"kind":"boundary-positive","total":250,"passed":250},{"kind":"hard-negative","total":1250,"passed":1250},{"kind":"positive","total":250,"passed":250}],"firstFailedIncidents":[]},
+    {"behaviourId":"password-spray-across-accounts","labels":2000,"passed":2000,"unexpectedAlerts":0,"missingAlerts":0,"truncated":false,"seconds":12.3,"byKind":[{"kind":"boundary-negative","total":286,"passed":286},{"kind":"boundary-positive","total":286,"passed":286},{"kind":"hard-negative","total":1142,"passed":1142},{"kind":"positive","total":286,"passed":286}],"firstFailedIncidents":[]},
+    {"behaviourId":"concurrent-sessions-different-hosts","labels":2000,"passed":2000,"unexpectedAlerts":0,"missingAlerts":0,"truncated":false,"seconds":29.3,"byKind":[{"kind":"boundary-negative","total":333,"passed":333},{"kind":"boundary-positive","total":334,"passed":334},{"kind":"hard-negative","total":999,"passed":999},{"kind":"positive","total":334,"passed":334}],"firstFailedIncidents":[]},
+    {"behaviourId":"service-account-interactive-auth","labels":2400,"passed":2400,"unexpectedAlerts":0,"missingAlerts":0,"truncated":false,"seconds":6.7,"byKind":[{"kind":"hard-negative","total":1000,"passed":1000},{"kind":"insufficient-context","total":900,"passed":900},{"kind":"positive","total":500,"passed":500}],"firstFailedIncidents":[]},
+    {"behaviourId":"mfa-bypass-on-required-account","labels":2500,"passed":2500,"unexpectedAlerts":0,"missingAlerts":0,"truncated":false,"seconds":6.1,"byKind":[{"kind":"hard-negative","total":1200,"passed":1200},{"kind":"insufficient-context","total":900,"passed":900},{"kind":"positive","total":400,"passed":400}],"firstFailedIncidents":[]}
+  ]
+}

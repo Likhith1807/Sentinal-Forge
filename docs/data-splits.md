@@ -1,5 +1,10 @@
 # Report Train / Held-Out Split (v1)
 
+> **Two corpora, two purposes.** This file describes the 15-report **v1 correctness harness** (Phase 1): hand-authored,
+> single-template, kept because every earlier result is scored against it. It is **not** big enough to produce a
+> meaningful F1. The larger, family-split, leakage-checked **v2 corpus** (`data/corpus/`, Phase B) is documented in
+> [`corpus.md`](corpus.md); numbers reported for training or evaluation at scale come from v2 and must say so.
+
 15 reports across the 5 behaviours in [`docs/behaviours.md`](behaviours.md):
 3 per behaviour — the original, a **paraphrase** (same incident, reworded),
 and a **held-out** report (a genuinely different incident of the same

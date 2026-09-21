@@ -29,6 +29,8 @@ lazy val root = (project in file("."))
     // --add-opens flags Spark's own spark-submit script sets automatically;
     // running via `sbt run` needs them supplied explicitly instead.
     fork := true,
+    // Opt-in heap for large local runs: sbt -Dsf.heap=10g "runMain ..."
+    Compile / run / javaOptions ++= sys.props.get("sf.heap").map(h => s"-Xmx$h").toSeq,
     Compile / run / javaOptions ++= Seq(
       "--add-opens=java.base/java.lang=ALL-UNNAMED",
       "--add-opens=java.base/java.lang.invoke=ALL-UNNAMED",

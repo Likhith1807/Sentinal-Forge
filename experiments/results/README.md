@@ -6,6 +6,14 @@
 > real bridge now exists and has been run end-to-end for real; see that
 > file for what was found and fixed.
 
+# Phase B — compiler vs labels at scale
+
+`phaseB_generated_dataset_check.json` (written by `GeneratedDataCheck.scala`): the real Spark `RuleCompiler`
+over **36,684,108 events (1.055 GB Parquet)** with **10,900** independently constructed labels — **10,900 / 10,900
+satisfied, 0 unexpected, 0 missing alerts**, about 97 s on one machine. Synthetic background; read it with the
+caveats in [`docs/data-sources.md`](../../docs/data-sources.md#labels-vs-the-real-compiler-at-scale-2026-09-22).
+The generated dataset itself is not committed (regenerate with the seed; hashes are in that doc).
+
 # Phase 5 — Evaluate & Explain
 
 Every number below comes from an actual execution against the real

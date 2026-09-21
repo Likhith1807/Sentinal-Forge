@@ -152,6 +152,47 @@ is on a synthetic LANL-shaped file, not the real one.
 "Size" in later results must state whether it is Parquet-compressed bytes or
 raw text/CSV-equivalent bytes; they differ by roughly an order of magnitude.
 
+## Labels vs the real compiler at scale (2026-09-22)
+
+The generated labels were checked against the actual Scala/Spark `RuleCompiler`, not just the Python
+reference detector, on a dataset above the 1 GB target:
+
+| | |
+|---|---|
+| Dataset | `--accounts 400000 --days 21 --incidents-per-behaviour 2000 --seed 42` (generator 1.0.0) |
+| Events | **36,684,108** (36,648,015 synthetic background + 36,093 incident events), **1.055 GB** Parquet (snappy) |
+| Labels | **10,900** (B1 2,000, B2 2,000, B3 2,000, B4 2,400, B5 2,500) |
+| Reproducible | `labels.jsonl` sha256 `bf70d5b3...aa2e`, `policy.json` sha256 `3102e4ad...896b` (regenerating with the same seed must match; full hashes in the run's `manifest.json`) |
+| Engine | Spark 3.5.3, `local[*]`, 10 GB heap, one machine |
+| Result | **10,900 / 10,900 labels satisfied, 0 unexpected alerts, 0 missing alerts** |
+| Compiler time | about 97 s for all five rules over the 36.7M events |
+
+Every kind passed in every behaviour, including 870 exact-boundary positives and 869 exact-boundary
+negatives across B1-B3 (per-kind counts in
+[`experiments/results/phaseB_generated_dataset_check.json`](../experiments/results/phaseB_generated_dataset_check.json)).
+"0 unexpected" is the strong half of that result: it means none of the 36.6M benign background events
+triggered any rule.
+
+**Negative control:** with one label deliberately corrupted, the same check reports 39/40, `unexpected=1`,
+and exits non-zero, so a pass is capable of failing.
+
+Reproduce (needs JDK 17, `HADOOP_HOME` and `.tools/hadoop/bin` on `PATH` on Windows; see
+[`spec/stage4-scala-toolchain.md`](spec/stage4-scala-toolchain.md)):
+
+```
+python -m scripts.datagen.generate --out data/generated/scale_1gb --accounts 400000 --days 21 --incidents-per-behaviour 2000 --seed 42
+sbt -Dsf.heap=10g "runMain sentinelforge.compiler.GeneratedDataCheck --dataset data/generated/scale_1gb"
+```
+
+What this does **not** show:
+- **Synthetic background.** It shows the compiler is correct and scales to 36.7M events on one machine. It says
+  nothing about behaviour on real traffic (the LANL background is still pending).
+- **Incident entities are unique**, so `DistinctCountWithinWindow`'s known one-alert-per-group collapse
+  ([`spec/detection-semantics.md`](spec/detection-semantics.md)) is deliberately not exercised here.
+- **B2/B3 are matched on `groupKey`**, and B1/B4/B5 on triggering event + status. The check does not compare
+  `detectedAt`/`matchedCount`.
+- **One run.** Timing above is a single run, not a distribution (Phase E will report repeated runs).
+
 ## Reproducing
 
 ```
