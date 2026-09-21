@@ -67,7 +67,7 @@ object ThroughputCheck {
          |  "caveat": "Measured on a 48-event dataset on one local machine (local[*]) - a real number for the data that exists, not a production-scale benchmark."
          |}
          |""".stripMargin
-    val pw = new java.io.PrintWriter(s"$repoRoot/experiments/results/phase5_throughput_check.json")
+    val pw = new java.io.PrintWriter(s"$repoRoot/experiments/results/phase5_throughput_check.json", "UTF-8")
     try pw.write(json) finally pw.close()
     println(s"\nWrote $repoRoot/experiments/results/phase5_throughput_check.json")
 

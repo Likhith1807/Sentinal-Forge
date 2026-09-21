@@ -54,7 +54,7 @@ object ReplayCheck {
     val json = results.map { r =>
       s"""{"behaviourId":"${r.behaviourId}","scenarioId":"${r.scenarioId}","expected":"${r.expected}","actual":"${r.actual}","pass":${r.pass}}"""
     }.mkString("[\n  ", ",\n  ", "\n]\n")
-    val pw = new java.io.PrintWriter(outPath)
+    val pw = new java.io.PrintWriter(outPath, "UTF-8")
     try pw.write(json) finally pw.close()
     println(s"Wrote $outPath")
 

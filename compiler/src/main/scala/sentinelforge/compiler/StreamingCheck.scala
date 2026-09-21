@@ -107,7 +107,7 @@ object StreamingCheck {
     val rows = spark.sql("select groupKey, triggeringEventId, status from streaming_alerts").collect()
     val json = rows.map(r => s"""{"groupKey":"${r.getString(0)}","triggeringEventId":"${r.getString(1)}","status":"${r.getString(2)}"}""")
       .mkString("[\n  ", ",\n  ", "\n]\n")
-    val pw = new java.io.PrintWriter(outPath)
+    val pw = new java.io.PrintWriter(outPath, "UTF-8")
     try pw.write(s"""{"microBatchCount": ${query.recentProgress.length}, "alerts": $json}""") finally pw.close()
     println(s"Wrote $outPath")
 

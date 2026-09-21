@@ -56,7 +56,7 @@ object RobustnessCheck {
     println(s"Result: $failureMessage")
 
     val outPath = s"$repoRoot/experiments/results/phase5_robustness_check.json"
-    val pw = new java.io.PrintWriter(outPath)
+    val pw = new java.io.PrintWriter(outPath, "UTF-8")
     try pw.write(
       s"""{
          |  "policySourceUnavailable": {"allDegradedToInsufficientContext": $allInsufficientContext},

@@ -101,7 +101,7 @@ object DistinctCountBoundaryCheck {
 
     val repoRoot = new java.io.File(".").getCanonicalPath
     val outPath = s"$repoRoot/experiments/results/distinct_count_boundary_check.json"
-    val pw = new java.io.PrintWriter(outPath)
+    val pw = new java.io.PrintWriter(outPath, "UTF-8")
     try pw.write(s"""{"allPassed": $allPassed, "cases": [${caseResults.mkString(", ")}]}\n""") finally pw.close()
     println(s"Wrote $outPath")
 

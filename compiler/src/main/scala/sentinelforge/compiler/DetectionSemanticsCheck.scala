@@ -197,7 +197,7 @@ object DetectionSemanticsCheck {
 
     val repoRoot = new java.io.File(".").getCanonicalPath
     val outPath = s"$repoRoot/experiments/results/detection_semantics_check.json"
-    val pw = new java.io.PrintWriter(outPath)
+    val pw = new java.io.PrintWriter(outPath, "UTF-8")
     try pw.write(s"""{"cases": [${findings.mkString(", ")}]}\n""") finally pw.close()
     println(s"\nWrote $outPath")
 
