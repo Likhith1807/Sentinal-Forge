@@ -1,0 +1,90 @@
+{
+  "reportId": "SFC-0089",
+  "reportFile": "data/corpus/reports/SFC-0089.md",
+  "familyId": "F-B3-005",
+  "style": "advisory",
+  "tier": "template",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "threshold",
+      "text": "two",
+      "start": 512,
+      "end": 515,
+      "form": "no-fewer",
+      "value": 2
+    },
+    {
+      "label": "window_amount",
+      "text": "thirty",
+      "start": 539,
+      "end": 545,
+      "value": 30
+    },
+    {
+      "label": "window_unit",
+      "text": "minutes",
+      "start": 546,
+      "end": 553,
+      "value": "minutes"
+    },
+    {
+      "label": "required_field",
+      "text": "the username",
+      "start": 586,
+      "end": 598,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "the login result",
+      "start": 600,
+      "end": 616,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "event timestamps",
+      "start": 618,
+      "end": 634,
+      "field": "timestamp"
+    },
+    {
+      "label": "required_field",
+      "text": "the source workstation or gateway",
+      "start": 639,
+      "end": 672,
+      "field": "source_host"
+    },
+    {
+      "label": "excluded_field",
+      "text": "how the account authenticated",
+      "start": 686,
+      "end": 715,
+      "field": "auth_method"
+    }
+  ],
+  "behaviourId": "concurrent-sessions-different-hosts",
+  "requiredFields": [
+    "account_id",
+    "event_type",
+    "source_host",
+    "timestamp"
+  ],
+  "policyFields": [],
+  "excludedFields": [
+    "auth_method"
+  ],
+  "threshold": {
+    "successCount": 2
+  },
+  "timeWindow": {
+    "amount": 30,
+    "unit": "minutes"
+  },
+  "fieldMode": "natural",
+  "numMode": "words",
+  "thresholdForm": "no-fewer",
+  "windowForm": "spaced"
+}

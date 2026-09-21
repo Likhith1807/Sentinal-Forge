@@ -1,0 +1,97 @@
+{
+  "corpusVersion": "1.0.0",
+  "seed": 42,
+  "model": "openai/gpt-oss-120b",
+  "promptVersion": "2",
+  "families": 110,
+  "reports": 201,
+  "byTier": {
+    "llm-rewrite": 91,
+    "template": 110
+  },
+  "bySplit": {
+    "dev": 39,
+    "test": 44,
+    "train": 118
+  },
+  "byBehaviour": {
+    "concurrent-sessions-different-hosts": 38,
+    "mfa-bypass-on-required-account": 30,
+    "password-spray-across-accounts": 39,
+    "repeated-failed-login-then-success": 39,
+    "service-account-interactive-auth": 39,
+    "unsupported": 16
+  },
+  "byStyle": {
+    "advisory": 28,
+    "chat-message": 18,
+    "email": 19,
+    "handoff-chat": 27,
+    "incident-review": 18,
+    "intel-brief": 18,
+    "postmortem": 27,
+    "runbook": 18,
+    "soc-ticket": 28
+  },
+  "bySplitAndBehaviour": {
+    "dev/concurrent-sessions-different-hosts": 7,
+    "dev/mfa-bypass-on-required-account": 5,
+    "dev/password-spray-across-accounts": 8,
+    "dev/repeated-failed-login-then-success": 8,
+    "dev/service-account-interactive-auth": 8,
+    "dev/unsupported": 3,
+    "test/concurrent-sessions-different-hosts": 8,
+    "test/mfa-bypass-on-required-account": 8,
+    "test/password-spray-across-accounts": 8,
+    "test/repeated-failed-login-then-success": 8,
+    "test/service-account-interactive-auth": 8,
+    "test/unsupported": 4,
+    "train/concurrent-sessions-different-hosts": 23,
+    "train/mfa-bypass-on-required-account": 17,
+    "train/password-spray-across-accounts": 23,
+    "train/repeated-failed-login-then-success": 23,
+    "train/service-account-interactive-auth": 23,
+    "train/unsupported": 9
+  },
+  "llm": {
+    "attempted": 110,
+    "accepted": 91,
+    "failed": 19,
+    "cached": 110,
+    "triesHistogram": {
+      "0": 18,
+      "1": 85,
+      "2": 3,
+      "3": 2,
+      "4": 2
+    },
+    "failureReasons": {
+      "not attempted (cache-only)": 18,
+      "missing verbatim phrases": 1
+    }
+  },
+  "familiesWithoutLlmVariant": [
+    "F-B1-009",
+    "F-B2-005",
+    "F-B3-013",
+    "F-B3-017",
+    "F-B4-018",
+    "F-B5-001",
+    "F-B5-004",
+    "F-B5-005",
+    "F-B5-006",
+    "F-B5-008",
+    "F-B5-011",
+    "F-B5-013",
+    "F-B5-015",
+    "F-B5-017",
+    "F-B5-019",
+    "F-U-002",
+    "F-U-005",
+    "F-U-007",
+    "F-U-009"
+  ],
+  "leakageGatePassed": true,
+  "verificationSampleSize": 30,
+  "goldVerification": "every gold span equals the text at its offsets (asserted at build time); no human second annotation has been run"
+}

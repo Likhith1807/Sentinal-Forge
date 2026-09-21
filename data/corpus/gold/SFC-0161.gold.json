@@ -1,0 +1,55 @@
+{
+  "reportId": "SFC-0161",
+  "reportFile": "data/corpus/reports/SFC-0161.md",
+  "familyId": "F-B5-001",
+  "style": "advisory",
+  "tier": "template",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "required_field",
+      "text": "account_id",
+      "start": 559,
+      "end": 569,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "event_type",
+      "start": 573,
+      "end": 583,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "mfa_used",
+      "start": 587,
+      "end": 595,
+      "field": "mfa_used"
+    },
+    {
+      "label": "required_field",
+      "text": "mfa_required",
+      "start": 602,
+      "end": 614,
+      "field": "policy.mfa_required"
+    }
+  ],
+  "behaviourId": "mfa-bypass-on-required-account",
+  "requiredFields": [
+    "account_id",
+    "event_type",
+    "mfa_used"
+  ],
+  "policyFields": [
+    "policy.mfa_required"
+  ],
+  "excludedFields": [],
+  "threshold": null,
+  "timeWindow": null,
+  "fieldMode": "code",
+  "numMode": "words",
+  "thresholdForm": "at-least",
+  "windowForm": "spaced"
+}

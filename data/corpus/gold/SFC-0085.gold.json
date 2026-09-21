@@ -1,0 +1,90 @@
+{
+  "reportId": "SFC-0085",
+  "reportFile": "data/corpus/reports/SFC-0085.md",
+  "familyId": "F-B3-003",
+  "style": "postmortem",
+  "tier": "template",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "threshold",
+      "text": "2",
+      "start": 387,
+      "end": 388,
+      "form": "or-more",
+      "value": 2
+    },
+    {
+      "label": "window_amount",
+      "text": "15",
+      "start": 420,
+      "end": 422,
+      "value": 15
+    },
+    {
+      "label": "window_unit",
+      "text": "minutes",
+      "start": 423,
+      "end": 430,
+      "value": "minutes"
+    },
+    {
+      "label": "required_field",
+      "text": "the username",
+      "start": 473,
+      "end": 485,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "the success/failure status of each event",
+      "start": 487,
+      "end": 527,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "event timestamps",
+      "start": 529,
+      "end": 545,
+      "field": "timestamp"
+    },
+    {
+      "label": "required_field",
+      "text": "the source workstation or gateway",
+      "start": 550,
+      "end": 583,
+      "field": "source_host"
+    },
+    {
+      "label": "excluded_field",
+      "text": "how the account authenticated",
+      "start": 598,
+      "end": 627,
+      "field": "auth_method"
+    }
+  ],
+  "behaviourId": "concurrent-sessions-different-hosts",
+  "requiredFields": [
+    "account_id",
+    "event_type",
+    "source_host",
+    "timestamp"
+  ],
+  "policyFields": [],
+  "excludedFields": [
+    "auth_method"
+  ],
+  "threshold": {
+    "successCount": 2
+  },
+  "timeWindow": {
+    "amount": 15,
+    "unit": "minutes"
+  },
+  "fieldMode": "natural",
+  "numMode": "digits",
+  "thresholdForm": "or-more",
+  "windowForm": "spaced"
+}

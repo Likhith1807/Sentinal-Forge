@@ -1,0 +1,86 @@
+{
+  "reportId": "SFC-0070",
+  "reportFile": "data/corpus/reports/SFC-0070.md",
+  "familyId": "F-B2-015",
+  "style": "runbook",
+  "tier": "llm-rewrite",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "threshold",
+      "text": "six",
+      "start": 119,
+      "end": 122,
+      "form": "at-least",
+      "value": 6
+    },
+    {
+      "label": "window_amount",
+      "text": "ten",
+      "start": 201,
+      "end": 204,
+      "value": 10
+    },
+    {
+      "label": "window_unit",
+      "text": "minutes",
+      "start": 205,
+      "end": 212,
+      "value": "minutes"
+    },
+    {
+      "label": "required_field",
+      "text": "the username",
+      "start": 272,
+      "end": 284,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "the login result",
+      "start": 292,
+      "end": 308,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "the event time",
+      "start": 316,
+      "end": 330,
+      "field": "timestamp"
+    },
+    {
+      "label": "required_field",
+      "text": "the host the request originated from",
+      "start": 342,
+      "end": 378,
+      "field": "source_host"
+    }
+  ],
+  "behaviourId": "password-spray-across-accounts",
+  "requiredFields": [
+    "account_id",
+    "event_type",
+    "source_host",
+    "timestamp"
+  ],
+  "policyFields": [],
+  "excludedFields": [],
+  "threshold": {
+    "distinctAccountCount": 6
+  },
+  "timeWindow": {
+    "amount": 10,
+    "unit": "minutes"
+  },
+  "fieldMode": "natural",
+  "numMode": "words",
+  "thresholdForm": "at-least",
+  "windowForm": "spaced",
+  "derivedFrom": "SFC-0069",
+  "llmModel": "openai/gpt-oss-120b",
+  "llmTries": 1,
+  "fieldSpansAreVerbatimPreserved": true,
+  "llmReasoningEffort": "default"
+}

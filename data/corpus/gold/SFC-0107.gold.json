@@ -1,0 +1,90 @@
+{
+  "reportId": "SFC-0107",
+  "reportFile": "data/corpus/reports/SFC-0107.md",
+  "familyId": "F-B3-014",
+  "style": "soc-ticket",
+  "tier": "template",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "threshold",
+      "text": "3",
+      "start": 369,
+      "end": 370,
+      "form": "plus",
+      "value": 3
+    },
+    {
+      "label": "window_amount",
+      "text": "1",
+      "start": 396,
+      "end": 397,
+      "value": 1
+    },
+    {
+      "label": "window_unit",
+      "text": "hour",
+      "start": 398,
+      "end": 402,
+      "value": "hours"
+    },
+    {
+      "label": "required_field",
+      "text": "the username",
+      "start": 458,
+      "end": 470,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "the success/failure status of each event",
+      "start": 472,
+      "end": 512,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "when each event occurred",
+      "start": 514,
+      "end": 538,
+      "field": "timestamp"
+    },
+    {
+      "label": "required_field",
+      "text": "the host the request originated from",
+      "start": 543,
+      "end": 579,
+      "field": "source_host"
+    },
+    {
+      "label": "excluded_field",
+      "text": "the credential type used",
+      "start": 603,
+      "end": 627,
+      "field": "auth_method"
+    }
+  ],
+  "behaviourId": "concurrent-sessions-different-hosts",
+  "requiredFields": [
+    "account_id",
+    "event_type",
+    "source_host",
+    "timestamp"
+  ],
+  "policyFields": [],
+  "excludedFields": [
+    "auth_method"
+  ],
+  "threshold": {
+    "successCount": 3
+  },
+  "timeWindow": {
+    "amount": 1,
+    "unit": "hours"
+  },
+  "fieldMode": "natural",
+  "numMode": "digits",
+  "thresholdForm": "plus",
+  "windowForm": "hyphen"
+}

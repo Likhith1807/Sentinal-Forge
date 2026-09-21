@@ -1,0 +1,73 @@
+{
+  "reportId": "SFC-0035",
+  "reportFile": "data/corpus/reports/SFC-0035.md",
+  "familyId": "F-B1-018",
+  "style": "soc-ticket",
+  "tier": "template",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "threshold",
+      "text": "five",
+      "start": 332,
+      "end": 336,
+      "form": "or-more",
+      "value": 5
+    },
+    {
+      "label": "window_amount",
+      "text": "ten",
+      "start": 358,
+      "end": 361,
+      "value": 10
+    },
+    {
+      "label": "window_unit",
+      "text": "minutes",
+      "start": 362,
+      "end": 369,
+      "value": "minutes"
+    },
+    {
+      "label": "required_field",
+      "text": "the username",
+      "start": 440,
+      "end": 452,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "whether each attempt succeeded or failed",
+      "start": 454,
+      "end": 494,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "event timestamps",
+      "start": 499,
+      "end": 515,
+      "field": "timestamp"
+    }
+  ],
+  "behaviourId": "repeated-failed-login-then-success",
+  "requiredFields": [
+    "account_id",
+    "event_type",
+    "timestamp"
+  ],
+  "policyFields": [],
+  "excludedFields": [],
+  "threshold": {
+    "failureCount": 5
+  },
+  "timeWindow": {
+    "amount": 10,
+    "unit": "minutes"
+  },
+  "fieldMode": "natural",
+  "numMode": "words",
+  "thresholdForm": "or-more",
+  "windowForm": "spaced"
+}

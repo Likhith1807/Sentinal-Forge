@@ -1,0 +1,82 @@
+{
+  "reportId": "SFC-0027",
+  "reportFile": "data/corpus/reports/SFC-0027.md",
+  "familyId": "F-B1-014",
+  "style": "soc-ticket",
+  "tier": "template",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "threshold",
+      "text": "8",
+      "start": 339,
+      "end": 340,
+      "form": "or-more",
+      "value": 8
+    },
+    {
+      "label": "window_amount",
+      "text": "1",
+      "start": 399,
+      "end": 400,
+      "value": 1
+    },
+    {
+      "label": "window_unit",
+      "text": "minute",
+      "start": 401,
+      "end": 407,
+      "value": "minutes"
+    },
+    {
+      "label": "required_field",
+      "text": "the account name",
+      "start": 507,
+      "end": 523,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "whether each attempt succeeded or failed",
+      "start": 525,
+      "end": 565,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "when each event occurred",
+      "start": 570,
+      "end": 594,
+      "field": "timestamp"
+    },
+    {
+      "label": "excluded_field",
+      "text": "the originating IP",
+      "start": 618,
+      "end": 636,
+      "field": "source_ip"
+    }
+  ],
+  "behaviourId": "repeated-failed-login-then-success",
+  "requiredFields": [
+    "account_id",
+    "event_type",
+    "timestamp"
+  ],
+  "policyFields": [],
+  "excludedFields": [
+    "source_ip"
+  ],
+  "threshold": {
+    "failureCount": 8
+  },
+  "timeWindow": {
+    "amount": 1,
+    "unit": "minutes"
+  },
+  "fieldMode": "natural",
+  "numMode": "digits",
+  "thresholdForm": "or-more",
+  "windowForm": "spaced"
+}

@@ -1,0 +1,81 @@
+{
+  "reportId": "SFC-0079",
+  "reportFile": "data/corpus/reports/SFC-0079.md",
+  "familyId": "F-B2-020",
+  "style": "handoff-chat",
+  "tier": "template",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "threshold",
+      "text": "5",
+      "start": 377,
+      "end": 378,
+      "form": "more-than",
+      "value": 6
+    },
+    {
+      "label": "window_amount",
+      "text": "15",
+      "start": 407,
+      "end": 409,
+      "value": 15
+    },
+    {
+      "label": "window_unit",
+      "text": "minute",
+      "start": 410,
+      "end": 416,
+      "value": "minutes"
+    },
+    {
+      "label": "required_field",
+      "text": "the account identifier",
+      "start": 454,
+      "end": 476,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "the sign-in outcome",
+      "start": 478,
+      "end": 497,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "the event time",
+      "start": 499,
+      "end": 513,
+      "field": "timestamp"
+    },
+    {
+      "label": "required_field",
+      "text": "the host the request originated from",
+      "start": 518,
+      "end": 554,
+      "field": "source_host"
+    }
+  ],
+  "behaviourId": "password-spray-across-accounts",
+  "requiredFields": [
+    "account_id",
+    "event_type",
+    "source_host",
+    "timestamp"
+  ],
+  "policyFields": [],
+  "excludedFields": [],
+  "threshold": {
+    "distinctAccountCount": 6
+  },
+  "timeWindow": {
+    "amount": 15,
+    "unit": "minutes"
+  },
+  "fieldMode": "natural",
+  "numMode": "digits",
+  "thresholdForm": "more-than",
+  "windowForm": "hyphen"
+}

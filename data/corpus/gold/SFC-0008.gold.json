@@ -1,0 +1,87 @@
+{
+  "reportId": "SFC-0008",
+  "reportFile": "data/corpus/reports/SFC-0008.md",
+  "familyId": "F-B1-004",
+  "style": "chat-message",
+  "tier": "llm-rewrite",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "threshold",
+      "text": "5",
+      "start": 143,
+      "end": 144,
+      "form": "at-least",
+      "value": 5
+    },
+    {
+      "label": "window_amount",
+      "text": "10",
+      "start": 184,
+      "end": 186,
+      "value": 10
+    },
+    {
+      "label": "window_unit",
+      "text": "minutes",
+      "start": 187,
+      "end": 194,
+      "value": "minutes"
+    },
+    {
+      "label": "required_field",
+      "text": "account_id",
+      "start": 231,
+      "end": 241,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "event_type",
+      "start": 245,
+      "end": 255,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "timestamp",
+      "start": 262,
+      "end": 271,
+      "field": "timestamp"
+    },
+    {
+      "label": "excluded_field",
+      "text": "source_ip",
+      "start": 299,
+      "end": 308,
+      "field": "source_ip"
+    }
+  ],
+  "behaviourId": "repeated-failed-login-then-success",
+  "requiredFields": [
+    "account_id",
+    "event_type",
+    "timestamp"
+  ],
+  "policyFields": [],
+  "excludedFields": [
+    "source_ip"
+  ],
+  "threshold": {
+    "failureCount": 5
+  },
+  "timeWindow": {
+    "amount": 10,
+    "unit": "minutes"
+  },
+  "fieldMode": "code",
+  "numMode": "digits",
+  "thresholdForm": "at-least",
+  "windowForm": "spaced",
+  "derivedFrom": "SFC-0007",
+  "llmModel": "openai/gpt-oss-120b",
+  "llmTries": 1,
+  "fieldSpansAreVerbatimPreserved": true,
+  "llmReasoningEffort": "default"
+}

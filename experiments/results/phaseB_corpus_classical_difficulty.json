@@ -1,0 +1,128 @@
+{
+  "extractor": "classical_extractor (regex/keyword, Phase 2)",
+  "split": "test",
+  "crashes": 0,
+  "note": "Difficulty check only: supported-behaviour reports; abstention not scored.",
+  "slices": {
+    "all": {
+      "reports": 40,
+      "behaviourAccuracy": 0.225,
+      "fieldMicro": {
+        "precision": 1.0,
+        "recall": 0.026,
+        "f1": 0.051
+      },
+      "thresholdExact": 0.0
+    },
+    "behaviour=concurrent-sessions-different-hosts": {
+      "reports": 8,
+      "behaviourAccuracy": 0.0,
+      "fieldMicro": {
+        "precision": 1.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "thresholdExact": 0.0
+    },
+    "behaviour=mfa-bypass-on-required-account": {
+      "reports": 8,
+      "behaviourAccuracy": 0.0,
+      "fieldMicro": {
+        "precision": 1.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "thresholdExact": null
+    },
+    "behaviour=password-spray-across-accounts": {
+      "reports": 8,
+      "behaviourAccuracy": 0.0,
+      "fieldMicro": {
+        "precision": 1.0,
+        "recall": 0.062,
+        "f1": 0.118
+      },
+      "thresholdExact": 0.0
+    },
+    "behaviour=repeated-failed-login-then-success": {
+      "reports": 8,
+      "behaviourAccuracy": 1.0,
+      "fieldMicro": {
+        "precision": 1.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "thresholdExact": 0.0
+    },
+    "behaviour=service-account-interactive-auth": {
+      "reports": 8,
+      "behaviourAccuracy": 0.125,
+      "fieldMicro": {
+        "precision": 1.0,
+        "recall": 0.062,
+        "f1": 0.118
+      },
+      "thresholdExact": null
+    },
+    "fieldMode=code": {
+      "reports": 28,
+      "behaviourAccuracy": 0.214,
+      "fieldMicro": {
+        "precision": 1.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "thresholdExact": 0.0
+    },
+    "fieldMode=natural": {
+      "reports": 12,
+      "behaviourAccuracy": 0.25,
+      "fieldMicro": {
+        "precision": 1.0,
+        "recall": 0.087,
+        "f1": 0.16
+      },
+      "thresholdExact": 0.0
+    },
+    "paramSection=False": {
+      "reports": 39,
+      "behaviourAccuracy": 0.205,
+      "fieldMicro": {
+        "precision": 1.0,
+        "recall": 0.014,
+        "f1": 0.027
+      },
+      "thresholdExact": 0.0
+    },
+    "paramSection=True": {
+      "reports": 1,
+      "behaviourAccuracy": 1.0,
+      "fieldMicro": {
+        "precision": 1.0,
+        "recall": 0.5,
+        "f1": 0.667
+      },
+      "thresholdExact": null
+    },
+    "tier=llm-rewrite": {
+      "reports": 20,
+      "behaviourAccuracy": 0.2,
+      "fieldMicro": {
+        "precision": 1.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "thresholdExact": 0.0
+    },
+    "tier=template": {
+      "reports": 20,
+      "behaviourAccuracy": 0.25,
+      "fieldMicro": {
+        "precision": 1.0,
+        "recall": 0.053,
+        "f1": 0.1
+      },
+      "thresholdExact": 0.0
+    }
+  }
+}

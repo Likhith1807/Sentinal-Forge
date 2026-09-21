@@ -1,0 +1,38 @@
+{
+  "reportId": "SFC-0217",
+  "reportFile": "data/corpus/reports/SFC-0217.md",
+  "familyId": "F-U-009",
+  "style": "advisory",
+  "tier": "template",
+  "hasParamSection": false,
+  "supported": false,
+  "spans": [
+    {
+      "label": "unavailable_field",
+      "text": "the lockout reason code",
+      "start": 544,
+      "end": 567,
+      "field": "lockout_reason"
+    },
+    {
+      "label": "unavailable_field",
+      "text": "the locked account",
+      "start": 572,
+      "end": 590,
+      "field": "locked_account"
+    }
+  ],
+  "behaviourId": null,
+  "requiredFields": [],
+  "policyFields": [],
+  "excludedFields": [],
+  "threshold": null,
+  "timeWindow": null,
+  "unsupportedReason": "requires fields the authentication log schema does not provide",
+  "unavailableFields": [
+    "lockout_reason",
+    "locked_account"
+  ],
+  "looksLike": "repeated-failed-login-then-success",
+  "topic": "lockout-storm"
+}

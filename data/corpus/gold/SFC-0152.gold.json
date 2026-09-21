@@ -1,0 +1,60 @@
+{
+  "reportId": "SFC-0152",
+  "reportFile": "data/corpus/reports/SFC-0152.md",
+  "familyId": "F-B4-016",
+  "style": "email",
+  "tier": "llm-rewrite",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "required_field",
+      "text": "account_id",
+      "start": 447,
+      "end": 457,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "event_type",
+      "start": 461,
+      "end": 471,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "auth_method",
+      "start": 475,
+      "end": 486,
+      "field": "auth_method"
+    },
+    {
+      "label": "required_field",
+      "text": "expected_auth_method",
+      "start": 493,
+      "end": 513,
+      "field": "policy.expected_auth_method"
+    }
+  ],
+  "behaviourId": "service-account-interactive-auth",
+  "requiredFields": [
+    "account_id",
+    "auth_method",
+    "event_type"
+  ],
+  "policyFields": [
+    "policy.expected_auth_method"
+  ],
+  "excludedFields": [],
+  "threshold": null,
+  "timeWindow": null,
+  "fieldMode": "code",
+  "numMode": "words",
+  "thresholdForm": "at-least",
+  "windowForm": "spaced",
+  "derivedFrom": "SFC-0151",
+  "llmModel": "openai/gpt-oss-120b",
+  "llmTries": 1,
+  "fieldSpansAreVerbatimPreserved": true,
+  "llmReasoningEffort": "default"
+}

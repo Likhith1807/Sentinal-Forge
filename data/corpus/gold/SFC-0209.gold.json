@@ -1,0 +1,38 @@
+{
+  "reportId": "SFC-0209",
+  "reportFile": "data/corpus/reports/SFC-0209.md",
+  "familyId": "F-U-005",
+  "style": "advisory",
+  "tier": "template",
+  "hasParamSection": false,
+  "supported": false,
+  "spans": [
+    {
+      "label": "unavailable_field",
+      "text": "file_path",
+      "start": 580,
+      "end": 589,
+      "field": "file_path"
+    },
+    {
+      "label": "unavailable_field",
+      "text": "file_extension",
+      "start": 596,
+      "end": 610,
+      "field": "file_extension"
+    }
+  ],
+  "behaviourId": null,
+  "requiredFields": [],
+  "policyFields": [],
+  "excludedFields": [],
+  "threshold": null,
+  "timeWindow": null,
+  "unsupportedReason": "requires fields the authentication log schema does not provide",
+  "unavailableFields": [
+    "file_path",
+    "file_extension"
+  ],
+  "looksLike": null,
+  "topic": "ransomware-encryption"
+}

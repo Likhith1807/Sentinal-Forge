@@ -1,0 +1,82 @@
+{
+  "reportId": "SFC-0015",
+  "reportFile": "data/corpus/reports/SFC-0015.md",
+  "familyId": "F-B1-008",
+  "style": "handoff-chat",
+  "tier": "template",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "threshold",
+      "text": "nine",
+      "start": 294,
+      "end": 298,
+      "form": "more-than",
+      "value": 10
+    },
+    {
+      "label": "window_amount",
+      "text": "90",
+      "start": 312,
+      "end": 314,
+      "value": 90
+    },
+    {
+      "label": "window_unit",
+      "text": "seconds",
+      "start": 315,
+      "end": 322,
+      "value": "seconds"
+    },
+    {
+      "label": "required_field",
+      "text": "account_id",
+      "start": 372,
+      "end": 382,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "event_type",
+      "start": 386,
+      "end": 396,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "timestamp",
+      "start": 403,
+      "end": 412,
+      "field": "timestamp"
+    },
+    {
+      "label": "excluded_field",
+      "text": "source_ip",
+      "start": 429,
+      "end": 438,
+      "field": "source_ip"
+    }
+  ],
+  "behaviourId": "repeated-failed-login-then-success",
+  "requiredFields": [
+    "account_id",
+    "event_type",
+    "timestamp"
+  ],
+  "policyFields": [],
+  "excludedFields": [
+    "source_ip"
+  ],
+  "threshold": {
+    "failureCount": 10
+  },
+  "timeWindow": {
+    "amount": 90,
+    "unit": "seconds"
+  },
+  "fieldMode": "code",
+  "numMode": "words",
+  "thresholdForm": "more-than",
+  "windowForm": "spaced"
+}

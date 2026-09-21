@@ -1,0 +1,95 @@
+{
+  "reportId": "SFC-0104",
+  "reportFile": "data/corpus/reports/SFC-0104.md",
+  "familyId": "F-B3-012",
+  "style": "intel-brief",
+  "tier": "llm-rewrite",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "threshold",
+      "text": "two",
+      "start": 448,
+      "end": 451,
+      "form": "or-more",
+      "value": 2
+    },
+    {
+      "label": "window_amount",
+      "text": "thirty",
+      "start": 485,
+      "end": 491,
+      "value": 30
+    },
+    {
+      "label": "window_unit",
+      "text": "minutes",
+      "start": 492,
+      "end": 499,
+      "value": "minutes"
+    },
+    {
+      "label": "required_field",
+      "text": "account_id",
+      "start": 537,
+      "end": 547,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "event_type",
+      "start": 549,
+      "end": 559,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "timestamp",
+      "start": 561,
+      "end": 570,
+      "field": "timestamp"
+    },
+    {
+      "label": "required_field",
+      "text": "source_host",
+      "start": 575,
+      "end": 586,
+      "field": "source_host"
+    },
+    {
+      "label": "excluded_field",
+      "text": "auth_method",
+      "start": 598,
+      "end": 609,
+      "field": "auth_method"
+    }
+  ],
+  "behaviourId": "concurrent-sessions-different-hosts",
+  "requiredFields": [
+    "account_id",
+    "event_type",
+    "source_host",
+    "timestamp"
+  ],
+  "policyFields": [],
+  "excludedFields": [
+    "auth_method"
+  ],
+  "threshold": {
+    "successCount": 2
+  },
+  "timeWindow": {
+    "amount": 30,
+    "unit": "minutes"
+  },
+  "fieldMode": "code",
+  "numMode": "words",
+  "thresholdForm": "or-more",
+  "windowForm": "spaced",
+  "derivedFrom": "SFC-0103",
+  "llmModel": "openai/gpt-oss-120b",
+  "llmTries": 1,
+  "fieldSpansAreVerbatimPreserved": true,
+  "llmReasoningEffort": "default"
+}

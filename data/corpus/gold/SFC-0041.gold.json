@@ -1,0 +1,81 @@
+{
+  "reportId": "SFC-0041",
+  "reportFile": "data/corpus/reports/SFC-0041.md",
+  "familyId": "F-B2-001",
+  "style": "advisory",
+  "tier": "template",
+  "hasParamSection": true,
+  "supported": true,
+  "spans": [
+    {
+      "label": "threshold",
+      "text": "3",
+      "start": 576,
+      "end": 577,
+      "form": "or-more",
+      "value": 3
+    },
+    {
+      "label": "window_amount",
+      "text": "5",
+      "start": 611,
+      "end": 612,
+      "value": 5
+    },
+    {
+      "label": "window_unit",
+      "text": "minutes",
+      "start": 613,
+      "end": 620,
+      "value": "minutes"
+    },
+    {
+      "label": "required_field",
+      "text": "the username",
+      "start": 701,
+      "end": 713,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "whether each attempt succeeded or failed",
+      "start": 715,
+      "end": 755,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "event timestamps",
+      "start": 757,
+      "end": 773,
+      "field": "timestamp"
+    },
+    {
+      "label": "required_field",
+      "text": "the originating host",
+      "start": 778,
+      "end": 798,
+      "field": "source_host"
+    }
+  ],
+  "behaviourId": "password-spray-across-accounts",
+  "requiredFields": [
+    "account_id",
+    "event_type",
+    "source_host",
+    "timestamp"
+  ],
+  "policyFields": [],
+  "excludedFields": [],
+  "threshold": {
+    "distinctAccountCount": 3
+  },
+  "timeWindow": {
+    "amount": 5,
+    "unit": "minutes"
+  },
+  "fieldMode": "natural",
+  "numMode": "digits",
+  "thresholdForm": "or-more",
+  "windowForm": "spaced"
+}

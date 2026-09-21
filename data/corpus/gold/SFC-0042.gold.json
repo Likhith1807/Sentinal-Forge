@@ -1,0 +1,86 @@
+{
+  "reportId": "SFC-0042",
+  "reportFile": "data/corpus/reports/SFC-0042.md",
+  "familyId": "F-B2-001",
+  "style": "email",
+  "tier": "llm-rewrite",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "threshold",
+      "text": "3",
+      "start": 484,
+      "end": 485,
+      "form": "or-more",
+      "value": 3
+    },
+    {
+      "label": "window_amount",
+      "text": "5",
+      "start": 521,
+      "end": 522,
+      "value": 5
+    },
+    {
+      "label": "window_unit",
+      "text": "minutes",
+      "start": 523,
+      "end": 530,
+      "value": "minutes"
+    },
+    {
+      "label": "required_field",
+      "text": "the username",
+      "start": 611,
+      "end": 623,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "whether each attempt succeeded or failed",
+      "start": 627,
+      "end": 667,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "event timestamps",
+      "start": 671,
+      "end": 687,
+      "field": "timestamp"
+    },
+    {
+      "label": "required_field",
+      "text": "the originating host",
+      "start": 694,
+      "end": 714,
+      "field": "source_host"
+    }
+  ],
+  "behaviourId": "password-spray-across-accounts",
+  "requiredFields": [
+    "account_id",
+    "event_type",
+    "source_host",
+    "timestamp"
+  ],
+  "policyFields": [],
+  "excludedFields": [],
+  "threshold": {
+    "distinctAccountCount": 3
+  },
+  "timeWindow": {
+    "amount": 5,
+    "unit": "minutes"
+  },
+  "fieldMode": "natural",
+  "numMode": "digits",
+  "thresholdForm": "or-more",
+  "windowForm": "spaced",
+  "derivedFrom": "SFC-0041",
+  "llmModel": "openai/gpt-oss-120b",
+  "llmTries": 1,
+  "fieldSpansAreVerbatimPreserved": true,
+  "llmReasoningEffort": "default"
+}

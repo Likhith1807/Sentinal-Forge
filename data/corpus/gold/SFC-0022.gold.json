@@ -1,0 +1,87 @@
+{
+  "reportId": "SFC-0022",
+  "reportFile": "data/corpus/reports/SFC-0022.md",
+  "familyId": "F-B1-011",
+  "style": "email",
+  "tier": "llm-rewrite",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "threshold",
+      "text": "4",
+      "start": 422,
+      "end": 423,
+      "form": "or-more",
+      "value": 4
+    },
+    {
+      "label": "window_amount",
+      "text": "2",
+      "start": 457,
+      "end": 458,
+      "value": 2
+    },
+    {
+      "label": "window_unit",
+      "text": "minute",
+      "start": 459,
+      "end": 465,
+      "value": "minutes"
+    },
+    {
+      "label": "required_field",
+      "text": "the account name",
+      "start": 561,
+      "end": 577,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "the success/failure status of each event",
+      "start": 581,
+      "end": 621,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "when each event occurred",
+      "start": 628,
+      "end": 652,
+      "field": "timestamp"
+    },
+    {
+      "label": "excluded_field",
+      "text": "the originating IP",
+      "start": 662,
+      "end": 680,
+      "field": "source_ip"
+    }
+  ],
+  "behaviourId": "repeated-failed-login-then-success",
+  "requiredFields": [
+    "account_id",
+    "event_type",
+    "timestamp"
+  ],
+  "policyFields": [],
+  "excludedFields": [
+    "source_ip"
+  ],
+  "threshold": {
+    "failureCount": 4
+  },
+  "timeWindow": {
+    "amount": 2,
+    "unit": "minutes"
+  },
+  "fieldMode": "natural",
+  "numMode": "digits",
+  "thresholdForm": "or-more",
+  "windowForm": "hyphen",
+  "derivedFrom": "SFC-0021",
+  "llmModel": "openai/gpt-oss-120b",
+  "llmTries": 1,
+  "fieldSpansAreVerbatimPreserved": true,
+  "llmReasoningEffort": "default"
+}

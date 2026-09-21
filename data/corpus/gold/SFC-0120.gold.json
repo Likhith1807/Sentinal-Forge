@@ -1,0 +1,95 @@
+{
+  "reportId": "SFC-0120",
+  "reportFile": "data/corpus/reports/SFC-0120.md",
+  "familyId": "F-B3-020",
+  "style": "runbook",
+  "tier": "llm-rewrite",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "threshold",
+      "text": "two",
+      "start": 503,
+      "end": 506,
+      "form": "no-fewer",
+      "value": 2
+    },
+    {
+      "label": "window_amount",
+      "text": "fifteen",
+      "start": 430,
+      "end": 437,
+      "value": 15
+    },
+    {
+      "label": "window_unit",
+      "text": "minutes",
+      "start": 438,
+      "end": 445,
+      "value": "minutes"
+    },
+    {
+      "label": "required_field",
+      "text": "the username",
+      "start": 135,
+      "end": 147,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "the login result",
+      "start": 155,
+      "end": 171,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "the event time",
+      "start": 179,
+      "end": 193,
+      "field": "timestamp"
+    },
+    {
+      "label": "required_field",
+      "text": "the host the request originated from",
+      "start": 204,
+      "end": 240,
+      "field": "source_host"
+    },
+    {
+      "label": "excluded_field",
+      "text": "the originating IP",
+      "start": 267,
+      "end": 285,
+      "field": "source_ip"
+    }
+  ],
+  "behaviourId": "concurrent-sessions-different-hosts",
+  "requiredFields": [
+    "account_id",
+    "event_type",
+    "source_host",
+    "timestamp"
+  ],
+  "policyFields": [],
+  "excludedFields": [
+    "source_ip"
+  ],
+  "threshold": {
+    "successCount": 2
+  },
+  "timeWindow": {
+    "amount": 15,
+    "unit": "minutes"
+  },
+  "fieldMode": "natural",
+  "numMode": "words",
+  "thresholdForm": "no-fewer",
+  "windowForm": "spaced",
+  "derivedFrom": "SFC-0119",
+  "llmModel": "openai/gpt-oss-120b",
+  "llmTries": 1,
+  "fieldSpansAreVerbatimPreserved": true,
+  "llmReasoningEffort": "default"
+}

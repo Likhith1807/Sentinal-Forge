@@ -1,0 +1,69 @@
+{
+  "reportId": "SFC-0164",
+  "reportFile": "data/corpus/reports/SFC-0164.md",
+  "familyId": "F-B5-002",
+  "style": "intel-brief",
+  "tier": "llm-rewrite",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "required_field",
+      "text": "account_id",
+      "start": 453,
+      "end": 463,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "event_type",
+      "start": 467,
+      "end": 477,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "mfa_used",
+      "start": 481,
+      "end": 489,
+      "field": "mfa_used"
+    },
+    {
+      "label": "required_field",
+      "text": "mfa_required",
+      "start": 496,
+      "end": 508,
+      "field": "policy.mfa_required"
+    },
+    {
+      "label": "excluded_field",
+      "text": "auth_method",
+      "start": 551,
+      "end": 562,
+      "field": "auth_method"
+    }
+  ],
+  "behaviourId": "mfa-bypass-on-required-account",
+  "requiredFields": [
+    "account_id",
+    "event_type",
+    "mfa_used"
+  ],
+  "policyFields": [
+    "policy.mfa_required"
+  ],
+  "excludedFields": [
+    "auth_method"
+  ],
+  "threshold": null,
+  "timeWindow": null,
+  "fieldMode": "code",
+  "numMode": "digits",
+  "thresholdForm": "at-least",
+  "windowForm": "spaced",
+  "derivedFrom": "SFC-0163",
+  "llmModel": "openai/gpt-oss-120b",
+  "llmTries": 1,
+  "fieldSpansAreVerbatimPreserved": true,
+  "llmReasoningEffort": "default"
+}

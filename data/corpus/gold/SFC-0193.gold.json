@@ -1,0 +1,64 @@
+{
+  "reportId": "SFC-0193",
+  "reportFile": "data/corpus/reports/SFC-0193.md",
+  "familyId": "F-B5-017",
+  "style": "advisory",
+  "tier": "template",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "required_field",
+      "text": "account_id",
+      "start": 581,
+      "end": 591,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "event_type",
+      "start": 595,
+      "end": 605,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "mfa_used",
+      "start": 609,
+      "end": 617,
+      "field": "mfa_used"
+    },
+    {
+      "label": "required_field",
+      "text": "mfa_required",
+      "start": 624,
+      "end": 636,
+      "field": "policy.mfa_required"
+    },
+    {
+      "label": "excluded_field",
+      "text": "auth_method",
+      "start": 680,
+      "end": 691,
+      "field": "auth_method"
+    }
+  ],
+  "behaviourId": "mfa-bypass-on-required-account",
+  "requiredFields": [
+    "account_id",
+    "event_type",
+    "mfa_used"
+  ],
+  "policyFields": [
+    "policy.mfa_required"
+  ],
+  "excludedFields": [
+    "auth_method"
+  ],
+  "threshold": null,
+  "timeWindow": null,
+  "fieldMode": "code",
+  "numMode": "words",
+  "thresholdForm": "at-least",
+  "windowForm": "spaced"
+}

@@ -1,0 +1,90 @@
+{
+  "reportId": "SFC-0117",
+  "reportFile": "data/corpus/reports/SFC-0117.md",
+  "familyId": "F-B3-019",
+  "style": "postmortem",
+  "tier": "template",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "threshold",
+      "text": "2",
+      "start": 361,
+      "end": 362,
+      "form": "at-least",
+      "value": 2
+    },
+    {
+      "label": "window_amount",
+      "text": "15",
+      "start": 387,
+      "end": 389,
+      "value": 15
+    },
+    {
+      "label": "window_unit",
+      "text": "minute",
+      "start": 390,
+      "end": 396,
+      "value": "minutes"
+    },
+    {
+      "label": "required_field",
+      "text": "account_id",
+      "start": 452,
+      "end": 462,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "event_type",
+      "start": 466,
+      "end": 476,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "timestamp",
+      "start": 480,
+      "end": 489,
+      "field": "timestamp"
+    },
+    {
+      "label": "required_field",
+      "text": "source_host",
+      "start": 496,
+      "end": 507,
+      "field": "source_host"
+    },
+    {
+      "label": "excluded_field",
+      "text": "source_ip",
+      "start": 549,
+      "end": 558,
+      "field": "source_ip"
+    }
+  ],
+  "behaviourId": "concurrent-sessions-different-hosts",
+  "requiredFields": [
+    "account_id",
+    "event_type",
+    "source_host",
+    "timestamp"
+  ],
+  "policyFields": [],
+  "excludedFields": [
+    "source_ip"
+  ],
+  "threshold": {
+    "successCount": 2
+  },
+  "timeWindow": {
+    "amount": 15,
+    "unit": "minutes"
+  },
+  "fieldMode": "code",
+  "numMode": "digits",
+  "thresholdForm": "at-least",
+  "windowForm": "hyphen"
+}

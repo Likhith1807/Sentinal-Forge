@@ -1,0 +1,95 @@
+{
+  "reportId": "SFC-0118",
+  "reportFile": "data/corpus/reports/SFC-0118.md",
+  "familyId": "F-B3-019",
+  "style": "chat-message",
+  "tier": "llm-rewrite",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "threshold",
+      "text": "2",
+      "start": 216,
+      "end": 217,
+      "form": "at-least",
+      "value": 2
+    },
+    {
+      "label": "window_amount",
+      "text": "15",
+      "start": 244,
+      "end": 246,
+      "value": 15
+    },
+    {
+      "label": "window_unit",
+      "text": "minute",
+      "start": 247,
+      "end": 253,
+      "value": "minutes"
+    },
+    {
+      "label": "required_field",
+      "text": "account_id",
+      "start": 304,
+      "end": 314,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "event_type",
+      "start": 318,
+      "end": 328,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "timestamp",
+      "start": 332,
+      "end": 341,
+      "field": "timestamp"
+    },
+    {
+      "label": "required_field",
+      "text": "source_host",
+      "start": 348,
+      "end": 359,
+      "field": "source_host"
+    },
+    {
+      "label": "excluded_field",
+      "text": "source_ip",
+      "start": 381,
+      "end": 390,
+      "field": "source_ip"
+    }
+  ],
+  "behaviourId": "concurrent-sessions-different-hosts",
+  "requiredFields": [
+    "account_id",
+    "event_type",
+    "source_host",
+    "timestamp"
+  ],
+  "policyFields": [],
+  "excludedFields": [
+    "source_ip"
+  ],
+  "threshold": {
+    "successCount": 2
+  },
+  "timeWindow": {
+    "amount": 15,
+    "unit": "minutes"
+  },
+  "fieldMode": "code",
+  "numMode": "digits",
+  "thresholdForm": "at-least",
+  "windowForm": "hyphen",
+  "derivedFrom": "SFC-0117",
+  "llmModel": "openai/gpt-oss-120b",
+  "llmTries": 2,
+  "fieldSpansAreVerbatimPreserved": true,
+  "llmReasoningEffort": "default"
+}

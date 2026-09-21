@@ -1,0 +1,55 @@
+{
+  "reportId": "SFC-0177",
+  "reportFile": "data/corpus/reports/SFC-0177.md",
+  "familyId": "F-B5-009",
+  "style": "advisory",
+  "tier": "template",
+  "hasParamSection": true,
+  "supported": true,
+  "spans": [
+    {
+      "label": "required_field",
+      "text": "the account name",
+      "start": 570,
+      "end": 586,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "whether each attempt succeeded or failed",
+      "start": 588,
+      "end": 628,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "whether a second factor was used",
+      "start": 630,
+      "end": 662,
+      "field": "mfa_used"
+    },
+    {
+      "label": "required_field",
+      "text": "whether policy requires MFA for the account",
+      "start": 667,
+      "end": 710,
+      "field": "policy.mfa_required"
+    }
+  ],
+  "behaviourId": "mfa-bypass-on-required-account",
+  "requiredFields": [
+    "account_id",
+    "event_type",
+    "mfa_used"
+  ],
+  "policyFields": [
+    "policy.mfa_required"
+  ],
+  "excludedFields": [],
+  "threshold": null,
+  "timeWindow": null,
+  "fieldMode": "natural",
+  "numMode": "words",
+  "thresholdForm": "at-least",
+  "windowForm": "spaced"
+}

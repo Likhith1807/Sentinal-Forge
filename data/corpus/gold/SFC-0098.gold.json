@@ -1,0 +1,86 @@
+{
+  "reportId": "SFC-0098",
+  "reportFile": "data/corpus/reports/SFC-0098.md",
+  "familyId": "F-B3-009",
+  "style": "chat-message",
+  "tier": "llm-rewrite",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "threshold",
+      "text": "2",
+      "start": 424,
+      "end": 425,
+      "form": "no-fewer",
+      "value": 2
+    },
+    {
+      "label": "window_amount",
+      "text": "15",
+      "start": 452,
+      "end": 454,
+      "value": 15
+    },
+    {
+      "label": "window_unit",
+      "text": "minutes",
+      "start": 455,
+      "end": 462,
+      "value": "minutes"
+    },
+    {
+      "label": "required_field",
+      "text": "the account being authenticated",
+      "start": 502,
+      "end": 533,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "the login result",
+      "start": 537,
+      "end": 553,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "when each event occurred",
+      "start": 557,
+      "end": 581,
+      "field": "timestamp"
+    },
+    {
+      "label": "required_field",
+      "text": "the machine each attempt came from",
+      "start": 588,
+      "end": 622,
+      "field": "source_host"
+    }
+  ],
+  "behaviourId": "concurrent-sessions-different-hosts",
+  "requiredFields": [
+    "account_id",
+    "event_type",
+    "source_host",
+    "timestamp"
+  ],
+  "policyFields": [],
+  "excludedFields": [],
+  "threshold": {
+    "successCount": 2
+  },
+  "timeWindow": {
+    "amount": 15,
+    "unit": "minutes"
+  },
+  "fieldMode": "natural",
+  "numMode": "digits",
+  "thresholdForm": "no-fewer",
+  "windowForm": "spaced",
+  "derivedFrom": "SFC-0097",
+  "llmModel": "openai/gpt-oss-120b",
+  "llmTries": 4,
+  "fieldSpansAreVerbatimPreserved": true,
+  "llmReasoningEffort": "default"
+}

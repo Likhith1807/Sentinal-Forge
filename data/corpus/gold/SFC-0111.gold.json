@@ -1,0 +1,90 @@
+{
+  "reportId": "SFC-0111",
+  "reportFile": "data/corpus/reports/SFC-0111.md",
+  "familyId": "F-B3-016",
+  "style": "handoff-chat",
+  "tier": "template",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "threshold",
+      "text": "2",
+      "start": 303,
+      "end": 304,
+      "form": "more-than",
+      "value": 3
+    },
+    {
+      "label": "window_amount",
+      "text": "1",
+      "start": 328,
+      "end": 329,
+      "value": 1
+    },
+    {
+      "label": "window_unit",
+      "text": "hour",
+      "start": 330,
+      "end": 334,
+      "value": "hours"
+    },
+    {
+      "label": "required_field",
+      "text": "the account name",
+      "start": 361,
+      "end": 377,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "the sign-in outcome",
+      "start": 379,
+      "end": 398,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "event timestamps",
+      "start": 400,
+      "end": 416,
+      "field": "timestamp"
+    },
+    {
+      "label": "required_field",
+      "text": "the originating host",
+      "start": 421,
+      "end": 441,
+      "field": "source_host"
+    },
+    {
+      "label": "excluded_field",
+      "text": "the source IP address",
+      "start": 453,
+      "end": 474,
+      "field": "source_ip"
+    }
+  ],
+  "behaviourId": "concurrent-sessions-different-hosts",
+  "requiredFields": [
+    "account_id",
+    "event_type",
+    "source_host",
+    "timestamp"
+  ],
+  "policyFields": [],
+  "excludedFields": [
+    "source_ip"
+  ],
+  "threshold": {
+    "successCount": 3
+  },
+  "timeWindow": {
+    "amount": 1,
+    "unit": "hours"
+  },
+  "fieldMode": "natural",
+  "numMode": "digits",
+  "thresholdForm": "more-than",
+  "windowForm": "spaced"
+}

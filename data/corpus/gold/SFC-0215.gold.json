@@ -1,0 +1,38 @@
+{
+  "reportId": "SFC-0215",
+  "reportFile": "data/corpus/reports/SFC-0215.md",
+  "familyId": "F-U-008",
+  "style": "handoff-chat",
+  "tier": "template",
+  "hasParamSection": false,
+  "supported": false,
+  "spans": [
+    {
+      "label": "unavailable_field",
+      "text": "the destination port",
+      "start": 325,
+      "end": 345,
+      "field": "destination_port"
+    },
+    {
+      "label": "unavailable_field",
+      "text": "the destination host",
+      "start": 350,
+      "end": 370,
+      "field": "dst_ip"
+    }
+  ],
+  "behaviourId": null,
+  "requiredFields": [],
+  "policyFields": [],
+  "excludedFields": [],
+  "threshold": null,
+  "timeWindow": null,
+  "unsupportedReason": "requires fields the authentication log schema does not provide",
+  "unavailableFields": [
+    "destination_port",
+    "dst_ip"
+  ],
+  "looksLike": null,
+  "topic": "port-scan"
+}

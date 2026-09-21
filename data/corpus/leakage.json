@@ -1,0 +1,96 @@
+{
+  "gate": {
+    "maxCrossSplitRawJaccard": 0.5,
+    "passed": true
+  },
+  "familiesStraddlingSplits": [],
+  "exactDuplicateTexts": 0,
+  "crossSplitRaw": {
+    "pairs": 11510,
+    "max": 0.296,
+    "mean": 0.007,
+    "p95": 0.041
+  },
+  "crossSplitNormalised": {
+    "pairs": 11510,
+    "max": 0.466,
+    "mean": 0.011,
+    "p95": 0.06
+  },
+  "crossSplitSameBehaviourRaw": {
+    "pairs": 2033,
+    "max": 0.296,
+    "mean": 0.024,
+    "p95": 0.112
+  },
+  "crossSplitSameBehaviourNormalised": {
+    "pairs": 2033,
+    "max": 0.466,
+    "mean": 0.035,
+    "p95": 0.162
+  },
+  "crossSplitSameBehaviourNormalisedByTier": {
+    "llm-rewrite/llm-rewrite": {
+      "pairs": 441,
+      "max": 0.08,
+      "mean": 0.01,
+      "p95": 0.036
+    },
+    "llm-rewrite/template": {
+      "pairs": 1004,
+      "max": 0.169,
+      "mean": 0.013,
+      "p95": 0.051
+    },
+    "template/template": {
+      "pairs": 588,
+      "max": 0.466,
+      "mean": 0.093,
+      "p95": 0.232
+    }
+  },
+  "withinFamilyRaw": {
+    "pairs": 91,
+    "max": 0.326,
+    "mean": 0.08,
+    "p95": 0.182
+  },
+  "withinFamilyNormalised": {
+    "pairs": 91,
+    "max": 0.323,
+    "mean": 0.08,
+    "p95": 0.181
+  },
+  "mostSimilarCrossSplitPairs": [
+    {
+      "a": "SFC-0043",
+      "b": "SFC-0067",
+      "rawJaccard": 0.296,
+      "normalisedJaccard": 0.358
+    },
+    {
+      "a": "SFC-0163",
+      "b": "SFC-0175",
+      "rawJaccard": 0.291,
+      "normalisedJaccard": 0.333
+    },
+    {
+      "a": "SFC-0171",
+      "b": "SFC-0187",
+      "rawJaccard": 0.287,
+      "normalisedJaccard": 0.414
+    },
+    {
+      "a": "SFC-0125",
+      "b": "SFC-0157",
+      "rawJaccard": 0.277,
+      "normalisedJaccard": 0.291
+    },
+    {
+      "a": "SFC-0167",
+      "b": "SFC-0175",
+      "rawJaccard": 0.263,
+      "normalisedJaccard": 0.299
+    }
+  ]
+}

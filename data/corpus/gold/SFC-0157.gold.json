@@ -1,0 +1,55 @@
+{
+  "reportId": "SFC-0157",
+  "reportFile": "data/corpus/reports/SFC-0157.md",
+  "familyId": "F-B4-019",
+  "style": "postmortem",
+  "tier": "template",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "required_field",
+      "text": "account_id",
+      "start": 505,
+      "end": 515,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "event_type",
+      "start": 519,
+      "end": 529,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "auth_method",
+      "start": 533,
+      "end": 544,
+      "field": "auth_method"
+    },
+    {
+      "label": "required_field",
+      "text": "expected_auth_method",
+      "start": 551,
+      "end": 571,
+      "field": "policy.expected_auth_method"
+    }
+  ],
+  "behaviourId": "service-account-interactive-auth",
+  "requiredFields": [
+    "account_id",
+    "auth_method",
+    "event_type"
+  ],
+  "policyFields": [
+    "policy.expected_auth_method"
+  ],
+  "excludedFields": [],
+  "threshold": null,
+  "timeWindow": null,
+  "fieldMode": "code",
+  "numMode": "digits",
+  "thresholdForm": "at-least",
+  "windowForm": "spaced"
+}

@@ -1,0 +1,90 @@
+{
+  "reportId": "SFC-0103",
+  "reportFile": "data/corpus/reports/SFC-0103.md",
+  "familyId": "F-B3-012",
+  "style": "handoff-chat",
+  "tier": "template",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "threshold",
+      "text": "two",
+      "start": 328,
+      "end": 331,
+      "form": "or-more",
+      "value": 2
+    },
+    {
+      "label": "window_amount",
+      "text": "thirty",
+      "start": 365,
+      "end": 371,
+      "value": 30
+    },
+    {
+      "label": "window_unit",
+      "text": "minutes",
+      "start": 372,
+      "end": 379,
+      "value": "minutes"
+    },
+    {
+      "label": "required_field",
+      "text": "account_id",
+      "start": 403,
+      "end": 413,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "event_type",
+      "start": 417,
+      "end": 427,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "timestamp",
+      "start": 431,
+      "end": 440,
+      "field": "timestamp"
+    },
+    {
+      "label": "required_field",
+      "text": "source_host",
+      "start": 447,
+      "end": 458,
+      "field": "source_host"
+    },
+    {
+      "label": "excluded_field",
+      "text": "auth_method",
+      "start": 472,
+      "end": 483,
+      "field": "auth_method"
+    }
+  ],
+  "behaviourId": "concurrent-sessions-different-hosts",
+  "requiredFields": [
+    "account_id",
+    "event_type",
+    "source_host",
+    "timestamp"
+  ],
+  "policyFields": [],
+  "excludedFields": [
+    "auth_method"
+  ],
+  "threshold": {
+    "successCount": 2
+  },
+  "timeWindow": {
+    "amount": 30,
+    "unit": "minutes"
+  },
+  "fieldMode": "code",
+  "numMode": "words",
+  "thresholdForm": "or-more",
+  "windowForm": "spaced"
+}

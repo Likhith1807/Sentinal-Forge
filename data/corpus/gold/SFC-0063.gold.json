@@ -1,0 +1,90 @@
+{
+  "reportId": "SFC-0063",
+  "reportFile": "data/corpus/reports/SFC-0063.md",
+  "familyId": "F-B2-012",
+  "style": "handoff-chat",
+  "tier": "template",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "threshold",
+      "text": "4",
+      "start": 355,
+      "end": 356,
+      "form": "or-more",
+      "value": 4
+    },
+    {
+      "label": "window_amount",
+      "text": "10",
+      "start": 393,
+      "end": 395,
+      "value": 10
+    },
+    {
+      "label": "window_unit",
+      "text": "minute",
+      "start": 396,
+      "end": 402,
+      "value": "minutes"
+    },
+    {
+      "label": "required_field",
+      "text": "account_id",
+      "start": 433,
+      "end": 443,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "event_type",
+      "start": 447,
+      "end": 457,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "timestamp",
+      "start": 461,
+      "end": 470,
+      "field": "timestamp"
+    },
+    {
+      "label": "required_field",
+      "text": "source_host",
+      "start": 477,
+      "end": 488,
+      "field": "source_host"
+    },
+    {
+      "label": "excluded_field",
+      "text": "auth_method",
+      "start": 505,
+      "end": 516,
+      "field": "auth_method"
+    }
+  ],
+  "behaviourId": "password-spray-across-accounts",
+  "requiredFields": [
+    "account_id",
+    "event_type",
+    "source_host",
+    "timestamp"
+  ],
+  "policyFields": [],
+  "excludedFields": [
+    "auth_method"
+  ],
+  "threshold": {
+    "distinctAccountCount": 4
+  },
+  "timeWindow": {
+    "amount": 10,
+    "unit": "minutes"
+  },
+  "fieldMode": "code",
+  "numMode": "digits",
+  "thresholdForm": "or-more",
+  "windowForm": "hyphen"
+}

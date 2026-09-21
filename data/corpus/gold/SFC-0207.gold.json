@@ -1,0 +1,30 @@
+{
+  "reportId": "SFC-0207",
+  "reportFile": "data/corpus/reports/SFC-0207.md",
+  "familyId": "F-U-004",
+  "style": "handoff-chat",
+  "tier": "template",
+  "hasParamSection": false,
+  "supported": false,
+  "spans": [
+    {
+      "label": "unavailable_field",
+      "text": "the country each sign-in geolocates to",
+      "start": 363,
+      "end": 401,
+      "field": "geo_country"
+    }
+  ],
+  "behaviourId": null,
+  "requiredFields": [],
+  "policyFields": [],
+  "excludedFields": [],
+  "threshold": null,
+  "timeWindow": null,
+  "unsupportedReason": "requires fields the authentication log schema does not provide",
+  "unavailableFields": [
+    "geo_country"
+  ],
+  "looksLike": "concurrent-sessions-different-hosts",
+  "topic": "impossible-travel"
+}

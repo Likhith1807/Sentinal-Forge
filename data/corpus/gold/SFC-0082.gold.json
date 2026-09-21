@@ -1,0 +1,86 @@
+{
+  "reportId": "SFC-0082",
+  "reportFile": "data/corpus/reports/SFC-0082.md",
+  "familyId": "F-B3-001",
+  "style": "email",
+  "tier": "llm-rewrite",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "threshold",
+      "text": "two",
+      "start": 499,
+      "end": 502,
+      "form": "or-more",
+      "value": 2
+    },
+    {
+      "label": "window_amount",
+      "text": "thirty",
+      "start": 540,
+      "end": 546,
+      "value": 30
+    },
+    {
+      "label": "window_unit",
+      "text": "minutes",
+      "start": 547,
+      "end": 554,
+      "value": "minutes"
+    },
+    {
+      "label": "required_field",
+      "text": "the username",
+      "start": 590,
+      "end": 602,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "whether each attempt succeeded or failed",
+      "start": 608,
+      "end": 648,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "the time of each attempt",
+      "start": 654,
+      "end": 678,
+      "field": "timestamp"
+    },
+    {
+      "label": "required_field",
+      "text": "the originating host",
+      "start": 687,
+      "end": 707,
+      "field": "source_host"
+    }
+  ],
+  "behaviourId": "concurrent-sessions-different-hosts",
+  "requiredFields": [
+    "account_id",
+    "event_type",
+    "source_host",
+    "timestamp"
+  ],
+  "policyFields": [],
+  "excludedFields": [],
+  "threshold": {
+    "successCount": 2
+  },
+  "timeWindow": {
+    "amount": 30,
+    "unit": "minutes"
+  },
+  "fieldMode": "natural",
+  "numMode": "words",
+  "thresholdForm": "or-more",
+  "windowForm": "spaced",
+  "derivedFrom": "SFC-0081",
+  "llmModel": "openai/gpt-oss-120b",
+  "llmTries": 1,
+  "fieldSpansAreVerbatimPreserved": true,
+  "llmReasoningEffort": "default"
+}

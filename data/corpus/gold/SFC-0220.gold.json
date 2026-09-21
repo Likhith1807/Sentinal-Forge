@@ -1,0 +1,43 @@
+{
+  "reportId": "SFC-0220",
+  "reportFile": "data/corpus/reports/SFC-0220.md",
+  "familyId": "F-U-010",
+  "style": "runbook",
+  "tier": "llm-rewrite",
+  "hasParamSection": false,
+  "supported": false,
+  "spans": [
+    {
+      "label": "unavailable_field",
+      "text": "the device identifier",
+      "start": 435,
+      "end": 456,
+      "field": "device_id"
+    },
+    {
+      "label": "unavailable_field",
+      "text": "the device class",
+      "start": 465,
+      "end": 481,
+      "field": "device_class"
+    }
+  ],
+  "behaviourId": null,
+  "requiredFields": [],
+  "policyFields": [],
+  "excludedFields": [],
+  "threshold": null,
+  "timeWindow": null,
+  "unsupportedReason": "requires fields the authentication log schema does not provide",
+  "unavailableFields": [
+    "device_id",
+    "device_class"
+  ],
+  "looksLike": null,
+  "topic": "usb-mass-storage",
+  "derivedFrom": "SFC-0219",
+  "llmModel": "openai/gpt-oss-120b",
+  "llmTries": 1,
+  "fieldSpansAreVerbatimPreserved": true,
+  "llmReasoningEffort": "low"
+}

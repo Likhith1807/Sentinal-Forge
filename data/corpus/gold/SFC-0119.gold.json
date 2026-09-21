@@ -1,0 +1,90 @@
+{
+  "reportId": "SFC-0119",
+  "reportFile": "data/corpus/reports/SFC-0119.md",
+  "familyId": "F-B3-020",
+  "style": "handoff-chat",
+  "tier": "template",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "threshold",
+      "text": "two",
+      "start": 308,
+      "end": 311,
+      "form": "no-fewer",
+      "value": 2
+    },
+    {
+      "label": "window_amount",
+      "text": "fifteen",
+      "start": 337,
+      "end": 344,
+      "value": 15
+    },
+    {
+      "label": "window_unit",
+      "text": "minutes",
+      "start": 345,
+      "end": 352,
+      "value": "minutes"
+    },
+    {
+      "label": "required_field",
+      "text": "the username",
+      "start": 395,
+      "end": 407,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "the login result",
+      "start": 409,
+      "end": 425,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "the event time",
+      "start": 427,
+      "end": 441,
+      "field": "timestamp"
+    },
+    {
+      "label": "required_field",
+      "text": "the host the request originated from",
+      "start": 446,
+      "end": 482,
+      "field": "source_host"
+    },
+    {
+      "label": "excluded_field",
+      "text": "the originating IP",
+      "start": 497,
+      "end": 515,
+      "field": "source_ip"
+    }
+  ],
+  "behaviourId": "concurrent-sessions-different-hosts",
+  "requiredFields": [
+    "account_id",
+    "event_type",
+    "source_host",
+    "timestamp"
+  ],
+  "policyFields": [],
+  "excludedFields": [
+    "source_ip"
+  ],
+  "threshold": {
+    "successCount": 2
+  },
+  "timeWindow": {
+    "amount": 15,
+    "unit": "minutes"
+  },
+  "fieldMode": "natural",
+  "numMode": "words",
+  "thresholdForm": "no-fewer",
+  "windowForm": "spaced"
+}

@@ -1,0 +1,87 @@
+{
+  "reportId": "SFC-0040",
+  "reportFile": "data/corpus/reports/SFC-0040.md",
+  "familyId": "F-B1-020",
+  "style": "runbook",
+  "tier": "llm-rewrite",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "threshold",
+      "text": "5",
+      "start": 59,
+      "end": 60,
+      "form": "plus",
+      "value": 5
+    },
+    {
+      "label": "window_amount",
+      "text": "60",
+      "start": 219,
+      "end": 221,
+      "value": 60
+    },
+    {
+      "label": "window_unit",
+      "text": "second",
+      "start": 222,
+      "end": 228,
+      "value": "seconds"
+    },
+    {
+      "label": "required_field",
+      "text": "the username",
+      "start": 315,
+      "end": 327,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "the sign-in outcome",
+      "start": 423,
+      "end": 442,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "the time of each attempt",
+      "start": 534,
+      "end": 558,
+      "field": "timestamp"
+    },
+    {
+      "label": "excluded_field",
+      "text": "the client IP",
+      "start": 650,
+      "end": 663,
+      "field": "source_ip"
+    }
+  ],
+  "behaviourId": "repeated-failed-login-then-success",
+  "requiredFields": [
+    "account_id",
+    "event_type",
+    "timestamp"
+  ],
+  "policyFields": [],
+  "excludedFields": [
+    "source_ip"
+  ],
+  "threshold": {
+    "failureCount": 5
+  },
+  "timeWindow": {
+    "amount": 60,
+    "unit": "seconds"
+  },
+  "fieldMode": "natural",
+  "numMode": "words",
+  "thresholdForm": "plus",
+  "windowForm": "hyphen",
+  "derivedFrom": "SFC-0039",
+  "llmModel": "openai/gpt-oss-120b",
+  "llmTries": 1,
+  "fieldSpansAreVerbatimPreserved": true,
+  "llmReasoningEffort": "default"
+}

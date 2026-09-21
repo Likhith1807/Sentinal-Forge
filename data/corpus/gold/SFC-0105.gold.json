@@ -1,0 +1,90 @@
+{
+  "reportId": "SFC-0105",
+  "reportFile": "data/corpus/reports/SFC-0105.md",
+  "familyId": "F-B3-013",
+  "style": "advisory",
+  "tier": "template",
+  "hasParamSection": true,
+  "supported": true,
+  "spans": [
+    {
+      "label": "threshold",
+      "text": "2",
+      "start": 589,
+      "end": 590,
+      "form": "at-least",
+      "value": 2
+    },
+    {
+      "label": "window_amount",
+      "text": "10",
+      "start": 616,
+      "end": 618,
+      "value": 10
+    },
+    {
+      "label": "window_unit",
+      "text": "minutes",
+      "start": 619,
+      "end": 626,
+      "value": "minutes"
+    },
+    {
+      "label": "required_field",
+      "text": "the username",
+      "start": 655,
+      "end": 667,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "whether each attempt succeeded or failed",
+      "start": 669,
+      "end": 709,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "when each event occurred",
+      "start": 711,
+      "end": 735,
+      "field": "timestamp"
+    },
+    {
+      "label": "required_field",
+      "text": "the machine each attempt came from",
+      "start": 740,
+      "end": 774,
+      "field": "source_host"
+    },
+    {
+      "label": "excluded_field",
+      "text": "the client IP",
+      "start": 791,
+      "end": 804,
+      "field": "source_ip"
+    }
+  ],
+  "behaviourId": "concurrent-sessions-different-hosts",
+  "requiredFields": [
+    "account_id",
+    "event_type",
+    "source_host",
+    "timestamp"
+  ],
+  "policyFields": [],
+  "excludedFields": [
+    "source_ip"
+  ],
+  "threshold": {
+    "successCount": 2
+  },
+  "timeWindow": {
+    "amount": 10,
+    "unit": "minutes"
+  },
+  "fieldMode": "natural",
+  "numMode": "digits",
+  "thresholdForm": "at-least",
+  "windowForm": "spaced"
+}

@@ -1,0 +1,95 @@
+{
+  "reportId": "SFC-0074",
+  "reportFile": "data/corpus/reports/SFC-0074.md",
+  "familyId": "F-B2-017",
+  "style": "intel-brief",
+  "tier": "llm-rewrite",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "threshold",
+      "text": "4",
+      "start": 341,
+      "end": 342,
+      "form": "or-more",
+      "value": 4
+    },
+    {
+      "label": "window_amount",
+      "text": "1",
+      "start": 417,
+      "end": 418,
+      "value": 1
+    },
+    {
+      "label": "window_unit",
+      "text": "hour",
+      "start": 419,
+      "end": 423,
+      "value": "hours"
+    },
+    {
+      "label": "required_field",
+      "text": "account_id",
+      "start": 515,
+      "end": 525,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "event_type",
+      "start": 529,
+      "end": 539,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "timestamp",
+      "start": 543,
+      "end": 552,
+      "field": "timestamp"
+    },
+    {
+      "label": "required_field",
+      "text": "source_host",
+      "start": 559,
+      "end": 570,
+      "field": "source_host"
+    },
+    {
+      "label": "excluded_field",
+      "text": "auth_method",
+      "start": 580,
+      "end": 591,
+      "field": "auth_method"
+    }
+  ],
+  "behaviourId": "password-spray-across-accounts",
+  "requiredFields": [
+    "account_id",
+    "event_type",
+    "source_host",
+    "timestamp"
+  ],
+  "policyFields": [],
+  "excludedFields": [
+    "auth_method"
+  ],
+  "threshold": {
+    "distinctAccountCount": 4
+  },
+  "timeWindow": {
+    "amount": 1,
+    "unit": "hours"
+  },
+  "fieldMode": "code",
+  "numMode": "digits",
+  "thresholdForm": "or-more",
+  "windowForm": "hyphen",
+  "derivedFrom": "SFC-0073",
+  "llmModel": "openai/gpt-oss-120b",
+  "llmTries": 1,
+  "fieldSpansAreVerbatimPreserved": true,
+  "llmReasoningEffort": "default"
+}

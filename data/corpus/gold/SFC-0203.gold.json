@@ -1,0 +1,38 @@
+{
+  "reportId": "SFC-0203",
+  "reportFile": "data/corpus/reports/SFC-0203.md",
+  "familyId": "F-U-002",
+  "style": "soc-ticket",
+  "tier": "template",
+  "hasParamSection": false,
+  "supported": false,
+  "spans": [
+    {
+      "label": "unavailable_field",
+      "text": "bytes_out",
+      "start": 387,
+      "end": 396,
+      "field": "bytes_out"
+    },
+    {
+      "label": "unavailable_field",
+      "text": "destination_ip",
+      "start": 403,
+      "end": 417,
+      "field": "destination_ip"
+    }
+  ],
+  "behaviourId": null,
+  "requiredFields": [],
+  "policyFields": [],
+  "excludedFields": [],
+  "threshold": null,
+  "timeWindow": null,
+  "unsupportedReason": "requires fields the authentication log schema does not provide",
+  "unavailableFields": [
+    "bytes_out",
+    "destination_ip"
+  ],
+  "looksLike": null,
+  "topic": "data-exfiltration-volume"
+}

@@ -1,0 +1,43 @@
+{
+  "reportId": "SFC-0206",
+  "reportFile": "data/corpus/reports/SFC-0206.md",
+  "familyId": "F-U-003",
+  "style": "incident-review",
+  "tier": "llm-rewrite",
+  "hasParamSection": false,
+  "supported": false,
+  "spans": [
+    {
+      "label": "unavailable_field",
+      "text": "the process name",
+      "start": 457,
+      "end": 473,
+      "field": "process_name"
+    },
+    {
+      "label": "unavailable_field",
+      "text": "the full command line",
+      "start": 480,
+      "end": 501,
+      "field": "command_line"
+    }
+  ],
+  "behaviourId": null,
+  "requiredFields": [],
+  "policyFields": [],
+  "excludedFields": [],
+  "threshold": null,
+  "timeWindow": null,
+  "unsupportedReason": "requires fields the authentication log schema does not provide",
+  "unavailableFields": [
+    "process_name",
+    "command_line"
+  ],
+  "looksLike": null,
+  "topic": "encoded-powershell",
+  "derivedFrom": "SFC-0205",
+  "llmModel": "openai/gpt-oss-120b",
+  "llmTries": 1,
+  "fieldSpansAreVerbatimPreserved": true,
+  "llmReasoningEffort": "low"
+}

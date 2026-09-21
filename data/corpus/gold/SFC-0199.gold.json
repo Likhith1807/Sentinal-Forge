@@ -1,0 +1,64 @@
+{
+  "reportId": "SFC-0199",
+  "reportFile": "data/corpus/reports/SFC-0199.md",
+  "familyId": "F-B5-020",
+  "style": "handoff-chat",
+  "tier": "template",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "required_field",
+      "text": "the username",
+      "start": 311,
+      "end": 323,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "whether each attempt succeeded or failed",
+      "start": 325,
+      "end": 365,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "whether a second factor was used",
+      "start": 367,
+      "end": 399,
+      "field": "mfa_used"
+    },
+    {
+      "label": "required_field",
+      "text": "whether policy requires MFA for the account",
+      "start": 404,
+      "end": 447,
+      "field": "policy.mfa_required"
+    },
+    {
+      "label": "excluded_field",
+      "text": "how the account authenticated",
+      "start": 459,
+      "end": 488,
+      "field": "auth_method"
+    }
+  ],
+  "behaviourId": "mfa-bypass-on-required-account",
+  "requiredFields": [
+    "account_id",
+    "event_type",
+    "mfa_used"
+  ],
+  "policyFields": [
+    "policy.mfa_required"
+  ],
+  "excludedFields": [
+    "auth_method"
+  ],
+  "threshold": null,
+  "timeWindow": null,
+  "fieldMode": "natural",
+  "numMode": "words",
+  "thresholdForm": "at-least",
+  "windowForm": "spaced"
+}

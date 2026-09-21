@@ -1,0 +1,82 @@
+{
+  "reportId": "SFC-0039",
+  "reportFile": "data/corpus/reports/SFC-0039.md",
+  "familyId": "F-B1-020",
+  "style": "handoff-chat",
+  "tier": "template",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "threshold",
+      "text": "5",
+      "start": 243,
+      "end": 244,
+      "form": "plus",
+      "value": 5
+    },
+    {
+      "label": "window_amount",
+      "text": "60",
+      "start": 289,
+      "end": 291,
+      "value": 60
+    },
+    {
+      "label": "window_unit",
+      "text": "second",
+      "start": 292,
+      "end": 298,
+      "value": "seconds"
+    },
+    {
+      "label": "required_field",
+      "text": "the username",
+      "start": 394,
+      "end": 406,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "the sign-in outcome",
+      "start": 408,
+      "end": 427,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "the time of each attempt",
+      "start": 432,
+      "end": 456,
+      "field": "timestamp"
+    },
+    {
+      "label": "excluded_field",
+      "text": "the client IP",
+      "start": 471,
+      "end": 484,
+      "field": "source_ip"
+    }
+  ],
+  "behaviourId": "repeated-failed-login-then-success",
+  "requiredFields": [
+    "account_id",
+    "event_type",
+    "timestamp"
+  ],
+  "policyFields": [],
+  "excludedFields": [
+    "source_ip"
+  ],
+  "threshold": {
+    "failureCount": 5
+  },
+  "timeWindow": {
+    "amount": 60,
+    "unit": "seconds"
+  },
+  "fieldMode": "natural",
+  "numMode": "words",
+  "thresholdForm": "plus",
+  "windowForm": "hyphen"
+}

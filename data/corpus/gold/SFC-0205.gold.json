@@ -1,0 +1,38 @@
+{
+  "reportId": "SFC-0205",
+  "reportFile": "data/corpus/reports/SFC-0205.md",
+  "familyId": "F-U-003",
+  "style": "postmortem",
+  "tier": "template",
+  "hasParamSection": false,
+  "supported": false,
+  "spans": [
+    {
+      "label": "unavailable_field",
+      "text": "the process name",
+      "start": 421,
+      "end": 437,
+      "field": "process_name"
+    },
+    {
+      "label": "unavailable_field",
+      "text": "the full command line",
+      "start": 442,
+      "end": 463,
+      "field": "command_line"
+    }
+  ],
+  "behaviourId": null,
+  "requiredFields": [],
+  "policyFields": [],
+  "excludedFields": [],
+  "threshold": null,
+  "timeWindow": null,
+  "unsupportedReason": "requires fields the authentication log schema does not provide",
+  "unavailableFields": [
+    "process_name",
+    "command_line"
+  ],
+  "looksLike": null,
+  "topic": "encoded-powershell"
+}

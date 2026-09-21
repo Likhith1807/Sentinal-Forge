@@ -1,0 +1,64 @@
+{
+  "reportId": "SFC-0183",
+  "reportFile": "data/corpus/reports/SFC-0183.md",
+  "familyId": "F-B5-012",
+  "style": "handoff-chat",
+  "tier": "template",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "required_field",
+      "text": "the account identifier",
+      "start": 308,
+      "end": 330,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "the success/failure status of each event",
+      "start": 332,
+      "end": 372,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "whether multi-factor authentication was presented",
+      "start": 374,
+      "end": 423,
+      "field": "mfa_used"
+    },
+    {
+      "label": "required_field",
+      "text": "whether policy requires MFA for the account",
+      "start": 428,
+      "end": 471,
+      "field": "policy.mfa_required"
+    },
+    {
+      "label": "excluded_field",
+      "text": "the credential type used",
+      "start": 483,
+      "end": 507,
+      "field": "auth_method"
+    }
+  ],
+  "behaviourId": "mfa-bypass-on-required-account",
+  "requiredFields": [
+    "account_id",
+    "event_type",
+    "mfa_used"
+  ],
+  "policyFields": [
+    "policy.mfa_required"
+  ],
+  "excludedFields": [
+    "auth_method"
+  ],
+  "threshold": null,
+  "timeWindow": null,
+  "fieldMode": "natural",
+  "numMode": "words",
+  "thresholdForm": "at-least",
+  "windowForm": "spaced"
+}

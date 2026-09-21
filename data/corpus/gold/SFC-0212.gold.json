@@ -1,0 +1,51 @@
+{
+  "reportId": "SFC-0212",
+  "reportFile": "data/corpus/reports/SFC-0212.md",
+  "familyId": "F-U-006",
+  "style": "email",
+  "tier": "llm-rewrite",
+  "hasParamSection": false,
+  "supported": false,
+  "spans": [
+    {
+      "label": "unavailable_field",
+      "text": "the message subject",
+      "start": 601,
+      "end": 620,
+      "field": "email_subject"
+    },
+    {
+      "label": "unavailable_field",
+      "text": "the sender's domain",
+      "start": 626,
+      "end": 645,
+      "field": "sender_domain"
+    },
+    {
+      "label": "unavailable_field",
+      "text": "the URL visited",
+      "start": 655,
+      "end": 670,
+      "field": "url_clicked"
+    }
+  ],
+  "behaviourId": null,
+  "requiredFields": [],
+  "policyFields": [],
+  "excludedFields": [],
+  "threshold": null,
+  "timeWindow": null,
+  "unsupportedReason": "requires fields the authentication log schema does not provide",
+  "unavailableFields": [
+    "email_subject",
+    "sender_domain",
+    "url_clicked"
+  ],
+  "looksLike": null,
+  "topic": "phishing-click",
+  "derivedFrom": "SFC-0211",
+  "llmModel": "openai/gpt-oss-120b",
+  "llmTries": 1,
+  "fieldSpansAreVerbatimPreserved": true,
+  "llmReasoningEffort": "low"
+}

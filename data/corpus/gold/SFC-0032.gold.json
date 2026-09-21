@@ -1,0 +1,78 @@
+{
+  "reportId": "SFC-0032",
+  "reportFile": "data/corpus/reports/SFC-0032.md",
+  "familyId": "F-B1-016",
+  "style": "email",
+  "tier": "llm-rewrite",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "threshold",
+      "text": "5",
+      "start": 457,
+      "end": 458,
+      "form": "no-fewer",
+      "value": 5
+    },
+    {
+      "label": "window_amount",
+      "text": "5",
+      "start": 486,
+      "end": 487,
+      "value": 5
+    },
+    {
+      "label": "window_unit",
+      "text": "minute",
+      "start": 488,
+      "end": 494,
+      "value": "minutes"
+    },
+    {
+      "label": "required_field",
+      "text": "account_id",
+      "start": 590,
+      "end": 600,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "event_type",
+      "start": 606,
+      "end": 616,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "timestamp",
+      "start": 626,
+      "end": 635,
+      "field": "timestamp"
+    }
+  ],
+  "behaviourId": "repeated-failed-login-then-success",
+  "requiredFields": [
+    "account_id",
+    "event_type",
+    "timestamp"
+  ],
+  "policyFields": [],
+  "excludedFields": [],
+  "threshold": {
+    "failureCount": 5
+  },
+  "timeWindow": {
+    "amount": 5,
+    "unit": "minutes"
+  },
+  "fieldMode": "code",
+  "numMode": "digits",
+  "thresholdForm": "no-fewer",
+  "windowForm": "hyphen",
+  "derivedFrom": "SFC-0031",
+  "llmModel": "openai/gpt-oss-120b",
+  "llmTries": 1,
+  "fieldSpansAreVerbatimPreserved": true,
+  "llmReasoningEffort": "default"
+}

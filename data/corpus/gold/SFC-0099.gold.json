@@ -1,0 +1,90 @@
+{
+  "reportId": "SFC-0099",
+  "reportFile": "data/corpus/reports/SFC-0099.md",
+  "familyId": "F-B3-010",
+  "style": "soc-ticket",
+  "tier": "template",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "threshold",
+      "text": "2",
+      "start": 366,
+      "end": 367,
+      "form": "plus",
+      "value": 2
+    },
+    {
+      "label": "window_amount",
+      "text": "ten",
+      "start": 392,
+      "end": 395,
+      "value": 10
+    },
+    {
+      "label": "window_unit",
+      "text": "minutes",
+      "start": 396,
+      "end": 403,
+      "value": "minutes"
+    },
+    {
+      "label": "required_field",
+      "text": "the account identifier",
+      "start": 452,
+      "end": 474,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "the sign-in outcome",
+      "start": 476,
+      "end": 495,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "the event time",
+      "start": 497,
+      "end": 511,
+      "field": "timestamp"
+    },
+    {
+      "label": "required_field",
+      "text": "the originating host",
+      "start": 516,
+      "end": 536,
+      "field": "source_host"
+    },
+    {
+      "label": "excluded_field",
+      "text": "the authentication method",
+      "start": 563,
+      "end": 588,
+      "field": "auth_method"
+    }
+  ],
+  "behaviourId": "concurrent-sessions-different-hosts",
+  "requiredFields": [
+    "account_id",
+    "event_type",
+    "source_host",
+    "timestamp"
+  ],
+  "policyFields": [],
+  "excludedFields": [
+    "auth_method"
+  ],
+  "threshold": {
+    "successCount": 2
+  },
+  "timeWindow": {
+    "amount": 10,
+    "unit": "minutes"
+  },
+  "fieldMode": "natural",
+  "numMode": "words",
+  "thresholdForm": "plus",
+  "windowForm": "spaced"
+}

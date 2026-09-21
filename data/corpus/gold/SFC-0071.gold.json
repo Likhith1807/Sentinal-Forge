@@ -1,0 +1,90 @@
+{
+  "reportId": "SFC-0071",
+  "reportFile": "data/corpus/reports/SFC-0071.md",
+  "familyId": "F-B2-016",
+  "style": "handoff-chat",
+  "tier": "template",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "threshold",
+      "text": "4",
+      "start": 345,
+      "end": 346,
+      "form": "no-fewer",
+      "value": 4
+    },
+    {
+      "label": "window_amount",
+      "text": "10",
+      "start": 419,
+      "end": 421,
+      "value": 10
+    },
+    {
+      "label": "window_unit",
+      "text": "minutes",
+      "start": 422,
+      "end": 429,
+      "value": "minutes"
+    },
+    {
+      "label": "required_field",
+      "text": "the account being authenticated",
+      "start": 460,
+      "end": 491,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "the success/failure status of each event",
+      "start": 493,
+      "end": 533,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "the time of each attempt",
+      "start": 535,
+      "end": 559,
+      "field": "timestamp"
+    },
+    {
+      "label": "required_field",
+      "text": "the originating host",
+      "start": 564,
+      "end": 584,
+      "field": "source_host"
+    },
+    {
+      "label": "excluded_field",
+      "text": "how the account authenticated",
+      "start": 599,
+      "end": 628,
+      "field": "auth_method"
+    }
+  ],
+  "behaviourId": "password-spray-across-accounts",
+  "requiredFields": [
+    "account_id",
+    "event_type",
+    "source_host",
+    "timestamp"
+  ],
+  "policyFields": [],
+  "excludedFields": [
+    "auth_method"
+  ],
+  "threshold": {
+    "distinctAccountCount": 4
+  },
+  "timeWindow": {
+    "amount": 10,
+    "unit": "minutes"
+  },
+  "fieldMode": "natural",
+  "numMode": "digits",
+  "thresholdForm": "no-fewer",
+  "windowForm": "spaced"
+}

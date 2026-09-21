@@ -1,0 +1,55 @@
+{
+  "reportId": "SFC-0155",
+  "reportFile": "data/corpus/reports/SFC-0155.md",
+  "familyId": "F-B4-018",
+  "style": "soc-ticket",
+  "tier": "template",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "required_field",
+      "text": "the account name",
+      "start": 506,
+      "end": 522,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "the login result",
+      "start": 524,
+      "end": 540,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "the authentication method",
+      "start": 542,
+      "end": 567,
+      "field": "auth_method"
+    },
+    {
+      "label": "required_field",
+      "text": "the expected authentication method from the policy export",
+      "start": 572,
+      "end": 629,
+      "field": "policy.expected_auth_method"
+    }
+  ],
+  "behaviourId": "service-account-interactive-auth",
+  "requiredFields": [
+    "account_id",
+    "auth_method",
+    "event_type"
+  ],
+  "policyFields": [
+    "policy.expected_auth_method"
+  ],
+  "excludedFields": [],
+  "threshold": null,
+  "timeWindow": null,
+  "fieldMode": "natural",
+  "numMode": "words",
+  "thresholdForm": "at-least",
+  "windowForm": "spaced"
+}

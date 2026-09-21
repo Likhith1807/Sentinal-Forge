@@ -1,0 +1,60 @@
+{
+  "reportId": "SFC-0178",
+  "reportFile": "data/corpus/reports/SFC-0178.md",
+  "familyId": "F-B5-009",
+  "style": "chat-message",
+  "tier": "llm-rewrite",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "required_field",
+      "text": "the account name",
+      "start": 267,
+      "end": 283,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "whether each attempt succeeded or failed",
+      "start": 289,
+      "end": 329,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "whether a second factor was used",
+      "start": 335,
+      "end": 367,
+      "field": "mfa_used"
+    },
+    {
+      "label": "required_field",
+      "text": "whether policy requires MFA for the account",
+      "start": 376,
+      "end": 419,
+      "field": "policy.mfa_required"
+    }
+  ],
+  "behaviourId": "mfa-bypass-on-required-account",
+  "requiredFields": [
+    "account_id",
+    "event_type",
+    "mfa_used"
+  ],
+  "policyFields": [
+    "policy.mfa_required"
+  ],
+  "excludedFields": [],
+  "threshold": null,
+  "timeWindow": null,
+  "fieldMode": "natural",
+  "numMode": "words",
+  "thresholdForm": "at-least",
+  "windowForm": "spaced",
+  "derivedFrom": "SFC-0177",
+  "llmModel": "openai/gpt-oss-120b",
+  "llmTries": 1,
+  "fieldSpansAreVerbatimPreserved": true,
+  "llmReasoningEffort": "low"
+}

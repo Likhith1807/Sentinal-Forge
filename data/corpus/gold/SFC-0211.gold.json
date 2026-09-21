@@ -1,0 +1,46 @@
+{
+  "reportId": "SFC-0211",
+  "reportFile": "data/corpus/reports/SFC-0211.md",
+  "familyId": "F-U-006",
+  "style": "soc-ticket",
+  "tier": "template",
+  "hasParamSection": false,
+  "supported": false,
+  "spans": [
+    {
+      "label": "unavailable_field",
+      "text": "the message subject",
+      "start": 414,
+      "end": 433,
+      "field": "email_subject"
+    },
+    {
+      "label": "unavailable_field",
+      "text": "the sender's domain",
+      "start": 435,
+      "end": 454,
+      "field": "sender_domain"
+    },
+    {
+      "label": "unavailable_field",
+      "text": "the URL visited",
+      "start": 459,
+      "end": 474,
+      "field": "url_clicked"
+    }
+  ],
+  "behaviourId": null,
+  "requiredFields": [],
+  "policyFields": [],
+  "excludedFields": [],
+  "threshold": null,
+  "timeWindow": null,
+  "unsupportedReason": "requires fields the authentication log schema does not provide",
+  "unavailableFields": [
+    "email_subject",
+    "sender_domain",
+    "url_clicked"
+  ],
+  "looksLike": null,
+  "topic": "phishing-click"
+}

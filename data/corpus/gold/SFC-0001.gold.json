@@ -1,0 +1,73 @@
+{
+  "reportId": "SFC-0001",
+  "reportFile": "data/corpus/reports/SFC-0001.md",
+  "familyId": "F-B1-001",
+  "style": "advisory",
+  "tier": "template",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "threshold",
+      "text": "five",
+      "start": 458,
+      "end": 462,
+      "form": "or-more",
+      "value": 5
+    },
+    {
+      "label": "window_amount",
+      "text": "five",
+      "start": 514,
+      "end": 518,
+      "value": 5
+    },
+    {
+      "label": "window_unit",
+      "text": "minute",
+      "start": 519,
+      "end": 525,
+      "value": "minutes"
+    },
+    {
+      "label": "required_field",
+      "text": "account_id",
+      "start": 616,
+      "end": 626,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "event_type",
+      "start": 630,
+      "end": 640,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "timestamp",
+      "start": 647,
+      "end": 656,
+      "field": "timestamp"
+    }
+  ],
+  "behaviourId": "repeated-failed-login-then-success",
+  "requiredFields": [
+    "account_id",
+    "event_type",
+    "timestamp"
+  ],
+  "policyFields": [],
+  "excludedFields": [],
+  "threshold": {
+    "failureCount": 5
+  },
+  "timeWindow": {
+    "amount": 5,
+    "unit": "minutes"
+  },
+  "fieldMode": "code",
+  "numMode": "words",
+  "thresholdForm": "or-more",
+  "windowForm": "hyphen"
+}

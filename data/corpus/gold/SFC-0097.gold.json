@@ -1,0 +1,81 @@
+{
+  "reportId": "SFC-0097",
+  "reportFile": "data/corpus/reports/SFC-0097.md",
+  "familyId": "F-B3-009",
+  "style": "advisory",
+  "tier": "template",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "threshold",
+      "text": "2",
+      "start": 507,
+      "end": 508,
+      "form": "no-fewer",
+      "value": 2
+    },
+    {
+      "label": "window_amount",
+      "text": "15",
+      "start": 532,
+      "end": 534,
+      "value": 15
+    },
+    {
+      "label": "window_unit",
+      "text": "minutes",
+      "start": 535,
+      "end": 542,
+      "value": "minutes"
+    },
+    {
+      "label": "required_field",
+      "text": "the account being authenticated",
+      "start": 571,
+      "end": 602,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "the login result",
+      "start": 604,
+      "end": 620,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "when each event occurred",
+      "start": 622,
+      "end": 646,
+      "field": "timestamp"
+    },
+    {
+      "label": "required_field",
+      "text": "the machine each attempt came from",
+      "start": 651,
+      "end": 685,
+      "field": "source_host"
+    }
+  ],
+  "behaviourId": "concurrent-sessions-different-hosts",
+  "requiredFields": [
+    "account_id",
+    "event_type",
+    "source_host",
+    "timestamp"
+  ],
+  "policyFields": [],
+  "excludedFields": [],
+  "threshold": {
+    "successCount": 2
+  },
+  "timeWindow": {
+    "amount": 15,
+    "unit": "minutes"
+  },
+  "fieldMode": "natural",
+  "numMode": "digits",
+  "thresholdForm": "no-fewer",
+  "windowForm": "spaced"
+}

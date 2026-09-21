@@ -1,0 +1,64 @@
+{
+  "reportId": "SFC-0127",
+  "reportFile": "data/corpus/reports/SFC-0127.md",
+  "familyId": "F-B4-004",
+  "style": "handoff-chat",
+  "tier": "template",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "required_field",
+      "text": "the account identifier",
+      "start": 425,
+      "end": 447,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "the success/failure status of each event",
+      "start": 449,
+      "end": 489,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "the authentication method",
+      "start": 491,
+      "end": 516,
+      "field": "auth_method"
+    },
+    {
+      "label": "required_field",
+      "text": "the method the account is provisioned for in the identity policy",
+      "start": 521,
+      "end": 585,
+      "field": "policy.expected_auth_method"
+    },
+    {
+      "label": "excluded_field",
+      "text": "MFA usage on the sign-in",
+      "start": 600,
+      "end": 624,
+      "field": "mfa_used"
+    }
+  ],
+  "behaviourId": "service-account-interactive-auth",
+  "requiredFields": [
+    "account_id",
+    "auth_method",
+    "event_type"
+  ],
+  "policyFields": [
+    "policy.expected_auth_method"
+  ],
+  "excludedFields": [
+    "mfa_used"
+  ],
+  "threshold": null,
+  "timeWindow": null,
+  "fieldMode": "natural",
+  "numMode": "digits",
+  "thresholdForm": "at-least",
+  "windowForm": "spaced"
+}

@@ -1,0 +1,95 @@
+{
+  "reportId": "SFC-0060",
+  "reportFile": "data/corpus/reports/SFC-0060.md",
+  "familyId": "F-B2-010",
+  "style": "runbook",
+  "tier": "llm-rewrite",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "threshold",
+      "text": "four",
+      "start": 579,
+      "end": 583,
+      "form": "or-more",
+      "value": 4
+    },
+    {
+      "label": "window_amount",
+      "text": "fifteen",
+      "start": 310,
+      "end": 317,
+      "value": 15
+    },
+    {
+      "label": "window_unit",
+      "text": "minutes",
+      "start": 318,
+      "end": 325,
+      "value": "minutes"
+    },
+    {
+      "label": "required_field",
+      "text": "the account being authenticated",
+      "start": 357,
+      "end": 388,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "whether each attempt succeeded or failed",
+      "start": 390,
+      "end": 430,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "the event time",
+      "start": 432,
+      "end": 446,
+      "field": "timestamp"
+    },
+    {
+      "label": "required_field",
+      "text": "the host the request originated from",
+      "start": 219,
+      "end": 255,
+      "field": "source_host"
+    },
+    {
+      "label": "excluded_field",
+      "text": "how the account authenticated",
+      "start": 633,
+      "end": 662,
+      "field": "auth_method"
+    }
+  ],
+  "behaviourId": "password-spray-across-accounts",
+  "requiredFields": [
+    "account_id",
+    "event_type",
+    "source_host",
+    "timestamp"
+  ],
+  "policyFields": [],
+  "excludedFields": [
+    "auth_method"
+  ],
+  "threshold": {
+    "distinctAccountCount": 4
+  },
+  "timeWindow": {
+    "amount": 15,
+    "unit": "minutes"
+  },
+  "fieldMode": "natural",
+  "numMode": "words",
+  "thresholdForm": "or-more",
+  "windowForm": "spaced",
+  "derivedFrom": "SFC-0059",
+  "llmModel": "openai/gpt-oss-120b",
+  "llmTries": 1,
+  "fieldSpansAreVerbatimPreserved": true,
+  "llmReasoningEffort": "default"
+}

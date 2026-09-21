@@ -1,0 +1,43 @@
+{
+  "reportId": "SFC-0216",
+  "reportFile": "data/corpus/reports/SFC-0216.md",
+  "familyId": "F-U-008",
+  "style": "incident-review",
+  "tier": "llm-rewrite",
+  "hasParamSection": false,
+  "supported": false,
+  "spans": [
+    {
+      "label": "unavailable_field",
+      "text": "the destination port",
+      "start": 401,
+      "end": 421,
+      "field": "destination_port"
+    },
+    {
+      "label": "unavailable_field",
+      "text": "the destination host",
+      "start": 581,
+      "end": 601,
+      "field": "dst_ip"
+    }
+  ],
+  "behaviourId": null,
+  "requiredFields": [],
+  "policyFields": [],
+  "excludedFields": [],
+  "threshold": null,
+  "timeWindow": null,
+  "unsupportedReason": "requires fields the authentication log schema does not provide",
+  "unavailableFields": [
+    "destination_port",
+    "dst_ip"
+  ],
+  "looksLike": null,
+  "topic": "port-scan",
+  "derivedFrom": "SFC-0215",
+  "llmModel": "openai/gpt-oss-120b",
+  "llmTries": 1,
+  "fieldSpansAreVerbatimPreserved": true,
+  "llmReasoningEffort": "low"
+}

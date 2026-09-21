@@ -1,0 +1,60 @@
+{
+  "reportId": "SFC-0144",
+  "reportFile": "data/corpus/reports/SFC-0144.md",
+  "familyId": "F-B4-012",
+  "style": "intel-brief",
+  "tier": "llm-rewrite",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "required_field",
+      "text": "the username",
+      "start": 467,
+      "end": 479,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "the login result",
+      "start": 483,
+      "end": 499,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "how the account authenticated",
+      "start": 503,
+      "end": 532,
+      "field": "auth_method"
+    },
+    {
+      "label": "required_field",
+      "text": "the method the account is provisioned for in the identity policy",
+      "start": 539,
+      "end": 603,
+      "field": "policy.expected_auth_method"
+    }
+  ],
+  "behaviourId": "service-account-interactive-auth",
+  "requiredFields": [
+    "account_id",
+    "auth_method",
+    "event_type"
+  ],
+  "policyFields": [
+    "policy.expected_auth_method"
+  ],
+  "excludedFields": [],
+  "threshold": null,
+  "timeWindow": null,
+  "fieldMode": "natural",
+  "numMode": "digits",
+  "thresholdForm": "at-least",
+  "windowForm": "spaced",
+  "derivedFrom": "SFC-0143",
+  "llmModel": "openai/gpt-oss-120b",
+  "llmTries": 1,
+  "fieldSpansAreVerbatimPreserved": true,
+  "llmReasoningEffort": "default"
+}

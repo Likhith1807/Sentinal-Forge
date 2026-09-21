@@ -1,0 +1,81 @@
+{
+  "reportId": "SFC-0051",
+  "reportFile": "data/corpus/reports/SFC-0051.md",
+  "familyId": "F-B2-006",
+  "style": "soc-ticket",
+  "tier": "template",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "threshold",
+      "text": "four",
+      "start": 355,
+      "end": 359,
+      "form": "at-least",
+      "value": 4
+    },
+    {
+      "label": "window_amount",
+      "text": "one",
+      "start": 385,
+      "end": 388,
+      "value": 1
+    },
+    {
+      "label": "window_unit",
+      "text": "hour",
+      "start": 389,
+      "end": 393,
+      "value": "hours"
+    },
+    {
+      "label": "required_field",
+      "text": "the account name",
+      "start": 494,
+      "end": 510,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "the sign-in outcome",
+      "start": 512,
+      "end": 531,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "event timestamps",
+      "start": 533,
+      "end": 549,
+      "field": "timestamp"
+    },
+    {
+      "label": "required_field",
+      "text": "the originating host",
+      "start": 554,
+      "end": 574,
+      "field": "source_host"
+    }
+  ],
+  "behaviourId": "password-spray-across-accounts",
+  "requiredFields": [
+    "account_id",
+    "event_type",
+    "source_host",
+    "timestamp"
+  ],
+  "policyFields": [],
+  "excludedFields": [],
+  "threshold": {
+    "distinctAccountCount": 4
+  },
+  "timeWindow": {
+    "amount": 1,
+    "unit": "hours"
+  },
+  "fieldMode": "natural",
+  "numMode": "words",
+  "thresholdForm": "at-least",
+  "windowForm": "spaced"
+}

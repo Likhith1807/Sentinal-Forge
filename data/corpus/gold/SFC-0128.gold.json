@@ -1,0 +1,69 @@
+{
+  "reportId": "SFC-0128",
+  "reportFile": "data/corpus/reports/SFC-0128.md",
+  "familyId": "F-B4-004",
+  "style": "chat-message",
+  "tier": "llm-rewrite",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "required_field",
+      "text": "the account identifier",
+      "start": 348,
+      "end": 370,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "the success/failure status of each event",
+      "start": 372,
+      "end": 412,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "the authentication method",
+      "start": 219,
+      "end": 244,
+      "field": "auth_method"
+    },
+    {
+      "label": "required_field",
+      "text": "the method the account is provisioned for in the identity policy",
+      "start": 258,
+      "end": 322,
+      "field": "policy.expected_auth_method"
+    },
+    {
+      "label": "excluded_field",
+      "text": "MFA usage on the sign-in",
+      "start": 517,
+      "end": 541,
+      "field": "mfa_used"
+    }
+  ],
+  "behaviourId": "service-account-interactive-auth",
+  "requiredFields": [
+    "account_id",
+    "auth_method",
+    "event_type"
+  ],
+  "policyFields": [
+    "policy.expected_auth_method"
+  ],
+  "excludedFields": [
+    "mfa_used"
+  ],
+  "threshold": null,
+  "timeWindow": null,
+  "fieldMode": "natural",
+  "numMode": "digits",
+  "thresholdForm": "at-least",
+  "windowForm": "spaced",
+  "derivedFrom": "SFC-0127",
+  "llmModel": "openai/gpt-oss-120b",
+  "llmTries": 1,
+  "fieldSpansAreVerbatimPreserved": true,
+  "llmReasoningEffort": "default"
+}

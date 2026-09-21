@@ -1,0 +1,38 @@
+{
+  "reportId": "SFC-0201",
+  "reportFile": "data/corpus/reports/SFC-0201.md",
+  "familyId": "F-U-001",
+  "style": "advisory",
+  "tier": "template",
+  "hasParamSection": false,
+  "supported": false,
+  "spans": [
+    {
+      "label": "unavailable_field",
+      "text": "dns_query",
+      "start": 588,
+      "end": 597,
+      "field": "dns_query"
+    },
+    {
+      "label": "unavailable_field",
+      "text": "query_length",
+      "start": 604,
+      "end": 616,
+      "field": "query_length"
+    }
+  ],
+  "behaviourId": null,
+  "requiredFields": [],
+  "policyFields": [],
+  "excludedFields": [],
+  "threshold": null,
+  "timeWindow": null,
+  "unsupportedReason": "requires fields the authentication log schema does not provide",
+  "unavailableFields": [
+    "dns_query",
+    "query_length"
+  ],
+  "looksLike": null,
+  "topic": "dns-tunnelling"
+}

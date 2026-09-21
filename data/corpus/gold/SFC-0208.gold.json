@@ -1,0 +1,35 @@
+{
+  "reportId": "SFC-0208",
+  "reportFile": "data/corpus/reports/SFC-0208.md",
+  "familyId": "F-U-004",
+  "style": "chat-message",
+  "tier": "llm-rewrite",
+  "hasParamSection": false,
+  "supported": false,
+  "spans": [
+    {
+      "label": "unavailable_field",
+      "text": "the country each sign-in geolocates to",
+      "start": 361,
+      "end": 399,
+      "field": "geo_country"
+    }
+  ],
+  "behaviourId": null,
+  "requiredFields": [],
+  "policyFields": [],
+  "excludedFields": [],
+  "threshold": null,
+  "timeWindow": null,
+  "unsupportedReason": "requires fields the authentication log schema does not provide",
+  "unavailableFields": [
+    "geo_country"
+  ],
+  "looksLike": "concurrent-sessions-different-hosts",
+  "topic": "impossible-travel",
+  "derivedFrom": "SFC-0207",
+  "llmModel": "openai/gpt-oss-120b",
+  "llmTries": 1,
+  "fieldSpansAreVerbatimPreserved": true,
+  "llmReasoningEffort": "default"
+}

@@ -1,0 +1,95 @@
+{
+  "reportId": "SFC-0100",
+  "reportFile": "data/corpus/reports/SFC-0100.md",
+  "familyId": "F-B3-010",
+  "style": "runbook",
+  "tier": "llm-rewrite",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "threshold",
+      "text": "2",
+      "start": 170,
+      "end": 171,
+      "form": "plus",
+      "value": 2
+    },
+    {
+      "label": "window_amount",
+      "text": "ten",
+      "start": 197,
+      "end": 200,
+      "value": 10
+    },
+    {
+      "label": "window_unit",
+      "text": "minutes",
+      "start": 201,
+      "end": 208,
+      "value": "minutes"
+    },
+    {
+      "label": "required_field",
+      "text": "the account identifier",
+      "start": 281,
+      "end": 303,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "the sign-in outcome",
+      "start": 324,
+      "end": 343,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "the event time",
+      "start": 347,
+      "end": 361,
+      "field": "timestamp"
+    },
+    {
+      "label": "required_field",
+      "text": "the originating host",
+      "start": 369,
+      "end": 389,
+      "field": "source_host"
+    },
+    {
+      "label": "excluded_field",
+      "text": "the authentication method",
+      "start": 741,
+      "end": 766,
+      "field": "auth_method"
+    }
+  ],
+  "behaviourId": "concurrent-sessions-different-hosts",
+  "requiredFields": [
+    "account_id",
+    "event_type",
+    "source_host",
+    "timestamp"
+  ],
+  "policyFields": [],
+  "excludedFields": [
+    "auth_method"
+  ],
+  "threshold": {
+    "successCount": 2
+  },
+  "timeWindow": {
+    "amount": 10,
+    "unit": "minutes"
+  },
+  "fieldMode": "natural",
+  "numMode": "words",
+  "thresholdForm": "plus",
+  "windowForm": "spaced",
+  "derivedFrom": "SFC-0099",
+  "llmModel": "openai/gpt-oss-120b",
+  "llmTries": 1,
+  "fieldSpansAreVerbatimPreserved": true,
+  "llmReasoningEffort": "default"
+}

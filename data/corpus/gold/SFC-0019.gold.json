@@ -1,0 +1,82 @@
+{
+  "reportId": "SFC-0019",
+  "reportFile": "data/corpus/reports/SFC-0019.md",
+  "familyId": "F-B1-010",
+  "style": "soc-ticket",
+  "tier": "template",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "threshold",
+      "text": "4",
+      "start": 352,
+      "end": 353,
+      "form": "no-fewer",
+      "value": 4
+    },
+    {
+      "label": "window_amount",
+      "text": "30",
+      "start": 367,
+      "end": 369,
+      "value": 30
+    },
+    {
+      "label": "window_unit",
+      "text": "seconds",
+      "start": 370,
+      "end": 377,
+      "value": "seconds"
+    },
+    {
+      "label": "required_field",
+      "text": "account_id",
+      "start": 439,
+      "end": 449,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "event_type",
+      "start": 453,
+      "end": 463,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "timestamp",
+      "start": 470,
+      "end": 479,
+      "field": "timestamp"
+    },
+    {
+      "label": "excluded_field",
+      "text": "auth_method",
+      "start": 533,
+      "end": 544,
+      "field": "auth_method"
+    }
+  ],
+  "behaviourId": "repeated-failed-login-then-success",
+  "requiredFields": [
+    "account_id",
+    "event_type",
+    "timestamp"
+  ],
+  "policyFields": [],
+  "excludedFields": [
+    "auth_method"
+  ],
+  "threshold": {
+    "failureCount": 4
+  },
+  "timeWindow": {
+    "amount": 30,
+    "unit": "seconds"
+  },
+  "fieldMode": "code",
+  "numMode": "digits",
+  "thresholdForm": "no-fewer",
+  "windowForm": "spaced"
+}

@@ -1,0 +1,64 @@
+{
+  "reportId": "SFC-0135",
+  "reportFile": "data/corpus/reports/SFC-0135.md",
+  "familyId": "F-B4-008",
+  "style": "handoff-chat",
+  "tier": "template",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "required_field",
+      "text": "account_id",
+      "start": 322,
+      "end": 332,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "event_type",
+      "start": 336,
+      "end": 346,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "auth_method",
+      "start": 350,
+      "end": 361,
+      "field": "auth_method"
+    },
+    {
+      "label": "required_field",
+      "text": "expected_auth_method",
+      "start": 368,
+      "end": 388,
+      "field": "policy.expected_auth_method"
+    },
+    {
+      "label": "excluded_field",
+      "text": "mfa_used",
+      "start": 405,
+      "end": 413,
+      "field": "mfa_used"
+    }
+  ],
+  "behaviourId": "service-account-interactive-auth",
+  "requiredFields": [
+    "account_id",
+    "auth_method",
+    "event_type"
+  ],
+  "policyFields": [
+    "policy.expected_auth_method"
+  ],
+  "excludedFields": [
+    "mfa_used"
+  ],
+  "threshold": null,
+  "timeWindow": null,
+  "fieldMode": "code",
+  "numMode": "words",
+  "thresholdForm": "at-least",
+  "windowForm": "spaced"
+}

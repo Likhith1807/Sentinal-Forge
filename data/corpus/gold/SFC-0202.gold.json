@@ -1,0 +1,43 @@
+{
+  "reportId": "SFC-0202",
+  "reportFile": "data/corpus/reports/SFC-0202.md",
+  "familyId": "F-U-001",
+  "style": "email",
+  "tier": "llm-rewrite",
+  "hasParamSection": false,
+  "supported": false,
+  "spans": [
+    {
+      "label": "unavailable_field",
+      "text": "dns_query",
+      "start": 744,
+      "end": 753,
+      "field": "dns_query"
+    },
+    {
+      "label": "unavailable_field",
+      "text": "query_length",
+      "start": 760,
+      "end": 772,
+      "field": "query_length"
+    }
+  ],
+  "behaviourId": null,
+  "requiredFields": [],
+  "policyFields": [],
+  "excludedFields": [],
+  "threshold": null,
+  "timeWindow": null,
+  "unsupportedReason": "requires fields the authentication log schema does not provide",
+  "unavailableFields": [
+    "dns_query",
+    "query_length"
+  ],
+  "looksLike": null,
+  "topic": "dns-tunnelling",
+  "derivedFrom": "SFC-0201",
+  "llmModel": "openai/gpt-oss-120b",
+  "llmTries": 1,
+  "fieldSpansAreVerbatimPreserved": true,
+  "llmReasoningEffort": "low"
+}

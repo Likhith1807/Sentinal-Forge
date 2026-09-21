@@ -1,0 +1,38 @@
+{
+  "reportId": "SFC-0219",
+  "reportFile": "data/corpus/reports/SFC-0219.md",
+  "familyId": "F-U-010",
+  "style": "soc-ticket",
+  "tier": "template",
+  "hasParamSection": false,
+  "supported": false,
+  "spans": [
+    {
+      "label": "unavailable_field",
+      "text": "the device identifier",
+      "start": 369,
+      "end": 390,
+      "field": "device_id"
+    },
+    {
+      "label": "unavailable_field",
+      "text": "the device class",
+      "start": 395,
+      "end": 411,
+      "field": "device_class"
+    }
+  ],
+  "behaviourId": null,
+  "requiredFields": [],
+  "policyFields": [],
+  "excludedFields": [],
+  "threshold": null,
+  "timeWindow": null,
+  "unsupportedReason": "requires fields the authentication log schema does not provide",
+  "unavailableFields": [
+    "device_id",
+    "device_class"
+  ],
+  "looksLike": null,
+  "topic": "usb-mass-storage"
+}

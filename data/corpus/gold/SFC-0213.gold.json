@@ -1,0 +1,38 @@
+{
+  "reportId": "SFC-0213",
+  "reportFile": "data/corpus/reports/SFC-0213.md",
+  "familyId": "F-U-007",
+  "style": "postmortem",
+  "tier": "template",
+  "hasParamSection": false,
+  "supported": false,
+  "spans": [
+    {
+      "label": "unavailable_field",
+      "text": "the group being modified",
+      "start": 442,
+      "end": 466,
+      "field": "group_name"
+    },
+    {
+      "label": "unavailable_field",
+      "text": "the account that was added",
+      "start": 471,
+      "end": 497,
+      "field": "target_user"
+    }
+  ],
+  "behaviourId": null,
+  "requiredFields": [],
+  "policyFields": [],
+  "excludedFields": [],
+  "threshold": null,
+  "timeWindow": null,
+  "unsupportedReason": "requires fields the authentication log schema does not provide",
+  "unavailableFields": [
+    "group_name",
+    "target_user"
+  ],
+  "looksLike": null,
+  "topic": "privilege-escalation"
+}

@@ -1,0 +1,64 @@
+{
+  "reportId": "SFC-0121",
+  "reportFile": "data/corpus/reports/SFC-0121.md",
+  "familyId": "F-B4-001",
+  "style": "advisory",
+  "tier": "template",
+  "hasParamSection": true,
+  "supported": true,
+  "spans": [
+    {
+      "label": "required_field",
+      "text": "the account identifier",
+      "start": 594,
+      "end": 616,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "the login result",
+      "start": 618,
+      "end": 634,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "the authentication method",
+      "start": 636,
+      "end": 661,
+      "field": "auth_method"
+    },
+    {
+      "label": "required_field",
+      "text": "the expected authentication method from the policy export",
+      "start": 666,
+      "end": 723,
+      "field": "policy.expected_auth_method"
+    },
+    {
+      "label": "excluded_field",
+      "text": "whether multi-factor authentication was presented",
+      "start": 740,
+      "end": 789,
+      "field": "mfa_used"
+    }
+  ],
+  "behaviourId": "service-account-interactive-auth",
+  "requiredFields": [
+    "account_id",
+    "auth_method",
+    "event_type"
+  ],
+  "policyFields": [
+    "policy.expected_auth_method"
+  ],
+  "excludedFields": [
+    "mfa_used"
+  ],
+  "threshold": null,
+  "timeWindow": null,
+  "fieldMode": "natural",
+  "numMode": "digits",
+  "thresholdForm": "at-least",
+  "windowForm": "spaced"
+}

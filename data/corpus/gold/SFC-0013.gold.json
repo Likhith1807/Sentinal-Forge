@@ -1,0 +1,73 @@
+{
+  "reportId": "SFC-0013",
+  "reportFile": "data/corpus/reports/SFC-0013.md",
+  "familyId": "F-B1-007",
+  "style": "postmortem",
+  "tier": "template",
+  "hasParamSection": false,
+  "supported": true,
+  "spans": [
+    {
+      "label": "threshold",
+      "text": "6",
+      "start": 355,
+      "end": 356,
+      "form": "no-fewer",
+      "value": 6
+    },
+    {
+      "label": "window_amount",
+      "text": "3",
+      "start": 400,
+      "end": 401,
+      "value": 3
+    },
+    {
+      "label": "window_unit",
+      "text": "minute",
+      "start": 402,
+      "end": 408,
+      "value": "minutes"
+    },
+    {
+      "label": "required_field",
+      "text": "the account name",
+      "start": 504,
+      "end": 520,
+      "field": "account_id"
+    },
+    {
+      "label": "required_field",
+      "text": "the sign-in outcome",
+      "start": 522,
+      "end": 541,
+      "field": "event_type"
+    },
+    {
+      "label": "required_field",
+      "text": "when each event occurred",
+      "start": 546,
+      "end": 570,
+      "field": "timestamp"
+    }
+  ],
+  "behaviourId": "repeated-failed-login-then-success",
+  "requiredFields": [
+    "account_id",
+    "event_type",
+    "timestamp"
+  ],
+  "policyFields": [],
+  "excludedFields": [],
+  "threshold": {
+    "failureCount": 6
+  },
+  "timeWindow": {
+    "amount": 3,
+    "unit": "minutes"
+  },
+  "fieldMode": "natural",
+  "numMode": "digits",
+  "thresholdForm": "no-fewer",
+  "windowForm": "hyphen"
+}
