@@ -1,0 +1,6 @@
+# Normalise line endings so Windows and Linux contributors get clean diffs
+* text=auto eol=lf
+*.pptx binary
+*.parquet binary
+*.png binary
+*.jpg binary
