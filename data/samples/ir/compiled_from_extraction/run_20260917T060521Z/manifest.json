@@ -1,0 +1,27 @@
+{
+  "runId": "run_20260917T060521Z",
+  "generatedAt": "2026-09-17T06:05:21.155452+00:00",
+  "reportsRequested": [
+    "login-brute-force-003",
+    "password-spray-003",
+    "concurrent-sessions-003"
+  ],
+  "reports": {
+    "login-brute-force-003": {
+      "behaviourId": "repeated-failed-login-then-success",
+      "stage3Status": "supported",
+      "compiledSpecPath": "data\\samples\\ir\\compiled_from_extraction\\run_20260917T060521Z\\login-brute-force-003.compiled.json"
+    },
+    "password-spray-003": {
+      "behaviourId": "password-spray-across-accounts",
+      "stage3Status": "supported",
+      "compiledSpecPath": "data\\samples\\ir\\compiled_from_extraction\\run_20260917T060521Z\\password-spray-003.compiled.json"
+    },
+    "concurrent-sessions-003": {
+      "behaviourId": "concurrent-sessions-different-hosts",
+      "stage3Status": "supported",
+      "compiledSpecPath": "data\\samples\\ir\\compiled_from_extraction\\run_20260917T060521Z\\concurrent-sessions-003.compiled.json"
+    }
+  },
+  "status": "SUCCESS"
+}

@@ -1,0 +1,14 @@
+{"runId":"run_20260917T060521Z","results":[
+  {"behaviourId":"concurrent-sessions-different-hosts","scenarioId":"CS-POS","expected":"true","actual":"true","pass":true},
+  {"behaviourId":"concurrent-sessions-different-hosts","scenarioId":"CS-NEG-SAMEHOST","expected":"false","actual":"false","pass":true},
+  {"behaviourId":"concurrent-sessions-different-hosts","scenarioId":"CS-NEG-WINDOW","expected":"false","actual":"false","pass":true},
+  {"behaviourId":"repeated-failed-login-then-success","scenarioId":"A","expected":"true","actual":"true","pass":true},
+  {"behaviourId":"repeated-failed-login-then-success","scenarioId":"B","expected":"false","actual":"false","pass":true},
+  {"behaviourId":"repeated-failed-login-then-success","scenarioId":"C","expected":"false","actual":"false","pass":true},
+  {"behaviourId":"repeated-failed-login-then-success","scenarioId":"D","expected":"false","actual":"false","pass":true},
+  {"behaviourId":"repeated-failed-login-then-success","scenarioId":"E","expected":"false","actual":"false","pass":true},
+  {"behaviourId":"repeated-failed-login-then-success","scenarioId":"F","expected":"true","actual":"true","pass":true},
+  {"behaviourId":"password-spray-across-accounts","scenarioId":"SPRAY-POS","expected":"true","actual":"true","pass":true},
+  {"behaviourId":"password-spray-across-accounts","scenarioId":"SPRAY-NEG","expected":"false","actual":"false","pass":true}
+]
+}

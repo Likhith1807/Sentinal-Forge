@@ -1,0 +1,127 @@
+[
+  {
+    "report": "login-brute-force-003",
+    "extractedBehaviourId": "repeated-failed-login-then-success",
+    "stage3Status": "supported",
+    "stage3Notes": [
+      "All requested fields are present and reliably observable."
+    ],
+    "bridged": true,
+    "compiledSpecPath": "data\\samples\\ir\\compiled_from_extraction\\repeated-failed-login-then-success.compiled.json",
+    "compiledSpec": {
+      "behaviourId": "repeated-failed-login-then-success",
+      "recipe": "SequenceThenTrigger",
+      "groupingKey": "account_id",
+      "timeWindowSeconds": 120,
+      "countEventType": "login_failure",
+      "countThreshold": 5,
+      "triggerEventType": "login_success",
+      "distinctField": null,
+      "distinctThreshold": null,
+      "filterEventType": null,
+      "logField": null,
+      "policyField": null,
+      "comparisonOp": null
+    }
+  },
+  {
+    "report": "password-spray-003",
+    "extractedBehaviourId": "password-spray-across-accounts",
+    "stage3Status": "supported",
+    "stage3Notes": [
+      "All requested fields are present and reliably observable."
+    ],
+    "bridged": true,
+    "compiledSpecPath": "data\\samples\\ir\\compiled_from_extraction\\password-spray-across-accounts.compiled.json",
+    "compiledSpec": {
+      "behaviourId": "password-spray-across-accounts",
+      "recipe": "DistinctCountWithinWindow",
+      "groupingKey": "source_host",
+      "timeWindowSeconds": 600,
+      "countEventType": null,
+      "countThreshold": null,
+      "triggerEventType": null,
+      "distinctField": "account_id",
+      "distinctThreshold": 4,
+      "filterEventType": "login_failure",
+      "logField": null,
+      "policyField": null,
+      "comparisonOp": null
+    }
+  },
+  {
+    "report": "concurrent-sessions-003",
+    "extractedBehaviourId": "concurrent-sessions-different-hosts",
+    "stage3Status": "supported",
+    "stage3Notes": [
+      "All requested fields are present and reliably observable."
+    ],
+    "bridged": true,
+    "compiledSpecPath": "data\\samples\\ir\\compiled_from_extraction\\concurrent-sessions-different-hosts.compiled.json",
+    "compiledSpec": {
+      "behaviourId": "concurrent-sessions-different-hosts",
+      "recipe": "DistinctCountWithinWindow",
+      "groupingKey": "account_id",
+      "timeWindowSeconds": 900,
+      "countEventType": null,
+      "countThreshold": null,
+      "triggerEventType": null,
+      "distinctField": "source_host",
+      "distinctThreshold": 2,
+      "filterEventType": "login_success",
+      "logField": null,
+      "policyField": null,
+      "comparisonOp": null
+    }
+  },
+  {
+    "report": "service-account-auth-003",
+    "extractedBehaviourId": "service-account-interactive-auth",
+    "stage3Status": "supported",
+    "stage3Notes": [
+      "All requested fields are present and reliably observable."
+    ],
+    "bridged": true,
+    "compiledSpecPath": "data\\samples\\ir\\compiled_from_extraction\\service-account-interactive-auth.compiled.json",
+    "compiledSpec": {
+      "behaviourId": "service-account-interactive-auth",
+      "recipe": "PolicyCompare",
+      "groupingKey": null,
+      "timeWindowSeconds": null,
+      "countEventType": null,
+      "countThreshold": null,
+      "triggerEventType": null,
+      "distinctField": null,
+      "distinctThreshold": null,
+      "filterEventType": "login_success",
+      "logField": "auth_method",
+      "policyField": "expected_auth_method",
+      "comparisonOp": "notEqual"
+    }
+  },
+  {
+    "report": "mfa-bypass-003",
+    "extractedBehaviourId": "mfa-bypass-on-required-account",
+    "stage3Status": "supported",
+    "stage3Notes": [
+      "All requested fields are present and reliably observable."
+    ],
+    "bridged": true,
+    "compiledSpecPath": "data\\samples\\ir\\compiled_from_extraction\\mfa-bypass-on-required-account.compiled.json",
+    "compiledSpec": {
+      "behaviourId": "mfa-bypass-on-required-account",
+      "recipe": "PolicyCompare",
+      "groupingKey": null,
+      "timeWindowSeconds": null,
+      "countEventType": null,
+      "countThreshold": null,
+      "triggerEventType": null,
+      "distinctField": null,
+      "distinctThreshold": null,
+      "filterEventType": "login_success",
+      "logField": "mfa_used",
+      "policyField": "mfa_required",
+      "comparisonOp": "falseWhenRequired"
+    }
+  }
+]
