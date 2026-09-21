@@ -72,9 +72,18 @@ object RuleCompiler {
       .orderBy(parseTs(col("timestamp")).cast("long"))
       .rangeBetween(-windowSecs, 0L)
 
+    // Exact distinct count, not approx_count_distinct: this is a security
+    // threshold comparison (matchedCount >= threshold decides whether an
+    // alert fires), and Spark's HyperLogLog-based approximation carries a
+    // real (if usually small) error rate. Spark's window-function
+    // framework doesn't support `count(distinct x)` as a window aggregate
+    // directly (only certain aggregates, approx_count_distinct among
+    // them, are allowed `.over(window)`), so collect_set — which IS a
+    // valid window aggregate — is used to materialize the exact distinct
+    // set per row, and size() turns it into an exact count.
     events
       .filter(col("event_type") === filterType)
-      .withColumn("recent_distinct", approx_count_distinct(col(distinctCol)).over(byGroupTime))
+      .withColumn("recent_distinct", size(collect_set(col(distinctCol)).over(byGroupTime)))
       .filter(col("recent_distinct") >= threshold)
       .groupBy(col(groupCol).as("groupKey"))
       .agg(
