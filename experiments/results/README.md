@@ -1,3 +1,11 @@
+> **See [`docs/spec/independent-review-corrections.md`](../../docs/spec/independent-review-corrections.md)**
+> for a significant correction: an independent review found that every
+> result in this file originally ran against hand-authored compiled
+> specs, not ones produced by actual extraction — i.e. these numbers
+> proved the compiler correct, not the full report-to-detection path. A
+> real bridge now exists and has been run end-to-end for real; see that
+> file for what was found and fixed.
+
 # Phase 5 — Evaluate & Explain
 
 Every number below comes from an actual execution against the real

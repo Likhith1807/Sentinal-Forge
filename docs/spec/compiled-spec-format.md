@@ -1,5 +1,12 @@
 # Compiled Spec Format (v1) — Stage 4's actual input
 
+See [`detection-semantics.md`](detection-semantics.md) for the precise,
+verified edge-case behavior of these recipes (window boundary
+inclusivity, event ordering, repeated-incident alert cardinality,
+missing-value handling, policy lookup failures) — this document covers
+what each recipe computes in the general case; that one covers exactly
+what happens at the boundaries.
+
 The full typed IR in
 [`behaviour-ir-format.md`](behaviour-ir-format.md) is the conceptual
 format Stage 2/3 reason about (entities, provenance, arbitrary predicates).
