@@ -40,3 +40,7 @@ compiler/test/.e2e_test_scratch/
 /Text analytics (1).pptx
 ppt/_build/icons/
 ppt/_build/node_modules/
+
+# Generated datasets and raw external data (large, reproducible / not ours to redistribute)
+data/generated/
+data/external/

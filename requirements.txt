@@ -5,3 +5,4 @@ groq
 pyyaml
 fastapi
 uvicorn
+numpy
