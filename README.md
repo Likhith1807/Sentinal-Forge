@@ -27,7 +27,7 @@ Evidence-grounded threat-report-to-detection compiler for the combined Text Anal
 - `experiments/` — baselines, ablations and measured results
 - `tests/` — cross-component tests
 - `docs/` — design, schema and evaluation documentation
-- `scripts/` — repeatable setup and execution scripts
+- `scripts/` — repeatable setup and execution scripts; `scripts/datagen/` builds the labelled scaled dataset ([`docs/data-sources.md`](docs/data-sources.md))
 
 ## Evaluation plan
 
