@@ -1,0 +1,54 @@
+name: CI
+
+# Runs on every push/PR. Two independent jobs, matching the project's two runtimes: the Python
+# side (corpus, datagen, NLP wiring) and the Scala/Spark compiler side. Neither job touches the
+# Groq API, a GPU, or generated multi-GB datasets — those are real, separately-run evaluations
+# (see docs/phase-c-extraction.md, docs/data-sources.md), not routine CI checks. This workflow
+# only became runnable once this repo had a GitHub remote; see README.md's CI section for how to
+# read the badge if you're looking at this before that history exists.
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch: {}
+
+jobs:
+  python-tests:
+    name: Python tests (pytest)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: pip
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pytest hypothesis
+      - name: Run the offline test suite
+        run: pytest -v
+        # testpaths in pyproject.toml already excludes real-API evaluation scripts
+        # (evaluate_*.py, the differential property test, nlp's adversarial/injection-guard
+        # scripts) — everything pytest collects here is offline and deterministic.
+
+  scala-tests:
+    name: Scala/Spark tests (sbt test)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: sbt/setup-sbt@v1
+      - name: Compile
+        run: sbt compile
+      - name: Run the ScalaTest suite
+        run: sbt test
+        # RuleCompilerSpec.scala: 7 fast, in-memory, deterministic cases (no generated dataset,
+        # no cluster). The large-scale checks (GeneratedDataCheck, ScaleBenchmarkCheck, the
+        # differential property test) are real, separately-run evaluations — see
+        # docs/spec/detection-semantics.md and docs/phase-e-scale.md for their actual results,
+        # not something this workflow re-runs on every push.
