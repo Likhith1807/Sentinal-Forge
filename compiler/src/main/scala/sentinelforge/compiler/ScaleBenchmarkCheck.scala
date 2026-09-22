@@ -19,7 +19,7 @@ import org.apache.spark.sql.functions._
   */
 object ScaleBenchmarkCheck {
 
-  private val behaviours = Seq(
+  private val allBehaviours = Seq(
     "repeated-failed-login-then-success", "password-spray-across-accounts",
     "concurrent-sessions-different-hosts", "service-account-interactive-auth",
     "mfa-bypass-on-required-account",
@@ -36,6 +36,7 @@ object ScaleBenchmarkCheck {
     val opts = args.sliding(2, 2).collect { case Array(k, v) if k.startsWith("--") => k.drop(2) -> v }.toMap
     val datasetDir = opts.getOrElse("dataset", sys.error("--dataset <dir> is required"))
     val runs = opts.getOrElse("runs", "5").toInt
+    val behaviours = opts.get("behaviours").map(_.split(",").toSeq).getOrElse(allBehaviours)
     val repoRoot = new java.io.File(".").getCanonicalPath
     val outPath = opts.getOrElse("out", s"$repoRoot/experiments/results/phaseE_scale_benchmark_${new java.io.File(datasetDir).getName}.json")
 

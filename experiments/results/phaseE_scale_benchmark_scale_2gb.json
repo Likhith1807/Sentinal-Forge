@@ -1,0 +1,80 @@
+{
+  "dataset": "data/generated/scale_2gb",
+  "events": 73377240,
+  "runsPerBehaviour": 3,
+  "sparkVersion": "3.5.3",
+  "maxHeapMB": 4096,
+  "note": "repeated-failed-login-then-success and password-spray-across-accounts ran in an earlier attempt that was killed by the system memory-pressure guard partway through concurrent-sessions-different-hosts; their 3 runs each completed cleanly and are merged in verbatim from that attempt's log, not re-run.",
+  "behaviours": [
+    {
+      "behaviourId": "repeated-failed-login-then-success",
+      "meanSeconds": 48.05666666666667,
+      "p50Seconds": 47.31,
+      "p95Seconds": 49.71,
+      "minSeconds": 47.15,
+      "maxSeconds": 49.71,
+      "throughputEventsPerSec": 1526889.9216203091,
+      "allRunsSeconds": [
+        47.31,
+        49.71,
+        47.15
+      ]
+    },
+    {
+      "behaviourId": "password-spray-across-accounts",
+      "meanSeconds": 13.766666666666666,
+      "p50Seconds": 13.4,
+      "p95Seconds": 14.79,
+      "minSeconds": 13.11,
+      "maxSeconds": 14.79,
+      "throughputEventsPerSec": 5330065.859564165,
+      "allRunsSeconds": [
+        14.79,
+        13.4,
+        13.11
+      ]
+    },
+    {
+      "behaviourId": "concurrent-sessions-different-hosts",
+      "meanSeconds": 64.06943956666666,
+      "p50Seconds": 65.6001866,
+      "p95Seconds": 66.3860859,
+      "minSeconds": 60.2220462,
+      "maxSeconds": 66.3860859,
+      "throughputEventsPerSec": 1145276.7574726203,
+      "allRunsSeconds": [
+        66.3860859,
+        65.6001866,
+        60.2220462
+      ]
+    },
+    {
+      "behaviourId": "service-account-interactive-auth",
+      "meanSeconds": 8.755442100000002,
+      "p50Seconds": 8.4833791,
+      "p95Seconds": 10.0801942,
+      "minSeconds": 7.702753,
+      "maxSeconds": 10.0801942,
+      "throughputEventsPerSec": 8380757.837459742,
+      "allRunsSeconds": [
+        10.0801942,
+        8.4833791,
+        7.702753
+      ]
+    },
+    {
+      "behaviourId": "mfa-bypass-on-required-account",
+      "meanSeconds": 8.6626528,
+      "p50Seconds": 8.5616652,
+      "p95Seconds": 9.6005012,
+      "minSeconds": 7.825792,
+      "maxSeconds": 9.6005012,
+      "throughputEventsPerSec": 8470527.642525394,
+      "allRunsSeconds": [
+        9.6005012,
+        7.825792,
+        8.5616652
+      ]
+    }
+  ]
+}
