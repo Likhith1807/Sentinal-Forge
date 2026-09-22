@@ -1,0 +1,13 @@
+{
+  "dataset": "data/generated/scale_1gb",
+  "overallPass": false,
+  "behaviours": [
+    {"behaviourId":"repeated-failed-login-then-success","labels":2000,"passed":2000,"truncated":false,"seconds":29.8},
+    {"behaviourId":"password-spray-across-accounts","labels":2000,"passed":1994,"truncated":false,"seconds":36.9},
+    {"behaviourId":"concurrent-sessions-different-hosts","labels":2000,"passed":2000,"truncated":false,"seconds":61.3},
+    {"behaviourId":"service-account-interactive-auth","labels":2400,"passed":2400,"truncated":false,"seconds":13.1},
+    {"behaviourId":"mfa-bypass-on-required-account","labels":2500,"passed":2500,"truncated":false,"seconds":11.9}
+  ],
+  "b2ApproxDistinctSample": [4,4,4,4,4,4,8,7,5,8,4,5,4,4,6,4,4,7,4,8],
+  "note": "password-spray-across-accounts is matched on groupKey only -- the hand-written baseline exposes no triggering event id."
+}

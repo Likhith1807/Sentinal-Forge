@@ -1,0 +1,10 @@
+{
+  "totalEvents": 3,
+  "firstHalfEvents": 2,
+  "secondHalfEvents": 1,
+  "microBatchesBeforeStop": 2,
+  "microBatchesAfterRestart": 1,
+  "noDuplicateRowsAfterRecovery": true,
+  "recoveredResultMatchesUninterruptedBatch": true,
+  "pass": true
+}

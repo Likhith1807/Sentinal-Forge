@@ -1,0 +1,14 @@
+{
+  "dataset": "data/generated/scale_1gb",
+  "events": 36684108,
+  "runsPerBehaviour": 3,
+  "sparkVersion": "3.5.3",
+  "maxHeapMB": 4096,
+  "behaviours": [
+    {"behaviourId":"repeated-failed-login-then-success","meanSeconds":23.287643833333334,"p50Seconds":22.6296122,"p95Seconds":26.1501584,"minSeconds":21.0831609,"maxSeconds":26.1501584,"throughputEventsPerSec":1575260.6086963299,"allRunsSeconds":[26.1501584,22.6296122,21.0831609]},
+    {"behaviourId":"password-spray-across-accounts","meanSeconds":7.545860133333332,"p50Seconds":7.1764971,"p95Seconds":8.334171,"minSeconds":7.1269123,"maxSeconds":8.334171,"throughputEventsPerSec":4861487.935344893,"allRunsSeconds":[8.334171,7.1269123,7.1764971]},
+    {"behaviourId":"concurrent-sessions-different-hosts","meanSeconds":26.487532633333334,"p50Seconds":26.5138505,"p95Seconds":26.734211,"minSeconds":26.2145364,"maxSeconds":26.734211,"throughputEventsPerSec":1384957.5386208207,"allRunsSeconds":[26.2145364,26.734211,26.5138505]},
+    {"behaviourId":"service-account-interactive-auth","meanSeconds":4.9753519666666675,"p50Seconds":4.4345204,"p95Seconds":6.9086008,"minSeconds":3.5829347,"maxSeconds":6.9086008,"throughputEventsPerSec":7373168.420198666,"allRunsSeconds":[6.9086008,4.4345204,3.5829347]},
+    {"behaviourId":"mfa-bypass-on-required-account","meanSeconds":3.2648988666666665,"p50Seconds":3.1387787,"p95Seconds":3.7521209,"minSeconds":2.903797,"maxSeconds":3.7521209,"throughputEventsPerSec":1.1235909441033632E7,"allRunsSeconds":[2.903797,3.1387787,3.7521209]}
+  ]
+}
