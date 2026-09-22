@@ -17,9 +17,11 @@ private case class DetectionSemanticsEvent(
   account_id: String,
   event_type: String,
   source_host: String,
+  auth_method: String = null,
 )
 
 private case class DetectionSemanticsPolicyRow(account_id: String, mfa_required: java.lang.Boolean)
+private case class DetectionSemanticsAuthPolicyRow(account_id: String, expected_auth_method: String)
 
 object DetectionSemanticsCheck {
   private val Event = DetectionSemanticsEvent
@@ -71,6 +73,22 @@ object DetectionSemanticsCheck {
     logField = Some("mfa_used"),
     policyField = Some("mfa_required"),
     comparisonOp = Some("falseWhenRequired"),
+  )
+
+  private val serviceAccountSpec = CompiledSpec(
+    behaviourId = "service-account-interactive-auth",
+    recipe = "PolicyCompare",
+    groupingKey = None,
+    timeWindowSeconds = None,
+    countEventType = None,
+    countThreshold = None,
+    triggerEventType = None,
+    distinctField = None,
+    distinctThreshold = None,
+    filterEventType = Some("login_success"),
+    logField = Some("auth_method"),
+    policyField = Some("expected_auth_method"),
+    comparisonOp = Some("notEqual"),
   )
 
   def main(args: Array[String]): Unit = {
@@ -152,11 +170,14 @@ object DetectionSemanticsCheck {
     ).toDF()
     val repeatedSprayResult = RuleCompiler.compile(spraySpec, repeatedSpray)
     val repeatedSprayAlerts = repeatedSprayResult.count()
-    val row = repeatedSprayResult.select("windowStart", "detectedAt").first()
+    val sprayRows = repeatedSprayResult.orderBy("detectedAt").select("windowStart", "detectedAt").collect()
+      .map(r => s"(windowStart=${r.getString(0)}, detectedAt=${r.getString(1)})").mkString(", ")
     record("E: 2 fully separate qualifying incidents, same host, 1 day apart (DistinctCountWithinWindow)",
-      s"alertRows=$repeatedSprayAlerts windowStart=${row.getString(0)} detectedAt=${row.getString(1)} " +
-        s"(groupBy collapses ALL qualifying rows for a group into exactly 1 output row per groupKey EVER, " +
-        s"spanning min..max timestamp across the WHOLE dataset — unlike SequenceThenTrigger's per-trigger-event alerting)")
+      s"alertRows=$repeatedSprayAlerts [$sprayRows] " +
+        s"(FIXED, Phase D: one alert per incident — a rising edge in the rolling distinct count, " +
+        s"not one collapsed row per groupKey ever — so 2 fully separate incidents now correctly " +
+        s"produce 2 alert rows, each with its own detectedAt and a windowStart exactly windowSecs " +
+        s"before it, the same per-trigger-event granularity SequenceThenTrigger already had)")
 
     // --- F: malformed/missing timestamp ---
     val malformedTs = Seq(
@@ -180,10 +201,10 @@ object DetectionSemanticsCheck {
     val nullLogFieldResult = RuleCompiler.compile(mfaSpec, nullLogField, Some(policy))
       .select("status").first().getString(0)
     record("G: mfa_required=true in policy, but mfa_used is NULL on the event itself (not missing, null)",
-      s"status=$nullLogFieldResult (policy lookup succeeded — only a per-event field is null; " +
-        s"'falseWhenRequired' checks logField===false, which is false for NULL, so this does " +
-        s"NOT count as insufficient_context and does NOT alert — a null observation is treated " +
-        s"the same as 'MFA was used', silently)")
+      s"status=$nullLogFieldResult (FIXED, Phase D: policy lookup succeeded, but the logField itself " +
+        s"is null on this event — checked explicitly now, for both comparisonOps, before the " +
+        s"three-valued-logic comparison ever runs, so an unobserved value correctly degrades to " +
+        s"insufficient_context instead of being silently read as compliant)")
 
     // --- H: repeated incidents, PolicyCompare ---
     val repeatedPolicy = Seq(
@@ -194,6 +215,19 @@ object DetectionSemanticsCheck {
       .filter(col("status") === "alert").count()
     record("H: 2 separate qualifying login_success events, same account, no mfa (PolicyCompare)",
       s"alertRows=$repeatedPolicyAlerts (expected 2 — PolicyCompare alerts once per qualifying EVENT, no dedup at all)")
+
+    // --- I: PolicyCompare, notEqual comparisonOp, null logField (same gap as case G, other op) ---
+    val authPolicy = Seq(DetectionSemanticsAuthPolicyRow("acct-svc", "password")).toDF()
+    val nullAuthMethod = Seq(
+      Event("e1", "2026-01-01T00:00:00.000Z", "acct-svc", "login_success", "h", auth_method = null),
+    ).toDF()
+    val nullAuthMethodResult = RuleCompiler.compile(serviceAccountSpec, nullAuthMethod, Some(authPolicy))
+      .select("status").first().getString(0)
+    record("I: expected_auth_method=password in policy, but auth_method is NULL on the event (notEqual op)",
+      s"status=$nullAuthMethodResult (FIXED, Phase D: the same three-valued-logic gap as case G existed " +
+        s"in 'notEqual' too — `col(logField) =!= col(policyField)` is also NULL when logField is NULL, " +
+        s"previously falling through to no_alert here as well; both comparisonOps now check logField.isNull " +
+        s"explicitly before comparing)")
 
     val repoRoot = new java.io.File(".").getCanonicalPath
     val outPath = s"$repoRoot/experiments/results/detection_semantics_check.json"

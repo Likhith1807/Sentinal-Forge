@@ -17,12 +17,13 @@ import org.apache.spark.sql.functions._
   *   - every non-`no_alert` output must be expected, which is what shows the
   *     benign background (tens of millions of events) raised nothing.
   *
-  * Alert keys: B1/B4/B5 are matched on `triggeringEventId` (+ status).
-  * B2/B3 are matched on `groupKey`, because `DistinctCountWithinWindow`
-  * emits one row per group without a triggering event (see
-  * docs/spec/detection-semantics.md); every generated incident uses its own
-  * groupKey, so that recipe's known one-alert-per-group collapse cannot
-  * affect the result.
+  * Alert keys: all 5 behaviours are matched on `triggeringEventId` (+ status).
+  * Before the Phase D fix, `DistinctCountWithinWindow` (B2/B3) collapsed every
+  * qualifying row for a group into one row with no triggering event, so this
+  * check used to fall back to matching B2/B3 on `groupKey` alone
+  * (docs/spec/detection-semantics.md). Now that the recipe alerts once per
+  * incident and exposes its own `triggeringEventId`, B2/B3 are held to the
+  * same exact-event standard as the other 3 behaviours.
   *
   * Usage: sbt -Dsf.heap=10g "runMain sentinelforge.compiler.GeneratedDataCheck \
   *          --dataset data/generated/scale_1gb [--out <json>] [--spark-tmp <dir>]"
@@ -40,12 +41,8 @@ object GeneratedDataCheck {
   final case class Label(incidentId: String, behaviourId: String, kind: String, expectedStatus: String,
                          groupKeys: Vector[String], trigger: Option[String], eventIds: Vector[String])
 
-  private def keyedByEvent(behaviourId: String): Boolean = behaviourId != B2 && behaviourId != B3
-
   private def expectedKey(l: Label): Option[String] =
-    if (l.expectedStatus == "no_alert") None
-    else if (keyedByEvent(l.behaviourId)) l.trigger
-    else l.groupKeys.headOption
+    if (l.expectedStatus == "no_alert") None else l.trigger
 
   private def js(s: String): String = "\"" + s.replace("\\", "\\\\").replace("\"", "\\\"") + "\""
 
@@ -91,9 +88,7 @@ object GeneratedDataCheck {
       val expectedSet = mine.flatMap(l => expectedKey(l).map(k => (k, l.expectedStatus))).toSet
 
       def satisfied(l: Label): Boolean = l.expectedStatus match {
-        case "no_alert" =>
-          val keys = if (keyedByEvent(id)) l.eventIds else l.groupKeys
-          !keys.exists(actualKeys.contains)
+        case "no_alert" => !l.eventIds.exists(actualKeys.contains)
         case status => expectedKey(l).exists(k => actual.contains((k, status)))
       }
       val results = mine.map(l => l -> satisfied(l))
@@ -146,10 +141,8 @@ object GeneratedDataCheck {
       case "PolicyCompare" =>
         RuleCompiler.compile(spec, events, Some(policy)).filter(col("status") =!= "no_alert")
           .select(col("triggeringEventId").as("k"), col("status"))
-      case "SequenceThenTrigger" =>
-        RuleCompiler.compile(spec, events).select(col("triggeringEventId").as("k"), col("status"))
       case _ =>
-        RuleCompiler.compile(spec, events).select(col("groupKey").as("k"), col("status"))
+        RuleCompiler.compile(spec, events).select(col("triggeringEventId").as("k"), col("status"))
     }
     val rows = projected.limit(MaxCollected + 1).collect()
     (rows.take(MaxCollected).map(r => (r.getString(0), r.getString(1))).toSet, rows.length > MaxCollected)

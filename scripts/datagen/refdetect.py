@@ -103,9 +103,19 @@ def _policy(prepared, policy):
             out.append(_alert(B4, event["account_id"], event, "insufficient_context"))
             out.append(_alert(B5, event["account_id"], event, "insufficient_context"))
             continue
-        if event["auth_method"] != row["expected_auth_method"]:
+        # A present-but-null log value is unobserved, not compliant: Python's plain `!=`/`is False`
+        # would otherwise get this wrong in BOTH directions relative to the intended semantics —
+        # `None != "password"` is True (a false alert), and `None is False` is False (a false
+        # no_alert) — so each field is checked for None explicitly before comparing it at all,
+        # matching RuleCompiler.scala's fix for the same three-valued-logic gap (both
+        # comparisonOps; detection-semantics.md case G originally only tested falseWhenRequired).
+        if event["auth_method"] is None:
+            out.append(_alert(B4, event["account_id"], event, "insufficient_context"))
+        elif event["auth_method"] != row["expected_auth_method"]:
             out.append(_alert(B4, event["account_id"], event))
-        if row["mfa_required"] and event["mfa_used"] is False:
+        if event["mfa_used"] is None:
+            out.append(_alert(B5, event["account_id"], event, "insufficient_context"))
+        elif row["mfa_required"] and event["mfa_used"] is False:
             out.append(_alert(B5, event["account_id"], event))
     return out
 

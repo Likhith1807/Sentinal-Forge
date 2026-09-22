@@ -47,45 +47,38 @@ a case where sub-second precision changes the *outcome* — the compiler's
 first. Documented, not currently a functional defect at the seconds
 granularity the compiler is designed for.
 
-## Repeated incidents: alert cardinality is NOT consistent across recipes
+## Repeated incidents: alert cardinality is consistent across all 3 recipes (fixed, Phase D)
 
-This is the most consequential finding. The 3 recipes handle "the same
-group qualifies more than once, far apart in time" in 3 **different**
-ways — this had never been stated anywhere before this check:
+All 3 recipes now alert **once per qualifying incident** — this was not always true, and the
+inconsistency was the most consequential finding of the first pass of this document:
 
-- **`SequenceThenTrigger`**: alerts **once per qualifying trigger event**.
-  Two fully separate incidents for the same account, a day apart, each
-  meeting the threshold independently, produce **2 alert rows** (case D).
-  This is the semantically correct behavior for an incident-oriented
-  alert stream.
+- **`SequenceThenTrigger`**: alerts once per qualifying trigger event. Two fully separate
+  incidents for the same account, a day apart, each meeting the threshold independently, produce
+  **2 alert rows** (case D). Always correct; not touched by this fix.
 
-- **`PolicyCompare`**: alerts **once per qualifying event**, with no
-  deduplication at all. Two separate non-compliant `login_success` events
-  for the same account produce **2 alert rows** (case H) — arguably
-  correct (each event is its own policy violation), but notably more
-  eager than `SequenceThenTrigger`, which requires per-trigger evaluation
-  rather than firing on every count-type event.
+- **`PolicyCompare`**: alerts once per qualifying event, with no deduplication at all. Two
+  separate non-compliant `login_success` events for the same account produce **2 alert rows**
+  (case H) — each event is its own policy violation. Always correct; not touched by this fix.
 
-- **`DistinctCountWithinWindow`**: alerts **at most once per groupKey,
-  ever**, regardless of how many separate qualifying incidents occurred.
-  The final `.groupBy(groupKey)` collapses every row that met the
-  threshold into one output row, taking `min(timestamp)` as `windowStart`
-  and `max(timestamp)` as `detectedAt`. Verified (case E): two fully
-  separate password-spray bursts against the same host, a day apart,
-  each independently meeting the distinct-account threshold, produce
-  **1 alert row** whose `windowStart`/`detectedAt` span the full day —
-  falsely implying one continuous window of attack activity rather than
-  two short, disjoint bursts with a quiet day between them.
+- **`DistinctCountWithinWindow`**: **CORRECTION (Phase D).** This used to alert at most once per
+  groupKey *ever*, regardless of how many separate incidents occurred — a final `.groupBy(groupKey)`
+  collapsed every qualifying row into one output row, taking `min(timestamp)` as `windowStart` and
+  `max(timestamp)` as `detectedAt`. Two fully separate password-spray bursts against the same
+  host, a day apart, produced **1 alert row** spanning the full day, falsely implying one
+  continuous incident.
 
-  **This is a real limitation, not a documentation gap**: an analyst
-  reading `windowStart`/`detectedAt` for a `DistinctCountWithinWindow`
-  alert cannot currently distinguish "one incident spanning that whole
-  range" from "the first and last of N disjoint incidents inside that
-  range." Fixing it (e.g., emitting one row per first-breach point,
-  analogous to `SequenceThenTrigger`) is a real, scoped follow-up —
-  deliberately not done in this pass, to avoid changing recipe output
-  shape without re-verifying every existing real-data result that
-  depends on it (`ReplayCheck`'s 17/17, `EndToEndCheck`'s 11/11).
+  **The fix**: alert on the *rising edge* of the rolling distinct count — the instant it first
+  reaches the threshold, exactly the same per-trigger-event granularity `SequenceThenTrigger`
+  already had. `windowStart` is now the alert's own `detectedAt` minus the window duration (well
+  defined per alert, not `min()` over however many incidents happened to share a groupKey). This
+  is also exactly the "episode" semantics `scripts/datagen/refdetect.py`'s independent reference
+  implementation used from the start (it was written to the *intended* semantics, not the bug).
+  Re-verified with case E: the same two-incidents-a-day-apart scenario now produces **2 alert
+  rows**, each with its own `detectedAt` and a `windowStart` exactly `windowSecs` before it —
+  and every existing real-data result that depends on this recipe's output shape was re-run and
+  still passes (`ReplayCheck` 17/17, `EndToEndCheck` 11/11, `ManualBaselineCheck` 17/17,
+  `DistinctCountBoundaryCheck` all pass, plus the 10,900-label `GeneratedDataCheck` run — see
+  `docs/data-sources.md`).
 
 ## Missing/malformed values: silent exclusion, not a structured error
 
@@ -108,22 +101,23 @@ currently silent) outcomes:
   entirely fails loudly with a `AnalysisException`; a malformed *value*
   inside a present column does not).
 
-- **Null value in a present field** (case G): `PolicyCompare`'s
-  `falseWhenRequired` comparison (`col(policyField) === true &&
-  col(logField) === false`) treats a `NULL` `logField` (e.g. `mfa_used`
-  present in the schema but null on a specific event) the same as
-  "condition not met" — three-valued SQL logic makes `NULL === false`
-  evaluate to `NULL`, which the `.otherwise(...)` branch treats as
-  `no_alert`, **not** `insufficient_context`. Only a missing *policy* row
-  (the left join producing a null `policyField`) is caught as
-  `insufficient_context`; a null *log* field is silently treated as
-  compliant. **This is a real, previously-undocumented correctness gap**:
-  a genuinely unobserved MFA status is indistinguishable, in the current
-  output, from MFA having actually been used. Scoped follow-up, not
-  fixed in this pass (fixing requires deciding whether a null log field
-  should be `insufficient_context` too — a real semantic decision, not a
-  one-line patch, and one that needs its own regression test against the
-  real replay data before shipping).
+- **Null value in a present field** (cases G, I): **CORRECTION (Phase D).** `PolicyCompare` used
+  to treat a `NULL` `logField` (e.g. `mfa_used` or `auth_method` present in the schema but null on
+  a specific event) the same as "condition not met" — three-valued SQL logic makes both
+  `NULL === false` (`falseWhenRequired`) and `NULL =!= x` (`notEqual`) evaluate to `NULL`, which
+  `.otherwise(...)` then read as `no_alert`. Only a missing *policy* row was caught as
+  `insufficient_context`; a null *log* field was silently treated as compliant, on **both**
+  comparison operators — case G originally tested only `falseWhenRequired`; case I, added in this
+  pass, confirms the same gap existed in `notEqual` too.
+
+  **The fix**: `logField.isNull` is now checked explicitly, before the comparison ever runs, for
+  both operators — a genuinely unobserved log value now correctly degrades to
+  `insufficient_context` instead of being read as compliant. Re-verified: case G now observes
+  `status=insufficient_context` (was `no_alert`); case I (new) observes the same for `notEqual`.
+  `scripts/datagen/refdetect.py`'s independent reference implementation had the equivalent gap
+  (a null `mfa_used`/`auth_method` fell through to no alert being appended at all, and for
+  `auth_method` specifically, Python's plain `!=` on `None` would have produced a **false alert**,
+  not just a false negative) and was fixed the same way.
 
 ## Policy lookup failure: per-event, not per-rule
 
