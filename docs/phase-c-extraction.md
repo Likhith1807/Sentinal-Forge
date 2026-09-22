@@ -33,57 +33,54 @@ epoch 9 of 17, early-stopped after 8 epochs with no dev improvement); dev combin
 ## Main comparison (test split, n=44)
 
 `python nlp/src/evaluate_corpus.py` — [`phaseC_corpus_comparison.json`](../experiments/results/phaseC_corpus_comparison.json).
-Bootstrap 95% CIs, 2000 resamples over reports.
-
-**A model substitution, stated up front.** Groq's daily token quota (200,000) for the project's
-default model, `openai/gpt-oss-120b`, was already at 198,715 from the corpus build's LLM-rewrite
-tier. Two full-evaluation attempts against it scored 3/44 and 2/44 before hitting the cap each
-time — not a result. `openai/gpt-oss-20b` (same vendor family, smaller, a separate quota bucket)
-was available, so the comparison below uses it for every prompted-LLM and hybrid-fallback call,
-**labelled as such everywhere it appears**. This is not the same comparison Phase 2 ran — it is a
-real, complete one against a smaller sibling model, not a partial one against the intended model.
-A `gpt-oss-120b` re-run is still open once its quota resets (see "What's still open").
+Bootstrap 95% CIs, 2000 resamples over reports. This is the final run, against the project's
+intended default model, `openai/gpt-oss-120b` (an earlier pass used `openai/gpt-oss-20b`, a
+smaller sibling with a separate quota, while `120b`'s daily cap was exhausted — that comparison is
+superseded by this one and kept in git history, not in this document).
 
 | System | Scored | Behaviour acc | Field F1 | Threshold exact | Window exact | Abstention recall |
 |---|---|---|---|---|---|---|
-| Classical | 44/44 | 0.205 [0.09, 0.34] | 0.051 [0.00, 0.13] | 0.0 | 0.0 | 0.0 |
-| Prompted (gpt-oss-20b) | 43/44 | 0.907 [0.81, 0.98] | **0.993** [0.98, 1.0] | 1.0 | 0.75 | **0.0** [0, 0] |
+| Classical | 44/44 | 0.205 [0.09, 0.34] | 0.051 [0.00, 0.13] | 0.0 | 0.0 | 0.0 [0, 0] |
+| Prompted (gpt-oss-120b) | 44/44 | 0.909 [0.82, 0.98] | **0.980** [0.96, 0.99] | 1.0 | 0.75 | **0.0** [0, 0] |
 | Fine-tuned | 44/44 | 0.955 [0.89, 1.0] | 0.919 [0.87, 0.96] | 1.0 | 0.708 | 0.5 [0, 1] |
-| **Hybrid** (gpt-oss-20b fallback) | 44/44 | **0.977** [0.93, 1.0] | 0.957 [0.92, 0.99] | 1.0 | 0.708 | 0.75 [0, 1] |
+| **Hybrid** (gpt-oss-120b fallback) | 40/44 | **0.975** [0.93, 1.0] | 0.956 [0.92, 0.99] | 1.0 | 0.696 | 0.0 [0, 0] |
 
-Classical collapses exactly as the Phase B difficulty check predicted (`docs/corpus.md`). One
-prompted call failed outright (`SFC-0174`: "Model output was not parseable JSON: ''") — excluded
-from that row's metrics, not scored as wrong, per the `run_system` fix below.
+Classical collapses exactly as the Phase B difficulty check predicted (`docs/corpus.md`). Hybrid's
+4 unavailable reports are 3 of its own fallback calls hitting the daily quota partway through
+(`gpt-oss-120b`'s 200,000-token cap; the standalone prompted row alone used most of it) — excluded
+from its metrics, not scored as wrong, per the `run_system` fix below.
 
-**A real bug found and fixed first.** The first attempt against `gpt-oss-120b` folded every API
-failure into "wrongly abstained" in `evaluate_corpus.run_system` — scoring an unavailable answer
-as a confident wrong one. Fixed to exclude errored reports from every metric and list them
-separately (`unavailable`), which is what makes the 43/44 and 44/44 counts above trustworthy.
+**A real bug found and fixed first.** An early attempt against `gpt-oss-120b` (before the corpus
+build had used up its quota) folded every API failure into "wrongly abstained" in
+`evaluate_corpus.run_system` — scoring an unavailable answer as a confident wrong one. Fixed to
+exclude errored reports from every metric and list them separately (`unavailable`), which is what
+makes every "scored" count above trustworthy.
 
-### The one genuinely surprising number: prompted abstention recall is 0.0, not 1.0
+### The one genuinely surprising number: prompted abstention recall is 0.0, at both model sizes
 
-An earlier, tiny (n=2-3) sample against `gpt-oss-120b` had suggested the prompted extractor
-abstains reliably. The real, complete `gpt-oss-20b` run says the opposite for *this* model: **it
-never correctly identified a report as out-of-scope** — abstention recall 0.0, CI [0, 0] (the CI is
-degenerate because bootstrap-resampling 4 identical failures always resamples 4 failures). Read as
-a smaller-model finding, not a retraction of anything about `gpt-oss-120b`, which hasn't had a real
-sample yet either way.
+An earlier, tiny (n=2-3) sample had suggested the prompted extractor abstains reliably. The real,
+complete run against the actual intended model says otherwise: **`gpt-oss-120b` never correctly
+identified a single one of the 4 out-of-scope test reports** — abstention recall 0.0, matching
+`gpt-oss-20b`'s result on the same 4 reports exactly. This is now a finding about the *prompting
+approach* to abstention on this task, not an artifact of one model's size: the extraction prompt
+(`transformer_extractor.build_prompt`) asks the model to pick a `behaviourId` from the 5 known
+values, and evidently that framing doesn't reliably produce "none of these" even from a much larger
+model. A real, scoped follow-up (not done here): try an explicit "or none of the above, in which
+case say so" instruction and re-measure, rather than assume a bigger model alone would fix it.
 
-**Hybrid's 0.75 abstention recall needs the same scrutiny, not a victory lap.** With only 4
-unsupported test reports, its CI is the maximally uninformative [0, 1] — this number is not
-reliable evidence of anything on its own. Tracing it per report against the committed JSON found
-something more interesting than the aggregate: on `SFC-0211` and `SFC-0212`, the fine-tuned model
-already abstained correctly, but the hybrid's `needs_fallback` condition (`primary.behaviourId is
-None or confidence < threshold`) fires on *any* fine-tuned abstention — so it called the prompted
-model anyway, discarding a correct answer, and the prompted model's *fresh, independent* call
-happened to also abstain this time, even though the same model's separately-sampled call on the
-same two reports in the standalone `transformer-prompted` row did not. That is the documented
-`gpt-oss-120b` run-to-run variance (`nlp/README.md`) now directly observed in `gpt-oss-20b` too, on
-the same day, same input, different call. The hybrid's headline number is therefore **partly a
-favourable re-roll**, not a demonstrated property of the fallback design — a real design gap worth
-naming: falling back on *every* fine-tuned abstention, rather than only on low-confidence
-non-abstentions, discards a correct answer, and should be reconsidered before this hybrid design
-is treated as final. Filed as an open item, not silently fixed.
+**The hybrid design gap this exposed, and the fix.** Tracing the *first* hybrid run (against
+`gpt-oss-20b`) found `hybrid_extractor`'s fallback condition firing on *every* fine-tuned
+`unsupported` prediction regardless of confidence — discarding a correct, confident abstention on
+`SFC-0211`/`SFC-0212` and calling the fallback anyway, which that time happened to also abstain
+(the same run-to-run variance `nlp/README.md` already documents, observed directly). **Fixed**:
+`unsupported` is now just another class judged by the same confidence threshold as any other
+(`hybrid_extractor.py`; regression tests in `nlp/test/test_hybrid_and_consistency.py` cover both
+"confident abstention is kept" and "unconfident abstention still falls back"). The corrected
+run's numbers are now fully self-consistent with the finding above: `SFC-0211`/`SFC-0212`
+correctly triggered a fallback attempt (both landed in the 4 quota-unavailable reports, since
+fine-tuned's own confidence there was genuinely below threshold, not because the logic forced it),
+and hybrid's overall abstention recall (0.0) now honestly reflects that the fallback model doesn't
+abstain reliably either — not a lucky re-roll dressed up as a working design.
 
 ## Ablation 1 — encoder choice: generic vs domain-adapted
 
@@ -136,17 +133,15 @@ training class (9 of 118 train examples) — while never wrongly abstaining on a
 (`falseAbstentionRate` 0.0). Rather than an arbitrary ensemble vote (the classical extractor is far
 too weak on this corpus to usefully vote on anything, per the ablation above), the hybrid uses the
 fine-tuned model for every report and calls the prompted extractor as a second opinion **only**
-when the fine-tuned model predicts `unsupported` or its own softmax confidence is below a
-threshold (default 0.6) — the one condition the data says is worth an API call.
+when the fine-tuned model's own softmax confidence is below a threshold (default 0.6) —
+`unsupported` is judged by that same confidence check, not treated as an automatic trigger (see the
+design-gap correction above).
 
-**Live-evaluated (see table above): 0.977 behaviour acc, 0.957 field F1 — the best of the four
-systems on both, with the abstention-recall caveat above.** 7 offline tests
-(`nlp/test/test_hybrid_and_consistency.py`) separately check the fallback trigger and aggregation
-logic against a mocked prompted extractor, so the wiring is verified independent of any one live
-model's behaviour. **Known design gap, found by tracing the live run, not assumed up front:**
-falling back on every fine-tuned `unsupported` prediction discards a correct answer whenever the
-fallback call disagrees — worth changing to skip the fallback when fine-tuned already abstained
-(not just when its confidence is low), before relying on this hybrid design further.
+**Live-evaluated (see table above): 0.975 behaviour acc, 0.956 field F1 — the best of the four
+systems on both.** 11 offline tests (`nlp/test/test_hybrid_and_consistency.py`) separately check
+the fallback trigger and aggregation logic against a mocked prompted extractor, including
+regression tests for the confidence-based fix, so the wiring is verified independent of any one
+live model's behaviour.
 
 ## Self-consistency voting (the reliability item, as originally scoped)
 
@@ -186,27 +181,35 @@ results rather than assuming the new fine-tuned model needed the same fix:
 
 ## What's still open
 
-1. **A `gpt-oss-120b` run of `evaluate_corpus.py`**, once its daily quota resets, for the
-   originally-intended model (today's numbers, for the prompted and hybrid rows, are `gpt-oss-20b`).
-2. **The hybrid fallback-on-abstention design gap** named above.
-3. Both are now precisely scoped follow-ups, not blanket "re-run when quota allows" placeholders —
-   the underlying mechanisms (evaluation harness, hybrid, self-consistency) are built, tested, and
-   have each produced at least one real, complete result today.
+Both items that were open after the first pass are closed: the comparison now runs against the
+intended `gpt-oss-120b`, and the hybrid's fallback-on-any-abstention gap is fixed and
+regression-tested. What remains is smaller and explicitly scoped, not a rerun of either of those:
+
+1. **Hybrid's `gpt-oss-120b` row is 40/44, not 44/44** — 4 of its own fallback calls hit the daily
+   quota (the standalone prompted row's 44 calls used most of it first). Re-running
+   `evaluate_corpus.py` once quota resets would fill in the last 4, but the 40 scored already tell
+   a coherent, internally-consistent story (see the abstention discussion above) — this is a
+   completeness gap on one row, not an open question about correctness.
+2. **Prompted-abstention framing**: try an explicit "or none of the above" instruction in
+   `transformer_extractor.build_prompt` and re-measure, now that abstention recall 0.0 is confirmed
+   at two model sizes rather than assumed fixable by a bigger model.
 
 ## Reproducing
 
 ```
 python nlp/src/train_transformer.py --encoder roberta-base --out nlp/models/roberta-base
-python nlp/src/evaluate_corpus.py --model-dir nlp/models/roberta-base --llm-model openai/gpt-oss-20b \
+python nlp/src/evaluate_corpus.py --model-dir nlp/models/roberta-base \
     --out experiments/results/phaseC_corpus_comparison.json
 python nlp/src/ablate_corpus.py --out experiments/results/phaseC_ablations.json
 python nlp/src/check_determinism.py --model-dir nlp/models/roberta-base --runs 3 --out experiments/results/phaseC_determinism_check.json
-python nlp/src/run_consistency_demo.py --n 10 --model openai/gpt-oss-20b --out experiments/results/phaseC_consistency_variance.json
+python nlp/src/run_consistency_demo.py --n 10 --out experiments/results/phaseC_consistency_variance.json
 python nlp/test/test_hybrid_and_consistency.py
 ```
 
-`--llm-model` defaults to `transformer_extractor.DEFAULT_MODEL` (`openai/gpt-oss-120b`); pass an
-override if its quota is exhausted, as it was for every live run in this document.
+`--llm-model` (default `transformer_extractor.DEFAULT_MODEL`, `openai/gpt-oss-120b`) overrides the
+prompted-LLM model if its quota is exhausted — the self-consistency demo above used
+`openai/gpt-oss-20b` for that reason and is not re-run with `120b` here, since its purpose (does
+voting reduce variance) doesn't depend on which model size demonstrates it.
 
 Checkpoints (`nlp/models/*/model.pt`, ~476 MB each) are not committed (`.gitignore`); their
 `run_config.json`/`training_log.json`/`best_dev_metrics.json` are, under

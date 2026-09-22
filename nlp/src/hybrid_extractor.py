@@ -11,11 +11,20 @@ between the two learned systems on the corpus test split:
     documented run-to-run variance (`nlp/README.md`).
 
 So the hybrid uses the fine-tuned model for every report (fast, deterministic, free), and only
-calls the prompted extractor as a second opinion when the fine-tuned model is **not confident**:
-predicted `unsupported`, or its top-class softmax probability is below `confidence_threshold`.
-That is the one condition the measured tradeoff says is worth spending an API call on — not a
-general-purpose ensemble vote, which the data doesn't support (the classical extractor is far too
-weak on this corpus, per `docs/corpus.md`, to usefully vote on anything).
+calls the prompted extractor as a second opinion when the fine-tuned model's own top-class softmax
+probability is below `confidence_threshold` — regardless of which class that is. That is the one
+condition the measured tradeoff says is worth spending an API call on — not a general-purpose
+ensemble vote, which the data doesn't support (the classical extractor is far too weak on this
+corpus, per `docs/corpus.md`, to usefully vote on anything).
+
+CORRECTION (found by tracing the first live run, not assumed up front): an earlier version fell
+back on *every* fine-tuned `unsupported` prediction unconditionally, regardless of confidence —
+discarding a correct, confident abstention whenever the fallback call's independently-sampled
+answer happened to disagree with it (`docs/phase-c-extraction.md` traces `SFC-0211`/`SFC-0212`,
+where this cost a correct answer and only "worked out" because the fallback call happened to also
+abstain that time — a lucky re-roll, not a property of the design). `unsupported` is now just
+another class whose own confidence is checked like any other; a confident abstention is kept, an
+unconfident one still gets a second opinion.
 
 This makes the hybrid only as deterministic as how often it falls back — reported per run via
 `fallbackRate`, never hidden.
@@ -51,8 +60,7 @@ def extract(report_text: str, model_dir=finetuned_extractor.DEFAULT_MODEL_DIR,
            llm_model: str = transformer_extractor.DEFAULT_MODEL) -> HybridExtractionResult:
     primary = finetuned_extractor.extract(report_text, model_dir)
     confidence = primary.raw.get("behaviourConfidence", 0.0)
-    needs_fallback = primary.behaviourId is None or confidence < confidence_threshold
-    if not needs_fallback:
+    if confidence >= confidence_threshold:
         return HybridExtractionResult(
             behaviourId=primary.behaviourId, requiredFields=primary.requiredFields, policyFields=primary.policyFields,
             threshold=primary.threshold, timeWindow=primary.timeWindow, provenance=primary.provenance,

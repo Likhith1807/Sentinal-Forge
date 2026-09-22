@@ -50,8 +50,20 @@ def test_hybrid_uses_fine_tuned_directly_when_confident():
     assert result.requiredFields == ["account_id"]
 
 
-def test_hybrid_falls_back_when_fine_tuned_predicts_unsupported():
+def test_hybrid_keeps_a_confident_abstention_instead_of_always_falling_back():
+    # Regression test for the design gap docs/phase-c-extraction.md traces (SFC-0211/SFC-0212):
+    # an earlier version fell back on EVERY "unsupported" prediction regardless of confidence,
+    # discarding a correct, confident abstention whenever the independently-sampled fallback call
+    # happened to disagree. `unsupported` must now be judged by confidence like any other class.
     finetuned_extractor.extract = _fake_finetuned(None, 0.9)
+    transformer_extractor.extract = _fake_prompted("SHOULD_NOT_BE_CALLED")
+    result = hybrid_extractor.extract("some report text")
+    assert result.source == "fine-tuned"
+    assert result.behaviourId is None
+
+
+def test_hybrid_falls_back_when_an_unsupported_prediction_is_not_confident():
+    finetuned_extractor.extract = _fake_finetuned(None, 0.4)
     transformer_extractor.extract = _fake_prompted("password-spray-across-accounts", requiredFields=["source_host"])
     result = hybrid_extractor.extract("some report text")
     assert result.source == "prompted-fallback"
@@ -75,9 +87,12 @@ def test_hybrid_respects_a_custom_confidence_threshold():
 
 
 def test_hybrid_treats_unrecognized_fallback_behaviour_as_abstention():
-    finetuned_extractor.extract = _fake_finetuned(None, 0.9)
+    # Low confidence, so the fallback path actually runs (see the confident-abstention test above
+    # for why a confidence of 0.9 would keep the fine-tuned answer without ever calling the fallback).
+    finetuned_extractor.extract = _fake_finetuned(None, 0.4)
     transformer_extractor.extract = _fake_prompted("unrecognized:something-the-model-invented")
     result = hybrid_extractor.extract("some report text")
+    assert result.source == "prompted-fallback"
     assert result.behaviourId is None
 
 

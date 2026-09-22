@@ -9,7 +9,7 @@
       "requested": 44,
       "scored": 44,
       "unavailable": [],
-      "seconds": 1.5,
+      "seconds": 0.9,
       "n": 44,
       "behaviourAccuracy": 0.20454545454545456,
       "fieldPrecision": 1.0,
@@ -614,34 +614,28 @@
         }
       ]
     },
-    "transformer-prompted (openai/gpt-oss-20b)": {
+    "transformer-prompted (openai/gpt-oss-120b)": {
       "system": "transformer-prompted",
       "requested": 44,
-      "scored": 43,
-      "unavailable": [
-        {
-          "reportId": "SFC-0174",
-          "error": "ValueError",
-          "message": "Model output was not parseable JSON: ''"
-        }
-      ],
-      "seconds": 680.3,
-      "n": 43,
-      "behaviourAccuracy": 0.9069767441860465,
+      "scored": 44,
+      "unavailable": [],
+      "seconds": 404.5,
+      "n": 44,
+      "behaviourAccuracy": 0.9090909090909091,
       "fieldPrecision": 0.9932432432432432,
-      "fieldRecall": 0.9932432432432432,
-      "fieldF1": 0.9932432432432432,
+      "fieldRecall": 0.9671052631578947,
+      "fieldF1": 0.98,
       "abstentionRecall": 0.0,
       "falseAbstentionRate": 0.0,
       "thresholdExact": 1.0,
       "windowExact": 0.75,
       "behaviourAccuracyCI95": [
-        0.813953488372093,
-        0.9767441860465116
+        0.8181818181818182,
+        0.9772727272727273
       ],
       "fieldF1CI95": [
-        0.983277591973244,
-        1.0
+        0.9641693811074918,
+        0.9933333333333333
       ],
       "abstentionRecallCI95": [
         0.0,
@@ -652,8 +646,8 @@
         1.0
       ],
       "windowExactCI95": [
-        0.5714285714285714,
-        0.9166666666666666
+        0.559888888888889,
+        0.9090909090909091
       ],
       "perReport": [
         {
@@ -975,9 +969,9 @@
           "behaviourCorrect": true,
           "abstainedCorrectly": false,
           "wronglyAbstained": false,
-          "tp": 4,
+          "tp": 3,
           "fp": 0,
-          "fn": 0,
+          "fn": 1,
           "thresholdOk": null,
           "windowOk": null
         },
@@ -988,9 +982,9 @@
           "behaviourCorrect": true,
           "abstainedCorrectly": false,
           "wronglyAbstained": false,
-          "tp": 4,
+          "tp": 3,
           "fp": 0,
-          "fn": 0,
+          "fn": 1,
           "thresholdOk": null,
           "windowOk": null
         },
@@ -1014,9 +1008,9 @@
           "behaviourCorrect": true,
           "abstainedCorrectly": false,
           "wronglyAbstained": false,
-          "tp": 3,
+          "tp": 4,
           "fp": 0,
-          "fn": 1,
+          "fn": 0,
           "thresholdOk": null,
           "windowOk": null
         },
@@ -1053,9 +1047,9 @@
           "behaviourCorrect": true,
           "abstainedCorrectly": false,
           "wronglyAbstained": false,
-          "tp": 4,
+          "tp": 3,
           "fp": 0,
-          "fn": 0,
+          "fn": 1,
           "thresholdOk": null,
           "windowOk": null
         },
@@ -1079,9 +1073,9 @@
           "behaviourCorrect": true,
           "abstainedCorrectly": false,
           "wronglyAbstained": false,
-          "tp": 4,
+          "tp": 3,
           "fp": 0,
-          "fn": 0,
+          "fn": 1,
           "thresholdOk": null,
           "windowOk": null
         },
@@ -1101,6 +1095,19 @@
         {
           "reportId": "SFC-0173",
           "tier": "template",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": null,
+          "windowOk": null
+        },
+        {
+          "reportId": "SFC-0174",
+          "tier": "llm-rewrite",
           "supported": true,
           "behaviourCorrect": true,
           "abstainedCorrectly": false,
@@ -1157,9 +1164,9 @@
           "behaviourCorrect": true,
           "abstainedCorrectly": false,
           "wronglyAbstained": false,
-          "tp": 4,
+          "tp": 3,
           "fp": 0,
-          "fn": 0,
+          "fn": 1,
           "thresholdOk": null,
           "windowOk": null
         },
@@ -1222,7 +1229,7 @@
       "requested": 44,
       "scored": 44,
       "unavailable": [],
-      "seconds": 8.5,
+      "seconds": 8.4,
       "n": 44,
       "behaviourAccuracy": 0.9545454545454546,
       "fieldPrecision": 0.9044585987261147,
@@ -1827,40 +1834,61 @@
         }
       ]
     },
-    "hybrid (openai/gpt-oss-20b fallback)": {
+    "hybrid (openai/gpt-oss-120b fallback)": {
       "system": "hybrid",
       "requested": 44,
-      "scored": 44,
-      "unavailable": [],
-      "seconds": 2162.1,
-      "n": 44,
-      "behaviourAccuracy": 0.9772727272727273,
-      "fieldPrecision": 0.9664429530201343,
-      "fieldRecall": 0.9473684210526315,
-      "fieldF1": 0.9568106312292358,
-      "abstentionRecall": 0.75,
+      "scored": 40,
+      "unavailable": [
+        {
+          "reportId": "SFC-0062",
+          "error": "RateLimitError",
+          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
+        },
+        {
+          "reportId": "SFC-0211",
+          "error": "RateLimitError",
+          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
+        },
+        {
+          "reportId": "SFC-0212",
+          "error": "RateLimitError",
+          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
+        },
+        {
+          "reportId": "SFC-0215",
+          "error": "RateLimitError",
+          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
+        }
+      ],
+      "seconds": 30.2,
+      "n": 40,
+      "behaviourAccuracy": 0.975,
+      "fieldPrecision": 0.9655172413793104,
+      "fieldRecall": 0.9459459459459459,
+      "fieldF1": 0.9556313993174061,
+      "abstentionRecall": 0.0,
       "falseAbstentionRate": 0.0,
       "thresholdExact": 1.0,
-      "windowExact": 0.7083333333333334,
+      "windowExact": 0.6956521739130435,
       "behaviourAccuracyCI95": [
-        0.9318181818181818,
+        0.925,
         1.0
       ],
       "fieldF1CI95": [
-        0.9192931357520013,
-        0.9858156028368793
+        0.9172413793103449,
+        0.9857242063492063
       ],
       "abstentionRecallCI95": [
         0.0,
-        1.0
+        0.0
       ],
       "thresholdExactCI95": [
         1.0,
         1.0
       ],
       "windowExactCI95": [
-        0.5185185185185185,
-        0.8846153846153846
+        0.5,
+        0.8695652173913043
       ],
       "perReport": [
         {
@@ -2048,19 +2076,6 @@
         {
           "reportId": "SFC-0061",
           "tier": "template",
-          "supported": true,
-          "behaviourCorrect": true,
-          "abstainedCorrectly": false,
-          "wronglyAbstained": false,
-          "tp": 4,
-          "fp": 0,
-          "fn": 0,
-          "thresholdOk": true,
-          "windowOk": true
-        },
-        {
-          "reportId": "SFC-0062",
-          "tier": "llm-rewrite",
           "supported": true,
           "behaviourCorrect": true,
           "abstainedCorrectly": false,
@@ -2378,45 +2393,6 @@
           "abstainedCorrectly": false,
           "wronglyAbstained": false,
           "tp": 4,
-          "fp": 0,
-          "fn": 0,
-          "thresholdOk": null,
-          "windowOk": null
-        },
-        {
-          "reportId": "SFC-0211",
-          "tier": "template",
-          "supported": false,
-          "behaviourCorrect": true,
-          "abstainedCorrectly": true,
-          "wronglyAbstained": false,
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "thresholdOk": null,
-          "windowOk": null
-        },
-        {
-          "reportId": "SFC-0212",
-          "tier": "llm-rewrite",
-          "supported": false,
-          "behaviourCorrect": true,
-          "abstainedCorrectly": true,
-          "wronglyAbstained": false,
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "thresholdOk": null,
-          "windowOk": null
-        },
-        {
-          "reportId": "SFC-0215",
-          "tier": "template",
-          "supported": false,
-          "behaviourCorrect": true,
-          "abstainedCorrectly": true,
-          "wronglyAbstained": false,
-          "tp": 0,
           "fp": 0,
           "fn": 0,
           "thresholdOk": null,
