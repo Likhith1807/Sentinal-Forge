@@ -6,3 +6,11 @@ pyyaml
 fastapi
 uvicorn
 numpy
+
+# Phase C: fine-tuned extractor (nlp/src/train_transformer.py etc.) — see docs/phase-c-extraction.md.
+# torch is installed separately per-platform (see https://pytorch.org/get-started/locally/); a
+# CUDA build is used here but is not a hard requirement (CPU fine-tuning works, just far slower).
+transformers
+accelerate
+scikit-learn
+sentencepiece
