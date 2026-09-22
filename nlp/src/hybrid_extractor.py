@@ -47,7 +47,8 @@ class HybridExtractionResult:
 
 
 def extract(report_text: str, model_dir=finetuned_extractor.DEFAULT_MODEL_DIR,
-           confidence_threshold: float = DEFAULT_CONFIDENCE_THRESHOLD) -> HybridExtractionResult:
+           confidence_threshold: float = DEFAULT_CONFIDENCE_THRESHOLD,
+           llm_model: str = transformer_extractor.DEFAULT_MODEL) -> HybridExtractionResult:
     primary = finetuned_extractor.extract(report_text, model_dir)
     confidence = primary.raw.get("behaviourConfidence", 0.0)
     needs_fallback = primary.behaviourId is None or confidence < confidence_threshold
@@ -57,7 +58,7 @@ def extract(report_text: str, model_dir=finetuned_extractor.DEFAULT_MODEL_DIR,
             threshold=primary.threshold, timeWindow=primary.timeWindow, provenance=primary.provenance,
             source="fine-tuned", fineTunedConfidence=confidence)
 
-    fallback = transformer_extractor.extract(report_text)
+    fallback = transformer_extractor.extract(report_text, model=llm_model)
     behaviour_id = fallback.get("behaviourId")
     if behaviour_id not in finetuned_extractor.BEHAVIOUR_LABELS[:-1]:   # "unrecognized:*" convention -> abstain
         behaviour_id = None

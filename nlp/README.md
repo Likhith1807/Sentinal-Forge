@@ -3,11 +3,14 @@
 > **A third, fine-tuned extractor now exists**, trained on the larger v2 corpus
 > (`data/corpus/`, 201 reports) this Phase 2 pass explicitly said there wasn't
 > enough data for yet. See [`docs/phase-c-extraction.md`](../docs/phase-c-extraction.md)
-> for the annotation schema, training, the 3-way comparison (a 4th, prompted-LLM
-> row is currently quota-limited to n=2 and not a real result), two ablations,
-> a hybrid extractor, and a verified-deterministic reliability result. This
-> file's own comparison below is unchanged: 2 untrained extractors on the
-> original 5-report v1 set, kept as the historical record it always was.
+> for the annotation schema, training, a real 4-system comparison (classical,
+> prompted-LLM, fine-tuned, hybrid — the prompted/hybrid rows use `gpt-oss-20b`,
+> not the project's default `gpt-oss-120b`, whose daily quota was exhausted;
+> clearly labelled throughout), two ablations, and a live-measured reliability
+> result for both the fine-tuned model and a self-consistency wrapper for the
+> prompted one. This file's own comparison below is unchanged: 2 untrained
+> extractors on the original 5-report v1 set, kept as the historical record it
+> always was.
 
 Two extractors, scored against hand-authored gold labels on the 5 held-out
 reports (`data/samples/ir/gold/`, see [`docs/data-splits.md`](../docs/data-splits.md)).

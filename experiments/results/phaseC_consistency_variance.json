@@ -1,0 +1,329 @@
+{
+  "n": 10,
+  "nSamples": 3,
+  "model": "openai/gpt-oss-20b",
+  "rawVariance": {
+    "nReports": 8,
+    "nSamplesPerReport": 3,
+    "reportsSkipped": [
+      {
+        "reportId": "SFC-0101",
+        "nSucceeded": 1
+      },
+      {
+        "reportId": "SFC-0029",
+        "nSucceeded": 1
+      }
+    ],
+    "behaviourAgreementRate": 1.0,
+    "fieldSetAgreementRate": 1.0
+  },
+  "rawVariancePerReport": [
+    {
+      "reportId": "SFC-0115",
+      "nSamples": 3,
+      "nFailed": 0,
+      "behavioursAgree": true,
+      "fieldsAgree": true,
+      "behaviours": [
+        "concurrent-sessions-different-hosts",
+        "concurrent-sessions-different-hosts",
+        "concurrent-sessions-different-hosts"
+      ],
+      "fieldSets": [
+        [
+          "account_id",
+          "event_type",
+          "source_host",
+          "timestamp"
+        ],
+        [
+          "account_id",
+          "event_type",
+          "source_host",
+          "timestamp"
+        ],
+        [
+          "account_id",
+          "event_type",
+          "source_host",
+          "timestamp"
+        ]
+      ]
+    },
+    {
+      "reportId": "SFC-0030",
+      "nSamples": 2,
+      "nFailed": 1,
+      "behavioursAgree": true,
+      "fieldsAgree": true,
+      "behaviours": [
+        "repeated-failed-login-then-success",
+        "repeated-failed-login-then-success"
+      ],
+      "fieldSets": [
+        [
+          "account_id",
+          "event_type",
+          "timestamp"
+        ],
+        [
+          "account_id",
+          "event_type",
+          "timestamp"
+        ]
+      ]
+    },
+    {
+      "reportId": "SFC-0120",
+      "nSamples": 2,
+      "nFailed": 1,
+      "behavioursAgree": true,
+      "fieldsAgree": true,
+      "behaviours": [
+        "concurrent-sessions-different-hosts",
+        "concurrent-sessions-different-hosts"
+      ],
+      "fieldSets": [
+        [
+          "account_id",
+          "event_type",
+          "source_host",
+          "timestamp"
+        ],
+        [
+          "account_id",
+          "event_type",
+          "source_host",
+          "timestamp"
+        ]
+      ]
+    },
+    {
+      "reportId": "SFC-0119",
+      "nSamples": 3,
+      "nFailed": 0,
+      "behavioursAgree": true,
+      "fieldsAgree": true,
+      "behaviours": [
+        "concurrent-sessions-different-hosts",
+        "concurrent-sessions-different-hosts",
+        "concurrent-sessions-different-hosts"
+      ],
+      "fieldSets": [
+        [
+          "account_id",
+          "event_type",
+          "source_host",
+          "timestamp"
+        ],
+        [
+          "account_id",
+          "event_type",
+          "source_host",
+          "timestamp"
+        ],
+        [
+          "account_id",
+          "event_type",
+          "source_host",
+          "timestamp"
+        ]
+      ]
+    },
+    {
+      "reportId": "SFC-0118",
+      "nSamples": 3,
+      "nFailed": 0,
+      "behavioursAgree": true,
+      "fieldsAgree": true,
+      "behaviours": [
+        "concurrent-sessions-different-hosts",
+        "concurrent-sessions-different-hosts",
+        "concurrent-sessions-different-hosts"
+      ],
+      "fieldSets": [
+        [
+          "account_id",
+          "event_type",
+          "source_host",
+          "timestamp"
+        ],
+        [
+          "account_id",
+          "event_type",
+          "source_host",
+          "timestamp"
+        ],
+        [
+          "account_id",
+          "event_type",
+          "source_host",
+          "timestamp"
+        ]
+      ]
+    },
+    {
+      "reportId": "SFC-0055",
+      "nSamples": 3,
+      "nFailed": 0,
+      "behavioursAgree": true,
+      "fieldsAgree": true,
+      "behaviours": [
+        "password-spray-across-accounts",
+        "password-spray-across-accounts",
+        "password-spray-across-accounts"
+      ],
+      "fieldSets": [
+        [
+          "account_id",
+          "event_type",
+          "source_host",
+          "timestamp"
+        ],
+        [
+          "account_id",
+          "event_type",
+          "source_host",
+          "timestamp"
+        ],
+        [
+          "account_id",
+          "event_type",
+          "source_host",
+          "timestamp"
+        ]
+      ]
+    },
+    {
+      "reportId": "SFC-0121",
+      "nSamples": 2,
+      "nFailed": 1,
+      "behavioursAgree": true,
+      "fieldsAgree": true,
+      "behaviours": [
+        "service-account-interactive-auth",
+        "service-account-interactive-auth"
+      ],
+      "fieldSets": [
+        [
+          "account_id",
+          "auth_method",
+          "event_type",
+          "policy.expected_auth_method"
+        ],
+        [
+          "account_id",
+          "auth_method",
+          "event_type",
+          "policy.expected_auth_method"
+        ]
+      ]
+    },
+    {
+      "reportId": "SFC-0125",
+      "nSamples": 3,
+      "nFailed": 0,
+      "behavioursAgree": true,
+      "fieldsAgree": true,
+      "behaviours": [
+        "service-account-interactive-auth",
+        "service-account-interactive-auth",
+        "service-account-interactive-auth"
+      ],
+      "fieldSets": [
+        [
+          "account_id",
+          "auth_method",
+          "event_type",
+          "policy.expected_auth_method"
+        ],
+        [
+          "account_id",
+          "auth_method",
+          "event_type",
+          "policy.expected_auth_method"
+        ],
+        [
+          "account_id",
+          "auth_method",
+          "event_type",
+          "policy.expected_auth_method"
+        ]
+      ]
+    }
+  ],
+  "votedBehaviourAccuracy": 0.9,
+  "votedPerReport": [
+    {
+      "reportId": "SFC-0115",
+      "votedBehaviourId": null,
+      "goldBehaviourId": "concurrent-sessions-different-hosts",
+      "correct": false,
+      "behaviourAgreement": 0.0
+    },
+    {
+      "reportId": "SFC-0030",
+      "votedBehaviourId": "repeated-failed-login-then-success",
+      "goldBehaviourId": "repeated-failed-login-then-success",
+      "correct": true,
+      "behaviourAgreement": 1.0
+    },
+    {
+      "reportId": "SFC-0120",
+      "votedBehaviourId": "concurrent-sessions-different-hosts",
+      "goldBehaviourId": "concurrent-sessions-different-hosts",
+      "correct": true,
+      "behaviourAgreement": 1.0
+    },
+    {
+      "reportId": "SFC-0101",
+      "votedBehaviourId": "concurrent-sessions-different-hosts",
+      "goldBehaviourId": "concurrent-sessions-different-hosts",
+      "correct": true,
+      "behaviourAgreement": 1.0
+    },
+    {
+      "reportId": "SFC-0119",
+      "votedBehaviourId": "concurrent-sessions-different-hosts",
+      "goldBehaviourId": "concurrent-sessions-different-hosts",
+      "correct": true,
+      "behaviourAgreement": 1.0
+    },
+    {
+      "reportId": "SFC-0118",
+      "votedBehaviourId": "concurrent-sessions-different-hosts",
+      "goldBehaviourId": "concurrent-sessions-different-hosts",
+      "correct": true,
+      "behaviourAgreement": 1.0
+    },
+    {
+      "reportId": "SFC-0029",
+      "votedBehaviourId": "repeated-failed-login-then-success",
+      "goldBehaviourId": "repeated-failed-login-then-success",
+      "correct": true,
+      "behaviourAgreement": 1.0
+    },
+    {
+      "reportId": "SFC-0055",
+      "votedBehaviourId": "password-spray-across-accounts",
+      "goldBehaviourId": "password-spray-across-accounts",
+      "correct": true,
+      "behaviourAgreement": 1.0
+    },
+    {
+      "reportId": "SFC-0121",
+      "votedBehaviourId": "service-account-interactive-auth",
+      "goldBehaviourId": "service-account-interactive-auth",
+      "correct": true,
+      "behaviourAgreement": 1.0
+    },
+    {
+      "reportId": "SFC-0125",
+      "votedBehaviourId": "service-account-interactive-auth",
+      "goldBehaviourId": "service-account-interactive-auth",
+      "correct": true,
+      "behaviourAgreement": 1.0
+    }
+  ]
+}

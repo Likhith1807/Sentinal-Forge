@@ -98,6 +98,45 @@ def test_consistency_majority_vote_on_behaviour_and_fields():
     assert abs(result["agreement"]["behaviourId"] - 2 / 3) < 1e-9
 
 
+def test_consistency_excludes_a_failing_sample_from_the_vote_instead_of_crashing():
+    good = {"behaviourId": "repeated-failed-login-then-success", "requiredFields": ["account_id"],
+            "policyFields": [], "threshold": {"failureCount": 5}, "timeWindow": None, "provenance": {}}
+    calls = iter([good, good])
+
+    def flaky(text, model=None):
+        if next(flaky.count) == 0:
+            raise ValueError("Model output was not parseable JSON: ''")
+        return next(calls)
+    flaky.count = iter([0, 1, 1])
+    transformer_extractor.extract = flaky
+    result = consistency_extractor.extract("some report text", n_samples=3)
+    assert result["nFailed"] == 1 and result["behaviourId"] == "repeated-failed-login-then-success"
+    assert result["agreement"]["behaviourId"] == 1.0    # both SUCCESSFUL samples agreed; the failure isn't a vote
+
+
+def test_consistency_handles_every_sample_failing():
+    transformer_extractor.extract = lambda text, model=None: (_ for _ in ()).throw(ValueError("boom"))
+    result = consistency_extractor.extract("x", n_samples=3)
+    assert result["behaviourId"] is None and result["nFailed"] == 3 and result["samples"] == []
+
+
+def test_measure_variance_skips_reports_with_fewer_than_two_successful_samples():
+    good = {"behaviourId": "b1", "requiredFields": [], "policyFields": [], "threshold": None, "timeWindow": None}
+    sequence = iter([good, ValueError("boom"), ValueError("boom")])
+
+    def flaky(text, model=None):
+        item = next(sequence)
+        if isinstance(item, Exception):
+            raise item
+        return item
+    transformer_extractor.extract = flaky
+    result = consistency_extractor.measure_variance({"r1": "text"}, n_samples=3)
+    assert result["nReports"] == 0 and len(result["reportsSkipped"]) == 1
+    skipped = result["reportsSkipped"][0]
+    assert skipped["reportId"] == "r1" and skipped["nSucceeded"] == 1 and len(skipped["failures"]) == 2
+    assert result["behaviourAgreementRate"] is None
+
+
 def test_consistency_returns_none_when_no_value_reaches_a_majority():
     calls = iter([
         {"behaviourId": "a", "requiredFields": [], "policyFields": [], "threshold": {"failureCount": 3}, "timeWindow": None, "provenance": {}},

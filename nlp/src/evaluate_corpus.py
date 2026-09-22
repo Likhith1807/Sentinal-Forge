@@ -132,6 +132,7 @@ def main(argv=None) -> int:
     ap.add_argument("--split", default="test")
     ap.add_argument("--model-dir", default=str(finetuned_extractor.DEFAULT_MODEL_DIR))
     ap.add_argument("--skip-llm", action="store_true")
+    ap.add_argument("--llm-model", default=None, help="override the prompted-LLM model (e.g. if the default's daily quota is exhausted)")
     ap.add_argument("--out", type=Path)
     args = ap.parse_args(argv)
 
@@ -144,11 +145,14 @@ def main(argv=None) -> int:
     results = {"classical": run_system("classical", classical_extractor.extract, golds, rng)}
     if not args.skip_llm:
         import transformer_extractor
-        results["transformer-prompted"] = run_system("transformer-prompted", transformer_extractor.extract, golds, rng)
+        llm_model = args.llm_model or transformer_extractor.DEFAULT_MODEL
+        results[f"transformer-prompted ({llm_model})"] = run_system(
+            "transformer-prompted", lambda t: transformer_extractor.extract(t, llm_model), golds, rng)
     results["fine-tuned"] = run_system("fine-tuned", lambda t: finetuned_extractor.extract(t, args.model_dir), golds, rng)
     if not args.skip_llm:
         import hybrid_extractor
-        results["hybrid"] = run_system("hybrid", lambda t: hybrid_extractor.extract(t, args.model_dir), golds, rng)
+        results[f"hybrid ({llm_model} fallback)"] = run_system(
+            "hybrid", lambda t: hybrid_extractor.extract(t, args.model_dir, llm_model=llm_model), golds, rng)
 
     summary = {name: {k: v for k, v in r.items() if k != "perReport"} for name, r in results.items()}
     out = {"split": args.split, "n": len(golds), "bootstrapResamples": N_BOOTSTRAP,

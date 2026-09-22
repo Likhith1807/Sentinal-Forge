@@ -9,7 +9,7 @@
       "requested": 44,
       "scored": 44,
       "unavailable": [],
-      "seconds": 0.5,
+      "seconds": 1.5,
       "n": 44,
       "behaviourAccuracy": 0.20454545454545456,
       "fieldPrecision": 1.0,
@@ -614,248 +614,46 @@
         }
       ]
     },
-    "transformer-prompted": {
+    "transformer-prompted (openai/gpt-oss-20b)": {
       "system": "transformer-prompted",
       "requested": 44,
-      "scored": 2,
+      "scored": 43,
       "unavailable": [
         {
-          "reportId": "SFC-0007",
-          "error": "RateLimitError",
-          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
-        },
-        {
-          "reportId": "SFC-0008",
-          "error": "RateLimitError",
-          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
-        },
-        {
-          "reportId": "SFC-0019",
-          "error": "RateLimitError",
-          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
-        },
-        {
-          "reportId": "SFC-0020",
-          "error": "RateLimitError",
-          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
-        },
-        {
-          "reportId": "SFC-0029",
-          "error": "RateLimitError",
-          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
-        },
-        {
-          "reportId": "SFC-0030",
-          "error": "RateLimitError",
-          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
-        },
-        {
-          "reportId": "SFC-0043",
-          "error": "RateLimitError",
-          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
-        },
-        {
-          "reportId": "SFC-0044",
-          "error": "RateLimitError",
-          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
-        },
-        {
-          "reportId": "SFC-0055",
-          "error": "RateLimitError",
-          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
-        },
-        {
-          "reportId": "SFC-0056",
-          "error": "RateLimitError",
-          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
-        },
-        {
-          "reportId": "SFC-0057",
-          "error": "RateLimitError",
-          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
-        },
-        {
-          "reportId": "SFC-0058",
-          "error": "RateLimitError",
-          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
-        },
-        {
-          "reportId": "SFC-0061",
-          "error": "RateLimitError",
-          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
-        },
-        {
-          "reportId": "SFC-0062",
-          "error": "RateLimitError",
-          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
-        },
-        {
-          "reportId": "SFC-0101",
-          "error": "RateLimitError",
-          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
-        },
-        {
-          "reportId": "SFC-0102",
-          "error": "RateLimitError",
-          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
-        },
-        {
-          "reportId": "SFC-0115",
-          "error": "RateLimitError",
-          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
-        },
-        {
-          "reportId": "SFC-0116",
-          "error": "RateLimitError",
-          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
-        },
-        {
-          "reportId": "SFC-0117",
-          "error": "RateLimitError",
-          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
-        },
-        {
-          "reportId": "SFC-0118",
-          "error": "RateLimitError",
-          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
-        },
-        {
-          "reportId": "SFC-0119",
-          "error": "RateLimitError",
-          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
-        },
-        {
-          "reportId": "SFC-0120",
-          "error": "RateLimitError",
-          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
-        },
-        {
-          "reportId": "SFC-0121",
-          "error": "RateLimitError",
-          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
-        },
-        {
-          "reportId": "SFC-0122",
-          "error": "RateLimitError",
-          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
-        },
-        {
-          "reportId": "SFC-0125",
-          "error": "RateLimitError",
-          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
-        },
-        {
-          "reportId": "SFC-0126",
-          "error": "RateLimitError",
-          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
-        },
-        {
-          "reportId": "SFC-0127",
-          "error": "RateLimitError",
-          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
-        },
-        {
-          "reportId": "SFC-0128",
-          "error": "RateLimitError",
-          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
-        },
-        {
-          "reportId": "SFC-0135",
-          "error": "RateLimitError",
-          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
-        },
-        {
-          "reportId": "SFC-0136",
-          "error": "RateLimitError",
-          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
-        },
-        {
-          "reportId": "SFC-0163",
-          "error": "RateLimitError",
-          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
-        },
-        {
-          "reportId": "SFC-0164",
-          "error": "RateLimitError",
-          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
-        },
-        {
-          "reportId": "SFC-0173",
-          "error": "RateLimitError",
-          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
-        },
-        {
           "reportId": "SFC-0174",
-          "error": "RateLimitError",
-          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
-        },
-        {
-          "reportId": "SFC-0179",
-          "error": "RateLimitError",
-          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
-        },
-        {
-          "reportId": "SFC-0180",
-          "error": "RateLimitError",
-          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
-        },
-        {
-          "reportId": "SFC-0191",
-          "error": "RateLimitError",
-          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
-        },
-        {
-          "reportId": "SFC-0192",
-          "error": "RateLimitError",
-          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
-        },
-        {
-          "reportId": "SFC-0211",
-          "error": "RateLimitError",
-          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
-        },
-        {
-          "reportId": "SFC-0212",
-          "error": "RateLimitError",
-          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
-        },
-        {
-          "reportId": "SFC-0215",
-          "error": "RateLimitError",
-          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
-        },
-        {
-          "reportId": "SFC-0216",
-          "error": "RateLimitError",
-          "message": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01m2m7jv19exvsgr9keak1n2xd` service tier `on_demand` on tokens per day (TPD): Limit 200"
+          "error": "ValueError",
+          "message": "Model output was not parseable JSON: ''"
         }
       ],
-      "seconds": 313.2,
-      "n": 2,
-      "behaviourAccuracy": 1.0,
-      "fieldPrecision": 1.0,
-      "fieldRecall": 1.0,
-      "fieldF1": 1.0,
-      "abstentionRecall": null,
+      "seconds": 680.3,
+      "n": 43,
+      "behaviourAccuracy": 0.9069767441860465,
+      "fieldPrecision": 0.9932432432432432,
+      "fieldRecall": 0.9932432432432432,
+      "fieldF1": 0.9932432432432432,
+      "abstentionRecall": 0.0,
       "falseAbstentionRate": 0.0,
       "thresholdExact": 1.0,
-      "windowExact": 0.0,
+      "windowExact": 0.75,
       "behaviourAccuracyCI95": [
-        1.0,
-        1.0
+        0.813953488372093,
+        0.9767441860465116
       ],
       "fieldF1CI95": [
-        1.0,
+        0.983277591973244,
         1.0
       ],
-      "abstentionRecallCI95": null,
+      "abstentionRecallCI95": [
+        0.0,
+        0.0
+      ],
       "thresholdExactCI95": [
         1.0,
         1.0
       ],
       "windowExactCI95": [
-        0.0,
-        0.0
+        0.5714285714285714,
+        0.9166666666666666
       ],
       "perReport": [
         {
@@ -883,6 +681,539 @@
           "fn": 0,
           "thresholdOk": true,
           "windowOk": false
+        },
+        {
+          "reportId": "SFC-0007",
+          "tier": "template",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": true,
+          "windowOk": true
+        },
+        {
+          "reportId": "SFC-0008",
+          "tier": "llm-rewrite",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": true,
+          "windowOk": true
+        },
+        {
+          "reportId": "SFC-0019",
+          "tier": "template",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": true,
+          "windowOk": false
+        },
+        {
+          "reportId": "SFC-0020",
+          "tier": "llm-rewrite",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": true,
+          "windowOk": false
+        },
+        {
+          "reportId": "SFC-0029",
+          "tier": "template",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": true,
+          "windowOk": false
+        },
+        {
+          "reportId": "SFC-0030",
+          "tier": "llm-rewrite",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": true,
+          "windowOk": false
+        },
+        {
+          "reportId": "SFC-0043",
+          "tier": "template",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": true,
+          "windowOk": true
+        },
+        {
+          "reportId": "SFC-0044",
+          "tier": "llm-rewrite",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": true,
+          "windowOk": true
+        },
+        {
+          "reportId": "SFC-0055",
+          "tier": "template",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": true,
+          "windowOk": true
+        },
+        {
+          "reportId": "SFC-0056",
+          "tier": "llm-rewrite",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": true,
+          "windowOk": true
+        },
+        {
+          "reportId": "SFC-0057",
+          "tier": "template",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": true,
+          "windowOk": true
+        },
+        {
+          "reportId": "SFC-0058",
+          "tier": "llm-rewrite",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": true,
+          "windowOk": true
+        },
+        {
+          "reportId": "SFC-0061",
+          "tier": "template",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": true,
+          "windowOk": true
+        },
+        {
+          "reportId": "SFC-0062",
+          "tier": "llm-rewrite",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": true,
+          "windowOk": true
+        },
+        {
+          "reportId": "SFC-0101",
+          "tier": "template",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": true,
+          "windowOk": true
+        },
+        {
+          "reportId": "SFC-0102",
+          "tier": "llm-rewrite",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": true,
+          "windowOk": true
+        },
+        {
+          "reportId": "SFC-0115",
+          "tier": "template",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": true,
+          "windowOk": true
+        },
+        {
+          "reportId": "SFC-0116",
+          "tier": "llm-rewrite",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": true,
+          "windowOk": true
+        },
+        {
+          "reportId": "SFC-0117",
+          "tier": "template",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": true,
+          "windowOk": true
+        },
+        {
+          "reportId": "SFC-0118",
+          "tier": "llm-rewrite",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": true,
+          "windowOk": true
+        },
+        {
+          "reportId": "SFC-0119",
+          "tier": "template",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": true,
+          "windowOk": true
+        },
+        {
+          "reportId": "SFC-0120",
+          "tier": "llm-rewrite",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": true,
+          "windowOk": true
+        },
+        {
+          "reportId": "SFC-0121",
+          "tier": "template",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": null,
+          "windowOk": null
+        },
+        {
+          "reportId": "SFC-0122",
+          "tier": "llm-rewrite",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": null,
+          "windowOk": null
+        },
+        {
+          "reportId": "SFC-0125",
+          "tier": "template",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": null,
+          "windowOk": null
+        },
+        {
+          "reportId": "SFC-0126",
+          "tier": "llm-rewrite",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 3,
+          "fp": 0,
+          "fn": 1,
+          "thresholdOk": null,
+          "windowOk": null
+        },
+        {
+          "reportId": "SFC-0127",
+          "tier": "template",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": null,
+          "windowOk": null
+        },
+        {
+          "reportId": "SFC-0128",
+          "tier": "llm-rewrite",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": null,
+          "windowOk": null
+        },
+        {
+          "reportId": "SFC-0135",
+          "tier": "template",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": null,
+          "windowOk": null
+        },
+        {
+          "reportId": "SFC-0136",
+          "tier": "llm-rewrite",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": null,
+          "windowOk": null
+        },
+        {
+          "reportId": "SFC-0163",
+          "tier": "template",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": null,
+          "windowOk": null
+        },
+        {
+          "reportId": "SFC-0164",
+          "tier": "llm-rewrite",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": null,
+          "windowOk": null
+        },
+        {
+          "reportId": "SFC-0173",
+          "tier": "template",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": null,
+          "windowOk": null
+        },
+        {
+          "reportId": "SFC-0179",
+          "tier": "template",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": null,
+          "windowOk": null
+        },
+        {
+          "reportId": "SFC-0180",
+          "tier": "llm-rewrite",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 1,
+          "fn": 0,
+          "thresholdOk": null,
+          "windowOk": null
+        },
+        {
+          "reportId": "SFC-0191",
+          "tier": "template",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": null,
+          "windowOk": null
+        },
+        {
+          "reportId": "SFC-0192",
+          "tier": "llm-rewrite",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": null,
+          "windowOk": null
+        },
+        {
+          "reportId": "SFC-0211",
+          "tier": "template",
+          "supported": false,
+          "behaviourCorrect": false,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": null,
+          "windowOk": null
+        },
+        {
+          "reportId": "SFC-0212",
+          "tier": "llm-rewrite",
+          "supported": false,
+          "behaviourCorrect": false,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": null,
+          "windowOk": null
+        },
+        {
+          "reportId": "SFC-0215",
+          "tier": "template",
+          "supported": false,
+          "behaviourCorrect": false,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": null,
+          "windowOk": null
+        },
+        {
+          "reportId": "SFC-0216",
+          "tier": "llm-rewrite",
+          "supported": false,
+          "behaviourCorrect": false,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": null,
+          "windowOk": null
         }
       ]
     },
@@ -891,7 +1222,7 @@
       "requested": 44,
       "scored": 44,
       "unavailable": [],
-      "seconds": 7.7,
+      "seconds": 8.5,
       "n": 44,
       "behaviourAccuracy": 0.9545454545454546,
       "fieldPrecision": 0.9044585987261147,
@@ -1477,6 +1808,616 @@
           "wronglyAbstained": false,
           "tp": 0,
           "fp": 4,
+          "fn": 0,
+          "thresholdOk": null,
+          "windowOk": null
+        },
+        {
+          "reportId": "SFC-0216",
+          "tier": "llm-rewrite",
+          "supported": false,
+          "behaviourCorrect": false,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 0,
+          "fp": 4,
+          "fn": 0,
+          "thresholdOk": null,
+          "windowOk": null
+        }
+      ]
+    },
+    "hybrid (openai/gpt-oss-20b fallback)": {
+      "system": "hybrid",
+      "requested": 44,
+      "scored": 44,
+      "unavailable": [],
+      "seconds": 2162.1,
+      "n": 44,
+      "behaviourAccuracy": 0.9772727272727273,
+      "fieldPrecision": 0.9664429530201343,
+      "fieldRecall": 0.9473684210526315,
+      "fieldF1": 0.9568106312292358,
+      "abstentionRecall": 0.75,
+      "falseAbstentionRate": 0.0,
+      "thresholdExact": 1.0,
+      "windowExact": 0.7083333333333334,
+      "behaviourAccuracyCI95": [
+        0.9318181818181818,
+        1.0
+      ],
+      "fieldF1CI95": [
+        0.9192931357520013,
+        0.9858156028368793
+      ],
+      "abstentionRecallCI95": [
+        0.0,
+        1.0
+      ],
+      "thresholdExactCI95": [
+        1.0,
+        1.0
+      ],
+      "windowExactCI95": [
+        0.5185185185185185,
+        0.8846153846153846
+      ],
+      "perReport": [
+        {
+          "reportId": "SFC-0005",
+          "tier": "template",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": true,
+          "windowOk": false
+        },
+        {
+          "reportId": "SFC-0006",
+          "tier": "llm-rewrite",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": true,
+          "windowOk": false
+        },
+        {
+          "reportId": "SFC-0007",
+          "tier": "template",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": true,
+          "windowOk": true
+        },
+        {
+          "reportId": "SFC-0008",
+          "tier": "llm-rewrite",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": true,
+          "windowOk": true
+        },
+        {
+          "reportId": "SFC-0019",
+          "tier": "template",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": true,
+          "windowOk": false
+        },
+        {
+          "reportId": "SFC-0020",
+          "tier": "llm-rewrite",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 2,
+          "fp": 0,
+          "fn": 1,
+          "thresholdOk": true,
+          "windowOk": false
+        },
+        {
+          "reportId": "SFC-0029",
+          "tier": "template",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": true,
+          "windowOk": false
+        },
+        {
+          "reportId": "SFC-0030",
+          "tier": "llm-rewrite",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": true,
+          "windowOk": false
+        },
+        {
+          "reportId": "SFC-0043",
+          "tier": "template",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": true,
+          "windowOk": true
+        },
+        {
+          "reportId": "SFC-0044",
+          "tier": "llm-rewrite",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": true,
+          "windowOk": true
+        },
+        {
+          "reportId": "SFC-0055",
+          "tier": "template",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": true,
+          "windowOk": false
+        },
+        {
+          "reportId": "SFC-0056",
+          "tier": "llm-rewrite",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": true,
+          "windowOk": true
+        },
+        {
+          "reportId": "SFC-0057",
+          "tier": "template",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": true,
+          "windowOk": true
+        },
+        {
+          "reportId": "SFC-0058",
+          "tier": "llm-rewrite",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": true,
+          "windowOk": true
+        },
+        {
+          "reportId": "SFC-0061",
+          "tier": "template",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": true,
+          "windowOk": true
+        },
+        {
+          "reportId": "SFC-0062",
+          "tier": "llm-rewrite",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": true,
+          "windowOk": true
+        },
+        {
+          "reportId": "SFC-0101",
+          "tier": "template",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": true,
+          "windowOk": true
+        },
+        {
+          "reportId": "SFC-0102",
+          "tier": "llm-rewrite",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 3,
+          "fp": 0,
+          "fn": 1,
+          "thresholdOk": true,
+          "windowOk": true
+        },
+        {
+          "reportId": "SFC-0115",
+          "tier": "template",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 3,
+          "fp": 0,
+          "fn": 1,
+          "thresholdOk": true,
+          "windowOk": true
+        },
+        {
+          "reportId": "SFC-0116",
+          "tier": "llm-rewrite",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 3,
+          "fp": 0,
+          "fn": 1,
+          "thresholdOk": true,
+          "windowOk": true
+        },
+        {
+          "reportId": "SFC-0117",
+          "tier": "template",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 2,
+          "fp": 0,
+          "fn": 2,
+          "thresholdOk": true,
+          "windowOk": true
+        },
+        {
+          "reportId": "SFC-0118",
+          "tier": "llm-rewrite",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": true,
+          "windowOk": true
+        },
+        {
+          "reportId": "SFC-0119",
+          "tier": "template",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 2,
+          "fp": 0,
+          "fn": 2,
+          "thresholdOk": true,
+          "windowOk": true
+        },
+        {
+          "reportId": "SFC-0120",
+          "tier": "llm-rewrite",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": true,
+          "windowOk": true
+        },
+        {
+          "reportId": "SFC-0121",
+          "tier": "template",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": null,
+          "windowOk": null
+        },
+        {
+          "reportId": "SFC-0122",
+          "tier": "llm-rewrite",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": null,
+          "windowOk": null
+        },
+        {
+          "reportId": "SFC-0125",
+          "tier": "template",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": null,
+          "windowOk": null
+        },
+        {
+          "reportId": "SFC-0126",
+          "tier": "llm-rewrite",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": null,
+          "windowOk": null
+        },
+        {
+          "reportId": "SFC-0127",
+          "tier": "template",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": null,
+          "windowOk": null
+        },
+        {
+          "reportId": "SFC-0128",
+          "tier": "llm-rewrite",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 1,
+          "fn": 0,
+          "thresholdOk": null,
+          "windowOk": null
+        },
+        {
+          "reportId": "SFC-0135",
+          "tier": "template",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": null,
+          "windowOk": null
+        },
+        {
+          "reportId": "SFC-0136",
+          "tier": "llm-rewrite",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": null,
+          "windowOk": null
+        },
+        {
+          "reportId": "SFC-0163",
+          "tier": "template",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": null,
+          "windowOk": null
+        },
+        {
+          "reportId": "SFC-0164",
+          "tier": "llm-rewrite",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": null,
+          "windowOk": null
+        },
+        {
+          "reportId": "SFC-0173",
+          "tier": "template",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": null,
+          "windowOk": null
+        },
+        {
+          "reportId": "SFC-0174",
+          "tier": "llm-rewrite",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": null,
+          "windowOk": null
+        },
+        {
+          "reportId": "SFC-0179",
+          "tier": "template",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": null,
+          "windowOk": null
+        },
+        {
+          "reportId": "SFC-0180",
+          "tier": "llm-rewrite",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": null,
+          "windowOk": null
+        },
+        {
+          "reportId": "SFC-0191",
+          "tier": "template",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": null,
+          "windowOk": null
+        },
+        {
+          "reportId": "SFC-0192",
+          "tier": "llm-rewrite",
+          "supported": true,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": false,
+          "wronglyAbstained": false,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": null,
+          "windowOk": null
+        },
+        {
+          "reportId": "SFC-0211",
+          "tier": "template",
+          "supported": false,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": true,
+          "wronglyAbstained": false,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": null,
+          "windowOk": null
+        },
+        {
+          "reportId": "SFC-0212",
+          "tier": "llm-rewrite",
+          "supported": false,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": true,
+          "wronglyAbstained": false,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "thresholdOk": null,
+          "windowOk": null
+        },
+        {
+          "reportId": "SFC-0215",
+          "tier": "template",
+          "supported": false,
+          "behaviourCorrect": true,
+          "abstainedCorrectly": true,
+          "wronglyAbstained": false,
+          "tp": 0,
+          "fp": 0,
           "fn": 0,
           "thresholdOk": null,
           "windowOk": null
