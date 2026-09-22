@@ -1,0 +1,26 @@
+{
+  "encoder": "roberta-base",
+  "out": "nlp\\models\\roberta-base-template-only",
+  "corpus": "D:\\SENTINEL_Forge\\data\\corpus",
+  "train_tiers": [
+    "template"
+  ],
+  "epochs": 40,
+  "patience": 8,
+  "batch_size": 8,
+  "lr": 2e-05,
+  "weight_decay": 0.01,
+  "max_length": 256,
+  "seed": 42,
+  "device": "cuda",
+  "trainExamples": 66,
+  "devExamples": 39,
+  "trainSpansDropped": {
+    "threshold": 0,
+    "window": 0
+  },
+  "devSpansDropped": {
+    "threshold": 0,
+    "window": 0
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "n": 39,
+  "behaviourAccuracy": 0.8974,
+  "fieldF1": 0.9531,
+  "fieldPrecision": 0.9362,
+  "fieldRecall": 0.9706,
+  "thresholdExact": 0.913,
+  "thresholdTotal": 23,
+  "windowExact": 0.8261,
+  "windowTotal": 23,
+  "combined": 0.8974,
+  "loss": 1.2681
+}

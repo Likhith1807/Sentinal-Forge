@@ -1,0 +1,9 @@
+{
+  "modelDir": "nlp/models/roberta-base",
+  "split": "test",
+  "runs": 3,
+  "reportsPerRun": 44,
+  "identicalAcrossAllRuns": true,
+  "diffs": [],
+  "method": "each run is a fresh `python` subprocess (fresh weights load from disk, fresh tokenizer, no shared process state), unlike the prompted extractor which is a live sampled API call."
+}
