@@ -74,6 +74,10 @@ docker compose up --build                       # or: make docker-up
 # needed for the live prompted-extraction panel; see .env.example).
 ```
 
+To put the dashboard behind a public URL (Render or Fly.io, both config files included) and
+record a demo walkthrough, see [`docs/deployment.md`](docs/deployment.md) and
+[`docs/demo-script.md`](docs/demo-script.md).
+
 ## Repository layout
 
 - `nlp/` — extraction: classical/prompted/fine-tuned extractors, the training pipeline, and their

@@ -1,0 +1,23 @@
+# Fly.io app config — alternative to render.yaml (see docs/deployment.md for both paths).
+# Builds and runs this repo's existing Dockerfile as-is; no separate fly-specific image.
+#
+# Usage:
+#   1. flyctl launch --no-deploy   (reuses this file; say no to auto-generating a new one)
+#   2. flyctl secrets set GROQ_API_KEY=...     (never put real keys in this file or git)
+#   3. flyctl deploy
+app = "sentinel-forge-dashboard"
+primary_region = "iad" # change to whichever region is closest to you
+
+[build]
+
+[http_service]
+  internal_port = 8000
+  force_https = true
+  auto_stop_machines = "stop"   # scales to zero when idle — free-tier friendly
+  auto_start_machines = true
+  min_machines_running = 0
+
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 512

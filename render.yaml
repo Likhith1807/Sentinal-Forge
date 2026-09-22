@@ -1,0 +1,29 @@
+# Render Blueprint for the analyst dashboard — https://render.com/docs/blueprint-spec
+#
+# Deploys the exact same image `docker compose up --build` builds locally (this repo's
+# Dockerfile), as a single free-tier web service. Does NOT deploy the Scala/Spark compiler
+# side, matching dashboard/README.md's documented design boundary (Stage 4 never runs
+# synchronously per request) — the live dashboard serves classical/prompted extraction and
+# Stage 3 validation live, and the heavier Scala/Spark/fine-tuned-model results from
+# experiments/results/*.json, exactly as it does locally.
+#
+# Usage (see docs/deployment.md for the full walkthrough):
+#   1. Push this repo to GitHub.
+#   2. In the Render dashboard: New -> Blueprint -> pick this repo. Render reads this file.
+#   3. Set GROQ_API_KEY in the Render dashboard's environment tab (never commit it here).
+#   4. Deploy. Render builds the Dockerfile and exposes the service on its own https URL.
+#
+# Free-tier caveat, stated plainly: Render's free web services spin down after ~15 minutes
+# idle and take 30-60s to cold-start on the next request — expected, not a bug, and worth
+# mentioning up front in a live demo/interview rather than being surprised by it.
+services:
+  - type: web
+    name: sentinel-forge-dashboard
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: free
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false # set manually in the Render dashboard; never stored in this file or git
+    healthCheckPath: /
