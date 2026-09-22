@@ -67,3 +67,39 @@ than smoothed over:
 All 4 original Phase 4 items are now done: compiler (batch), historical
 replay, streaming (for the recipe that's structurally streamable), and
 Sigma export (with honestly-scoped fidelity per recipe).
+
+## Revisited after Phase D's correctness fixes (2026-09-22)
+
+Phase D fixed `DistinctCountWithinWindow` to alert once per incident (a
+rising edge in the rolling distinct count) instead of collapsing every
+qualifying row into one row per group
+(`docs/spec/detection-semantics.md`). **This does not change the streaming
+limitation stated above, and in one sense sharpens it**: the fix adds a
+`lag()` call over `Window.partitionBy(groupCol).orderBy(ts_long,
+event_id)` — a second analytic window function, on top of the
+`rangeBetween` one already there. Structured Streaming's restriction is on
+analytic window functions on a streaming DataFrame at all, not specifically
+on `rangeBetween`, so this recipe is no closer to streaming-compatible as
+written; a real streaming version would still need Structured Streaming's
+own stateful primitive (`flatMapGroupsWithState`, tracking each group's
+current distinct set and breaching status as explicit state across
+micro-batches) — a distinct implementation, not an incremental change to
+the current one, and still scoped as real follow-up work rather than
+attempted in this pass.
+
+`PolicyCompare` is unaffected by either Phase D fix in a way that changes
+its streaming status: it already streamed natively (no window function),
+and the null-logField correction only changes a `when(...)` branch's
+output value, not the query's shape.
+
+**Failure recovery, tested for real**
+(`compiler/src/main/scala/sentinelforge/compiler/StreamingRecoveryCheck.scala`):
+a genuine kill-and-restart of the one streaming-capable recipe's query —
+process the first half of a real event set, `query.stop()` (a true stop,
+not a description of one), write the remaining events while nothing is
+running, start an entirely new `StreamingQuery` against the same
+checkpoint directory, and verify both that it resumes (processes new
+micro-batches) and that the combined result exactly matches the same
+events run through the batch path uninterrupted, with no duplicate output
+rows from the restart. Result:
+[`experiments/results/phaseE_streaming_recovery_check.json`](../../experiments/results/phaseE_streaming_recovery_check.json).

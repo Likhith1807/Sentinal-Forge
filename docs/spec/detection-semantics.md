@@ -143,7 +143,20 @@ cross-incident collapsing and the null-logField-as-compliant gap are both
 real, named limitations kept open as tracked follow-up rather than
 silently fixed or silently left undocumented.
 
-The still-open "independently-implemented reference detector" requirement
-(a small, non-Spark reimplementation of the 3 recipes to differentially
-test generated boundary cases against) is separate, larger follow-up work
-and is not addressed by this document.
+**Closed (Phase D).** `scripts/datagen/refdetect.py` is that independent,
+non-Spark reimplementation (written from this document's semantics,
+sharing no code with `RuleCompiler.scala`), and
+`compiler/test/differential_property_test.py` +
+`compiler/src/main/scala/sentinelforge/compiler/DifferentialCheck.scala`
+run it differentially against the real compiler over Hypothesis-generated
+random scenarios, batched into one JVM invocation per behaviour per test
+run. All 5 behaviours agreed across every scenario in the final run: 300
+scenarios each (1,500 total). Two real bugs were found and fixed by this
+process before it passed cleanly — both in the test harness, not the
+compiler: an empty `events` array (Hypothesis's shrinker found this
+immediately) and, once that was fixed, an empty `policy` array for the two
+`PolicyCompare` behaviours specifically, both cases where Spark cannot
+infer a struct type from a wholly-empty JSON array and the whole batch
+failed before any comparison could run. Re-runnable at any scale via
+`python compiler/test/differential_property_test.py --n-scenarios N
+--max-examples M`.

@@ -93,7 +93,12 @@ def distinct_count_scenario(draw, sid: int, counter: Counter, window_s: int, gro
 @st.composite
 def policy_scenario(draw, sid: int, counter: Counter, log_field: str):
     acct = f"s{sid}-acct"
-    has_policy = draw(st.booleans())
+    # Same empty-array schema-inference hazard as _ensure_nonempty guards for events (Hypothesis's
+    # shrinker found it immediately: minimizing every scenario's has_policy to False collapses the
+    # WHOLE batch's "policy" array to empty, which Spark can't infer a struct type for). Scenario 0
+    # always contributes a real policy row so the batch-level array is never empty, regardless of
+    # what every other scenario draws.
+    has_policy = True if sid == 0 else draw(st.booleans())
     policy = []
     if has_policy:
         if log_field == "auth_method":
@@ -146,7 +151,7 @@ def run_batch(scenarios_by_behaviour: dict[str, list[dict]], tmp_dir: Path) -> d
     in_path, out_path = tmp_dir / "differential_in.json", tmp_dir / "differential_out.json"
     in_path.write_text(json.dumps(batch_in), encoding="utf-8")
 
-    cmd = [SBT, "-Dsf.heap=4g", f'runMain sentinelforge.compiler.DifferentialCheck {in_path} {out_path}']
+    cmd = [SBT, "-Dsf.heap=2g", f'runMain sentinelforge.compiler.DifferentialCheck {in_path} {out_path}']
     import os
     env = dict(os.environ, JAVA_HOME=JAVA_HOME)
     proc = subprocess.run(cmd, cwd=str(REPO_ROOT), env=env, capture_output=True, text=True)
