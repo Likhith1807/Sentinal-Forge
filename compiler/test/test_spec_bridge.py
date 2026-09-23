@@ -85,12 +85,12 @@ def case_threshold_under_wrong_behaviours_key_name_rejected():
         pass
 
 
-def case_threshold_accepts_real_transformer_synonym():
-    """A live run of nlp/src/transformer_extractor.py on the real
-    concurrent-sessions-003 held-out report (2026-09-17) returned
-    {"loginCount": 2} — NOT gold's {"successCount": 2} — a reasonable
-    synonym, not a mislabelling. The threshold-key check must accept this
-    real extractor output, not just the gold fixture's own spelling."""
+def case_ambiguous_threshold_alias_now_rejected():
+    """AUDIT REGRESSION (2026-09): this case used to assert the OPPOSITE. A live prompted-extractor run
+    once returned {"loginCount": 2} for a multi-host report and the bridge accepted it as "distinct hosts".
+    "loginCount" is equally a plausible name for an event count, so accepting it meant the meaning of the
+    number was guessed. Ambiguous aliases are now rejected; the count's semantics must come from an
+    unambiguous key or from the evidence-backed `conditions.count` (see sentinelforge.reconcile)."""
     spec = {
         "behaviourId": "multi-host-authentication",
         "requiredFields": ["account_id", "event_type", "timestamp", "source_host"],
@@ -98,8 +98,23 @@ def case_threshold_accepts_real_transformer_synonym():
         "threshold": {"loginCount": 2},
         "timeWindow": {"amount": 15, "unit": "minutes"},
     }
+    try:
+        spec_bridge.build_compiled_spec(spec)
+        raise AssertionError("expected UnbuildableSpecError for the ambiguous alias loginCount")
+    except spec_bridge.UnbuildableSpecError as e:
+        assert "AMBIGUOUS_COUNT_ALIAS" in str(e)
+
+
+def case_unambiguous_distinct_host_alias_accepted():
+    spec = {
+        "behaviourId": "multi-host-authentication",
+        "requiredFields": ["account_id", "event_type", "timestamp", "source_host"],
+        "policyFields": [],
+        "threshold": {"distinctHostCount": 2},
+        "timeWindow": {"amount": 15, "unit": "minutes"},
+    }
     c = spec_bridge.build_compiled_spec(spec)
-    assert c["distinctThreshold"] == 2
+    assert c["distinctThreshold"] == 2 and c["countSemantics"] == "distinct_hosts"
 
 
 def case_unknown_behaviour_id_raises():
@@ -121,7 +136,8 @@ def case_policy_compare_needs_no_numbers():
 
 def case_structural_dependencies_known_behaviour():
     log_fields, policy_fields = spec_bridge.structural_dependencies("repeated-failed-login-then-success")
-    assert log_fields == {"account_id", "event_type", "timestamp"}
+    # event_id is an OUTPUT of every alert (it is the supporting-event reference), so the recipe depends on it
+    assert log_fields == {"account_id", "event_type", "timestamp", "event_id"}
     assert policy_fields == set()
 
 

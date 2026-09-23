@@ -54,6 +54,23 @@ def _parse_number(text: str) -> int | None:
     return _WORD_TO_NUMBER.get(text)
 
 
+_UNIT_AFTER = re.compile(r"^(\s*[-‐-―]?\s*)(seconds?|secs?|minutes?|mins?|hours?|hrs?)\b", re.IGNORECASE)
+
+
+def unit_after(text: str, pos: int) -> str | None:
+    """The time unit written immediately after character `pos` ("90-second", "5 minutes"), else None."""
+    m = _UNIT_AFTER.match(text[pos:pos + 24])
+    if not m:
+        return None
+    w = m.group(2).lower()
+    return "seconds" if w.startswith("sec") else "minutes" if w.startswith("min") else "hours"
+
+
+def _unit_span_len(text: str, pos: int) -> int:
+    m = _UNIT_AFTER.match(text[pos:pos + 24])
+    return m.end() if m else 0
+
+
 @dataclass
 class FinetunedExtractionResult:
     behaviourId: str | None
@@ -135,10 +152,16 @@ def extract(report_text: str, model_dir: str | Path = DEFAULT_MODEL_DIR, device:
         if w_end >= w_start:
             span_text, prov = _span_text_and_prov(report_text, offsets, w_start, w_end)
             amount = _parse_number(span_text)
-            unit = WINDOW_UNITS[out["unit_logits"].argmax(-1).item()]
-            if amount is not None:
+            # The unit is READ FROM THE TEXT beside the amount span, never taken from the separate unit head:
+            # that head answered "minutes" for "90-second" and "600 seconds" (audit, 2026-09), compiling a
+            # 60x-too-long window with no sign of trouble. The head's answer is kept only for diagnostics.
+            unit_head = WINDOW_UNITS[out["unit_logits"].argmax(-1).item()]
+            unit = unit_after(report_text, prov["charEnd"])
+            raw["unitHead"] = unit_head
+            raw["unitFromText"] = unit
+            if amount is not None and unit is not None:
                 time_window = {"amount": amount, "unit": unit}
-                provenance["timeWindow"] = prov
+                provenance["timeWindow"] = {**prov, "charEnd": prov["charEnd"] + _unit_span_len(report_text, prov["charEnd"])}
             raw["windowSpanText"] = span_text
 
     return FinetunedExtractionResult(behaviourId=behaviour_id, requiredFields=required, policyFields=policy,

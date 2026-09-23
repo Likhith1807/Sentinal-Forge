@@ -1,27 +1,42 @@
-"""End-to-end audit of extraction -> Stage 3 -> bridge: does the fine-tuned pipeline produce the
-*compiled specification the gold labels imply*?  This is the measurement behind the "27 of 40
-supported reports correct; 7 of 44 silently wrong" finding, reproduced here so every fix has a
-number to move.
+"""End-to-end audit: does an extraction pipeline produce the *compiled rule the gold labels imply*?
 
-Outcome taxonomy per report (gold-supported reports):
-  correct              compiled spec == compiled(gold)
-  wrong-spec-silent    a rule was compiled, but it differs from the gold rule   <- the dangerous one
-  rejected-supported   pipeline refused a report that is supported            <- annoying, safe
+This is the measurement behind the finding "the fine-tuned pipeline produced the correct compiled
+specification for 27 of 40 supported reports, while 7 of 44 reports silently produced an incorrect or
+unsupported rule". It runs the SAME reports through several pipelines so every fix has a number to move:
+
+  legacy-finetuned   fine-tuned model -> Stage 3 -> bridge   (unit taken from the model's unit head;
+                     reproduced from experiments/results/audit_pipeline_baseline.json, run before any fix)
+  finetuned-raw      fine-tuned model (unit read from text) -> strict Stage 3 -> strict bridge; no evidence check
+  finetuned+evidence fine-tuned model -> reconcile against the passage -> data check -> compile   [product]
+  evidence-only      no model at all: the deterministic condition finder decides
+  classical          the regex baseline, through the product path
+
+Outcome per gold-supported report:
+  correct              compiled rule == compiled(gold)
+  wrong-rule-silent    a rule was compiled and it differs from the gold rule            <- the dangerous one
+  needs-review         nothing compiled because evidence was absent / readings disagreed
+  rejected-supported   nothing compiled although the report is supported and evidence conflicts
 Per unsupported report:
-  correctly-rejected   no rule compiled
-  silently-accepted    a rule was compiled for behaviour the compiler cannot express  <- dangerous
+  correctly-refused    nothing compiled
+  silently-accepted    a rule was compiled for a behaviour the compiler cannot express  <- dangerous
+
+The test split is used here because these reports are the *regression* set: the pipeline was tuned against
+their failures, so this is development evidence. The frozen holdout (data/holdout) is the untouched one.
 """
 from __future__ import annotations
 
+import argparse
 import json
 import sys
+from collections import Counter
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
-sys.path[:0] = [str(REPO / "nlp" / "src"), str(REPO / "compiler" / "src")]
+sys.path[:0] = [str(REPO), str(REPO / "nlp" / "src"), str(REPO / "compiler" / "src")]
 
 import observability_checker as stage3  # noqa: E402
 import spec_bridge  # noqa: E402
+from sentinelforge.pipeline import analyze  # noqa: E402
 
 CORPUS = REPO / "data" / "corpus"
 
@@ -34,51 +49,77 @@ def load_split(split: str):
             yield g, (CORPUS / "reports" / f"{g['reportId']}.md").read_text(encoding="utf-8")
 
 
-def pipeline(extraction: dict):
-    """The path the dashboard/CLI take today: Stage 3 verdict, then the bridge."""
-    v = stage3.validate(extraction)
-    if v.status != "supported":
-        return None, "stage3: " + "; ".join(v.notes)[:160]
-    try:
-        return spec_bridge.build_compiled_spec(extraction), None
-    except spec_bridge.UnbuildableSpecError as e:
-        return None, f"bridge: {e}"[:160]
-
-
 def gold_compiled(g: dict):
-    if not g["supported"]:
-        return None
-    return spec_bridge.build_compiled_spec(g)
+    return spec_bridge.build_compiled_spec(g) if g["supported"] else None
 
 
-def main():
+def functional(c):
+    """Only the keys that decide what the rule does (metadata such as hashes/versions excluded)."""
+    return None if c is None else {k: c.get(k) for k in spec_bridge.ALL_COMPILED_SPEC_KEYS}
+
+
+def outcome(gold_rule, got, status):
+    if gold_rule is None:
+        return "silently-accepted" if got is not None else "correctly-refused"
+    if got is None:
+        return "needs-review" if status == "needs_review" else "rejected-supported"
+    return "correct" if functional(got) == functional(gold_rule) else "wrong-rule-silent"
+
+
+def as_extraction(r) -> dict:
+    return {"behaviourId": r.behaviourId, "requiredFields": r.requiredFields, "policyFields": r.policyFields,
+            "threshold": r.threshold, "timeWindow": r.timeWindow, "provenance": r.provenance}
+
+
+def raw_pipeline(ext: dict):
+    v = stage3.validate(ext)
+    if v.status != "supported":
+        return None, "rejected"
+    try:
+        return spec_bridge.build_compiled_spec(ext), "compiled"
+    except spec_bridge.UnbuildableSpecError:
+        return None, "rejected"
+
+
+def main(argv=None):
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--split", default="test")
+    ap.add_argument("--out", default=str(REPO / "experiments" / "results" / "audit_pipeline_fixed.json"))
+    args = ap.parse_args(argv)
+
+    import classical_extractor
     import finetuned_extractor
+
     rows = []
-    for g, text in load_split("test"):
-        r = finetuned_extractor.extract(text)
-        ext = {"behaviourId": r.behaviourId, "requiredFields": r.requiredFields, "policyFields": r.policyFields,
-               "threshold": r.threshold, "timeWindow": r.timeWindow}
-        got, why = pipeline(ext)
+    for g, text in load_split(args.split):
         want = gold_compiled(g)
-        if want is None:
-            outcome = "correctly-rejected" if got is None else "silently-accepted"
-        elif got is None:
-            outcome = "rejected-supported"
-        elif got == want:
-            outcome = "correct"
-        else:
-            outcome = "wrong-spec-silent"
-        diff = {k: (want.get(k) if want else None, got.get(k)) for k in (got or {}) if want is None or got.get(k) != want.get(k)} if got else {}
-        rows.append({"reportId": g["reportId"], "behaviour": g["behaviourId"], "outcome": outcome, "diff": diff,
-                     "rejectReason": why, "goldWindow": g.get("timeWindow"), "predWindow": r.timeWindow})
-    from collections import Counter
-    c = Counter(r["outcome"] for r in rows)
-    print(dict(c))
-    for r in rows:
-        if r["outcome"] in ("wrong-spec-silent", "silently-accepted", "rejected-supported"):
-            print(r["reportId"], r["outcome"], r["behaviour"], r["diff"], r["rejectReason"] or "")
-    out = REPO / "experiments" / "results" / "audit_pipeline_baseline.json"
-    out.write_text(json.dumps({"counts": c, "rows": rows}, indent=2), encoding="utf-8")
+        ft = finetuned_extractor.extract(text)
+        ext = as_extraction(ft)
+        cl = classical_extractor.extract(text)
+        cl_ext = {"behaviourId": cl.behaviourId, "requiredFields": cl.requiredFields, "policyFields": cl.policyFields,
+                  "threshold": cl.threshold, "timeWindow": cl.timeWindow, "provenance": cl.provenance}
+        res = {}
+        c, st = raw_pipeline(ext)
+        res["finetuned-raw"] = (c, st, [])
+        for name, extraction in (("finetuned+evidence", ext), ("evidence-only", None), ("classical", cl_ext)):
+            a = analyze(text, extraction)
+            res[name] = (a.compiled, a.status, a.reconciliation.codes)
+        rows.append({"reportId": g["reportId"], "behaviour": g["behaviourId"], "supported": g["supported"],
+                     "outcomes": {k: outcome(want, c, st) for k, (c, st, _) in res.items()},
+                     "codes": {k: codes for k, (_, _, codes) in res.items() if codes}})
+
+    systems = ["finetuned-raw", "finetuned+evidence", "evidence-only", "classical"]
+    summary = {s: dict(Counter(r["outcomes"][s] for r in rows)) for s in systems}
+    n_sup = sum(r["supported"] for r in rows)
+    print(f"{len(rows)} reports ({n_sup} supported, {len(rows) - n_sup} unsupported), split={args.split}")
+    for s in systems:
+        c = summary[s]
+        silent = c.get("wrong-rule-silent", 0) + c.get("silently-accepted", 0)
+        print(f"  {s:20s} correct={c.get('correct', 0):3d}/{n_sup}  silent-failures={silent}  needs-review={c.get('needs-review', 0)}  "
+              f"rejected-supported={c.get('rejected-supported', 0)}  correctly-refused={c.get('correctly-refused', 0)}")
+    Path(args.out).write_text(json.dumps({"split": args.split, "n": len(rows), "supported": n_sup, "summary": summary,
+                                          "rows": rows}, indent=2), encoding="utf-8")
+    return rows
 
 
 if __name__ == "__main__":

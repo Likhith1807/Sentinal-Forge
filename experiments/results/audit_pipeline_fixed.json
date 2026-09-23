@@ -1,0 +1,812 @@
+{
+  "split": "test",
+  "n": 44,
+  "supported": 40,
+  "summary": {
+    "finetuned-raw": {
+      "correct": 40,
+      "correctly-refused": 2,
+      "silently-accepted": 2
+    },
+    "finetuned+evidence": {
+      "correct": 39,
+      "needs-review": 1,
+      "correctly-refused": 4
+    },
+    "evidence-only": {
+      "correct": 39,
+      "rejected-supported": 1,
+      "correctly-refused": 4
+    },
+    "classical": {
+      "correct": 9,
+      "rejected-supported": 16,
+      "needs-review": 15,
+      "correctly-refused": 4
+    }
+  },
+  "rows": [
+    {
+      "reportId": "SFC-0005",
+      "behaviour": "repeated-failed-login-then-success",
+      "supported": true,
+      "outcomes": {
+        "finetuned-raw": "correct",
+        "finetuned+evidence": "correct",
+        "evidence-only": "correct",
+        "classical": "correct"
+      },
+      "codes": {}
+    },
+    {
+      "reportId": "SFC-0006",
+      "behaviour": "repeated-failed-login-then-success",
+      "supported": true,
+      "outcomes": {
+        "finetuned-raw": "correct",
+        "finetuned+evidence": "correct",
+        "evidence-only": "correct",
+        "classical": "correct"
+      },
+      "codes": {}
+    },
+    {
+      "reportId": "SFC-0007",
+      "behaviour": "repeated-failed-login-then-success",
+      "supported": true,
+      "outcomes": {
+        "finetuned-raw": "correct",
+        "finetuned+evidence": "correct",
+        "evidence-only": "correct",
+        "classical": "correct"
+      },
+      "codes": {}
+    },
+    {
+      "reportId": "SFC-0008",
+      "behaviour": "repeated-failed-login-then-success",
+      "supported": true,
+      "outcomes": {
+        "finetuned-raw": "correct",
+        "finetuned+evidence": "correct",
+        "evidence-only": "correct",
+        "classical": "correct"
+      },
+      "codes": {}
+    },
+    {
+      "reportId": "SFC-0019",
+      "behaviour": "repeated-failed-login-then-success",
+      "supported": true,
+      "outcomes": {
+        "finetuned-raw": "correct",
+        "finetuned+evidence": "correct",
+        "evidence-only": "correct",
+        "classical": "correct"
+      },
+      "codes": {}
+    },
+    {
+      "reportId": "SFC-0020",
+      "behaviour": "repeated-failed-login-then-success",
+      "supported": true,
+      "outcomes": {
+        "finetuned-raw": "correct",
+        "finetuned+evidence": "correct",
+        "evidence-only": "correct",
+        "classical": "correct"
+      },
+      "codes": {}
+    },
+    {
+      "reportId": "SFC-0029",
+      "behaviour": "repeated-failed-login-then-success",
+      "supported": true,
+      "outcomes": {
+        "finetuned-raw": "correct",
+        "finetuned+evidence": "correct",
+        "evidence-only": "correct",
+        "classical": "correct"
+      },
+      "codes": {}
+    },
+    {
+      "reportId": "SFC-0030",
+      "behaviour": "repeated-failed-login-then-success",
+      "supported": true,
+      "outcomes": {
+        "finetuned-raw": "correct",
+        "finetuned+evidence": "correct",
+        "evidence-only": "correct",
+        "classical": "correct"
+      },
+      "codes": {}
+    },
+    {
+      "reportId": "SFC-0043",
+      "behaviour": "password-spray-across-accounts",
+      "supported": true,
+      "outcomes": {
+        "finetuned-raw": "correct",
+        "finetuned+evidence": "correct",
+        "evidence-only": "correct",
+        "classical": "rejected-supported"
+      },
+      "codes": {
+        "classical": [
+          "BEHAVIOUR_CONFLICT",
+          "COUNT_SEMANTICS_MISMATCH"
+        ]
+      }
+    },
+    {
+      "reportId": "SFC-0044",
+      "behaviour": "password-spray-across-accounts",
+      "supported": true,
+      "outcomes": {
+        "finetuned-raw": "correct",
+        "finetuned+evidence": "correct",
+        "evidence-only": "correct",
+        "classical": "rejected-supported"
+      },
+      "codes": {
+        "classical": [
+          "BEHAVIOUR_CONFLICT",
+          "COUNT_SEMANTICS_MISMATCH"
+        ]
+      }
+    },
+    {
+      "reportId": "SFC-0055",
+      "behaviour": "password-spray-across-accounts",
+      "supported": true,
+      "outcomes": {
+        "finetuned-raw": "correct",
+        "finetuned+evidence": "correct",
+        "evidence-only": "correct",
+        "classical": "rejected-supported"
+      },
+      "codes": {
+        "classical": [
+          "BEHAVIOUR_CONFLICT",
+          "COUNT_SEMANTICS_MISMATCH"
+        ]
+      }
+    },
+    {
+      "reportId": "SFC-0056",
+      "behaviour": "password-spray-across-accounts",
+      "supported": true,
+      "outcomes": {
+        "finetuned-raw": "correct",
+        "finetuned+evidence": "correct",
+        "evidence-only": "correct",
+        "classical": "rejected-supported"
+      },
+      "codes": {
+        "classical": [
+          "BEHAVIOUR_CONFLICT",
+          "COUNT_SEMANTICS_MISMATCH"
+        ]
+      }
+    },
+    {
+      "reportId": "SFC-0057",
+      "behaviour": "password-spray-across-accounts",
+      "supported": true,
+      "outcomes": {
+        "finetuned-raw": "correct",
+        "finetuned+evidence": "correct",
+        "evidence-only": "correct",
+        "classical": "rejected-supported"
+      },
+      "codes": {
+        "classical": [
+          "BEHAVIOUR_CONFLICT",
+          "COUNT_SEMANTICS_MISMATCH"
+        ]
+      }
+    },
+    {
+      "reportId": "SFC-0058",
+      "behaviour": "password-spray-across-accounts",
+      "supported": true,
+      "outcomes": {
+        "finetuned-raw": "correct",
+        "finetuned+evidence": "correct",
+        "evidence-only": "correct",
+        "classical": "rejected-supported"
+      },
+      "codes": {
+        "classical": [
+          "BEHAVIOUR_CONFLICT",
+          "COUNT_SEMANTICS_MISMATCH"
+        ]
+      }
+    },
+    {
+      "reportId": "SFC-0061",
+      "behaviour": "password-spray-across-accounts",
+      "supported": true,
+      "outcomes": {
+        "finetuned-raw": "correct",
+        "finetuned+evidence": "correct",
+        "evidence-only": "correct",
+        "classical": "rejected-supported"
+      },
+      "codes": {
+        "classical": [
+          "BEHAVIOUR_CONFLICT",
+          "COUNT_SEMANTICS_MISMATCH"
+        ]
+      }
+    },
+    {
+      "reportId": "SFC-0062",
+      "behaviour": "password-spray-across-accounts",
+      "supported": true,
+      "outcomes": {
+        "finetuned-raw": "correct",
+        "finetuned+evidence": "correct",
+        "evidence-only": "correct",
+        "classical": "rejected-supported"
+      },
+      "codes": {
+        "classical": [
+          "BEHAVIOUR_CONFLICT",
+          "COUNT_SEMANTICS_MISMATCH"
+        ]
+      }
+    },
+    {
+      "reportId": "SFC-0101",
+      "behaviour": "multi-host-authentication",
+      "supported": true,
+      "outcomes": {
+        "finetuned-raw": "correct",
+        "finetuned+evidence": "correct",
+        "evidence-only": "correct",
+        "classical": "rejected-supported"
+      },
+      "codes": {
+        "classical": [
+          "BEHAVIOUR_CONFLICT",
+          "COUNT_SEMANTICS_MISMATCH"
+        ]
+      }
+    },
+    {
+      "reportId": "SFC-0102",
+      "behaviour": "multi-host-authentication",
+      "supported": true,
+      "outcomes": {
+        "finetuned-raw": "correct",
+        "finetuned+evidence": "correct",
+        "evidence-only": "correct",
+        "classical": "rejected-supported"
+      },
+      "codes": {
+        "classical": [
+          "BEHAVIOUR_CONFLICT",
+          "COUNT_SEMANTICS_MISMATCH"
+        ]
+      }
+    },
+    {
+      "reportId": "SFC-0115",
+      "behaviour": "multi-host-authentication",
+      "supported": true,
+      "outcomes": {
+        "finetuned-raw": "correct",
+        "finetuned+evidence": "correct",
+        "evidence-only": "correct",
+        "classical": "rejected-supported"
+      },
+      "codes": {
+        "classical": [
+          "BEHAVIOUR_CONFLICT",
+          "COUNT_SEMANTICS_MISMATCH"
+        ]
+      }
+    },
+    {
+      "reportId": "SFC-0116",
+      "behaviour": "multi-host-authentication",
+      "supported": true,
+      "outcomes": {
+        "finetuned-raw": "correct",
+        "finetuned+evidence": "correct",
+        "evidence-only": "correct",
+        "classical": "rejected-supported"
+      },
+      "codes": {
+        "classical": [
+          "BEHAVIOUR_CONFLICT",
+          "COUNT_SEMANTICS_MISMATCH"
+        ]
+      }
+    },
+    {
+      "reportId": "SFC-0117",
+      "behaviour": "multi-host-authentication",
+      "supported": true,
+      "outcomes": {
+        "finetuned-raw": "correct",
+        "finetuned+evidence": "correct",
+        "evidence-only": "correct",
+        "classical": "rejected-supported"
+      },
+      "codes": {
+        "classical": [
+          "BEHAVIOUR_CONFLICT",
+          "COUNT_SEMANTICS_MISMATCH"
+        ]
+      }
+    },
+    {
+      "reportId": "SFC-0118",
+      "behaviour": "multi-host-authentication",
+      "supported": true,
+      "outcomes": {
+        "finetuned-raw": "correct",
+        "finetuned+evidence": "correct",
+        "evidence-only": "correct",
+        "classical": "rejected-supported"
+      },
+      "codes": {
+        "classical": [
+          "BEHAVIOUR_CONFLICT",
+          "COUNT_SEMANTICS_MISMATCH"
+        ]
+      }
+    },
+    {
+      "reportId": "SFC-0119",
+      "behaviour": "multi-host-authentication",
+      "supported": true,
+      "outcomes": {
+        "finetuned-raw": "correct",
+        "finetuned+evidence": "correct",
+        "evidence-only": "correct",
+        "classical": "rejected-supported"
+      },
+      "codes": {
+        "classical": [
+          "BEHAVIOUR_CONFLICT",
+          "COUNT_SEMANTICS_MISMATCH"
+        ]
+      }
+    },
+    {
+      "reportId": "SFC-0120",
+      "behaviour": "multi-host-authentication",
+      "supported": true,
+      "outcomes": {
+        "finetuned-raw": "correct",
+        "finetuned+evidence": "needs-review",
+        "evidence-only": "rejected-supported",
+        "classical": "rejected-supported"
+      },
+      "codes": {
+        "finetuned+evidence": [
+          "RECIPE_CONDITIONS_NOT_FOUND"
+        ],
+        "evidence-only": [
+          "UNSUPPORTED_BEHAVIOUR"
+        ],
+        "classical": [
+          "RECIPE_CONDITIONS_NOT_FOUND",
+          "COUNT_SEMANTICS_MISMATCH",
+          "WINDOW_OUTSIDE_RULE_SENTENCE"
+        ]
+      }
+    },
+    {
+      "reportId": "SFC-0121",
+      "behaviour": "auth-method-policy-violation",
+      "supported": true,
+      "outcomes": {
+        "finetuned-raw": "correct",
+        "finetuned+evidence": "correct",
+        "evidence-only": "correct",
+        "classical": "correct"
+      },
+      "codes": {}
+    },
+    {
+      "reportId": "SFC-0122",
+      "behaviour": "auth-method-policy-violation",
+      "supported": true,
+      "outcomes": {
+        "finetuned-raw": "correct",
+        "finetuned+evidence": "correct",
+        "evidence-only": "correct",
+        "classical": "needs-review"
+      },
+      "codes": {
+        "classical": [
+          "BEHAVIOUR_CONFLICT",
+          "COUNT_MISSING",
+          "WINDOW_MISSING"
+        ]
+      }
+    },
+    {
+      "reportId": "SFC-0125",
+      "behaviour": "auth-method-policy-violation",
+      "supported": true,
+      "outcomes": {
+        "finetuned-raw": "correct",
+        "finetuned+evidence": "correct",
+        "evidence-only": "correct",
+        "classical": "needs-review"
+      },
+      "codes": {
+        "classical": [
+          "BEHAVIOUR_CONFLICT",
+          "COUNT_MISSING",
+          "WINDOW_MISSING"
+        ]
+      }
+    },
+    {
+      "reportId": "SFC-0126",
+      "behaviour": "auth-method-policy-violation",
+      "supported": true,
+      "outcomes": {
+        "finetuned-raw": "correct",
+        "finetuned+evidence": "correct",
+        "evidence-only": "correct",
+        "classical": "needs-review"
+      },
+      "codes": {
+        "classical": [
+          "BEHAVIOUR_CONFLICT",
+          "COUNT_MISSING",
+          "WINDOW_MISSING"
+        ]
+      }
+    },
+    {
+      "reportId": "SFC-0127",
+      "behaviour": "auth-method-policy-violation",
+      "supported": true,
+      "outcomes": {
+        "finetuned-raw": "correct",
+        "finetuned+evidence": "correct",
+        "evidence-only": "correct",
+        "classical": "needs-review"
+      },
+      "codes": {
+        "classical": [
+          "BEHAVIOUR_CONFLICT",
+          "COUNT_MISSING",
+          "WINDOW_MISSING"
+        ]
+      }
+    },
+    {
+      "reportId": "SFC-0128",
+      "behaviour": "auth-method-policy-violation",
+      "supported": true,
+      "outcomes": {
+        "finetuned-raw": "correct",
+        "finetuned+evidence": "correct",
+        "evidence-only": "correct",
+        "classical": "needs-review"
+      },
+      "codes": {
+        "classical": [
+          "BEHAVIOUR_CONFLICT",
+          "COUNT_MISSING",
+          "WINDOW_MISSING"
+        ]
+      }
+    },
+    {
+      "reportId": "SFC-0135",
+      "behaviour": "auth-method-policy-violation",
+      "supported": true,
+      "outcomes": {
+        "finetuned-raw": "correct",
+        "finetuned+evidence": "correct",
+        "evidence-only": "correct",
+        "classical": "needs-review"
+      },
+      "codes": {
+        "classical": [
+          "BEHAVIOUR_CONFLICT",
+          "COUNT_MISSING",
+          "WINDOW_MISSING"
+        ]
+      }
+    },
+    {
+      "reportId": "SFC-0136",
+      "behaviour": "auth-method-policy-violation",
+      "supported": true,
+      "outcomes": {
+        "finetuned-raw": "correct",
+        "finetuned+evidence": "correct",
+        "evidence-only": "correct",
+        "classical": "needs-review"
+      },
+      "codes": {
+        "classical": [
+          "BEHAVIOUR_CONFLICT",
+          "COUNT_MISSING",
+          "WINDOW_MISSING"
+        ]
+      }
+    },
+    {
+      "reportId": "SFC-0163",
+      "behaviour": "mfa-missing-on-required-account",
+      "supported": true,
+      "outcomes": {
+        "finetuned-raw": "correct",
+        "finetuned+evidence": "correct",
+        "evidence-only": "correct",
+        "classical": "needs-review"
+      },
+      "codes": {
+        "classical": [
+          "BEHAVIOUR_CONFLICT",
+          "COUNT_MISSING",
+          "WINDOW_MISSING"
+        ]
+      }
+    },
+    {
+      "reportId": "SFC-0164",
+      "behaviour": "mfa-missing-on-required-account",
+      "supported": true,
+      "outcomes": {
+        "finetuned-raw": "correct",
+        "finetuned+evidence": "correct",
+        "evidence-only": "correct",
+        "classical": "needs-review"
+      },
+      "codes": {
+        "classical": [
+          "BEHAVIOUR_CONFLICT",
+          "COUNT_MISSING",
+          "WINDOW_MISSING"
+        ]
+      }
+    },
+    {
+      "reportId": "SFC-0173",
+      "behaviour": "mfa-missing-on-required-account",
+      "supported": true,
+      "outcomes": {
+        "finetuned-raw": "correct",
+        "finetuned+evidence": "correct",
+        "evidence-only": "correct",
+        "classical": "needs-review"
+      },
+      "codes": {
+        "classical": [
+          "BEHAVIOUR_CONFLICT",
+          "COUNT_MISSING",
+          "WINDOW_MISSING"
+        ]
+      }
+    },
+    {
+      "reportId": "SFC-0174",
+      "behaviour": "mfa-missing-on-required-account",
+      "supported": true,
+      "outcomes": {
+        "finetuned-raw": "correct",
+        "finetuned+evidence": "correct",
+        "evidence-only": "correct",
+        "classical": "needs-review"
+      },
+      "codes": {
+        "classical": [
+          "BEHAVIOUR_CONFLICT",
+          "COUNT_MISSING",
+          "WINDOW_MISSING"
+        ]
+      }
+    },
+    {
+      "reportId": "SFC-0179",
+      "behaviour": "mfa-missing-on-required-account",
+      "supported": true,
+      "outcomes": {
+        "finetuned-raw": "correct",
+        "finetuned+evidence": "correct",
+        "evidence-only": "correct",
+        "classical": "needs-review"
+      },
+      "codes": {
+        "classical": [
+          "BEHAVIOUR_CONFLICT",
+          "COUNT_MISSING",
+          "WINDOW_MISSING"
+        ]
+      }
+    },
+    {
+      "reportId": "SFC-0180",
+      "behaviour": "mfa-missing-on-required-account",
+      "supported": true,
+      "outcomes": {
+        "finetuned-raw": "correct",
+        "finetuned+evidence": "correct",
+        "evidence-only": "correct",
+        "classical": "needs-review"
+      },
+      "codes": {
+        "classical": [
+          "BEHAVIOUR_CONFLICT",
+          "COUNT_MISSING",
+          "WINDOW_MISSING"
+        ]
+      }
+    },
+    {
+      "reportId": "SFC-0191",
+      "behaviour": "mfa-missing-on-required-account",
+      "supported": true,
+      "outcomes": {
+        "finetuned-raw": "correct",
+        "finetuned+evidence": "correct",
+        "evidence-only": "correct",
+        "classical": "needs-review"
+      },
+      "codes": {
+        "classical": [
+          "BEHAVIOUR_CONFLICT",
+          "COUNT_MISSING",
+          "WINDOW_MISSING"
+        ]
+      }
+    },
+    {
+      "reportId": "SFC-0192",
+      "behaviour": "mfa-missing-on-required-account",
+      "supported": true,
+      "outcomes": {
+        "finetuned-raw": "correct",
+        "finetuned+evidence": "correct",
+        "evidence-only": "correct",
+        "classical": "needs-review"
+      },
+      "codes": {
+        "classical": [
+          "BEHAVIOUR_CONFLICT",
+          "COUNT_MISSING",
+          "WINDOW_MISSING"
+        ]
+      }
+    },
+    {
+      "reportId": "SFC-0211",
+      "behaviour": null,
+      "supported": false,
+      "outcomes": {
+        "finetuned-raw": "correctly-refused",
+        "finetuned+evidence": "correctly-refused",
+        "evidence-only": "correctly-refused",
+        "classical": "correctly-refused"
+      },
+      "codes": {
+        "finetuned+evidence": [
+          "UNSUPPORTED_QUALIFIER",
+          "UNSUPPORTED_QUALIFIER",
+          "UNSUPPORTED_BEHAVIOUR"
+        ],
+        "evidence-only": [
+          "UNSUPPORTED_QUALIFIER",
+          "UNSUPPORTED_QUALIFIER",
+          "UNSUPPORTED_BEHAVIOUR"
+        ],
+        "classical": [
+          "UNSUPPORTED_QUALIFIER",
+          "UNSUPPORTED_QUALIFIER",
+          "COUNT_MISSING",
+          "WINDOW_MISSING",
+          "UNMAPPED_FIELD_PHRASE",
+          "UNMAPPED_FIELD_PHRASE",
+          "UNMAPPED_FIELD_PHRASE"
+        ]
+      }
+    },
+    {
+      "reportId": "SFC-0212",
+      "behaviour": null,
+      "supported": false,
+      "outcomes": {
+        "finetuned-raw": "correctly-refused",
+        "finetuned+evidence": "correctly-refused",
+        "evidence-only": "correctly-refused",
+        "classical": "correctly-refused"
+      },
+      "codes": {
+        "finetuned+evidence": [
+          "UNSUPPORTED_QUALIFIER",
+          "UNSUPPORTED_QUALIFIER",
+          "UNSUPPORTED_BEHAVIOUR"
+        ],
+        "evidence-only": [
+          "UNSUPPORTED_QUALIFIER",
+          "UNSUPPORTED_QUALIFIER",
+          "UNSUPPORTED_BEHAVIOUR"
+        ],
+        "classical": [
+          "UNSUPPORTED_QUALIFIER",
+          "UNSUPPORTED_QUALIFIER",
+          "COUNT_MISSING",
+          "WINDOW_MISSING",
+          "UNMAPPED_FIELD_PHRASE",
+          "UNMAPPED_FIELD_PHRASE",
+          "UNMAPPED_FIELD_PHRASE"
+        ]
+      }
+    },
+    {
+      "reportId": "SFC-0215",
+      "behaviour": null,
+      "supported": false,
+      "outcomes": {
+        "finetuned-raw": "silently-accepted",
+        "finetuned+evidence": "correctly-refused",
+        "evidence-only": "correctly-refused",
+        "classical": "correctly-refused"
+      },
+      "codes": {
+        "finetuned+evidence": [
+          "UNSUPPORTED_QUALIFIER",
+          "UNSUPPORTED_QUALIFIER",
+          "COUNT_UNKNOWN_OBJECT",
+          "UNMAPPED_FIELD_PHRASE"
+        ],
+        "evidence-only": [
+          "UNSUPPORTED_QUALIFIER",
+          "UNSUPPORTED_QUALIFIER",
+          "UNSUPPORTED_BEHAVIOUR"
+        ],
+        "classical": [
+          "UNSUPPORTED_QUALIFIER",
+          "UNSUPPORTED_QUALIFIER",
+          "COUNT_UNKNOWN_OBJECT",
+          "UNMAPPED_FIELD_PHRASE"
+        ]
+      }
+    },
+    {
+      "reportId": "SFC-0216",
+      "behaviour": null,
+      "supported": false,
+      "outcomes": {
+        "finetuned-raw": "silently-accepted",
+        "finetuned+evidence": "correctly-refused",
+        "evidence-only": "correctly-refused",
+        "classical": "correctly-refused"
+      },
+      "codes": {
+        "finetuned+evidence": [
+          "UNSUPPORTED_QUALIFIER",
+          "UNSUPPORTED_QUALIFIER",
+          "UNSUPPORTED_QUALIFIER",
+          "COUNT_UNKNOWN_OBJECT"
+        ],
+        "evidence-only": [
+          "UNSUPPORTED_QUALIFIER",
+          "UNSUPPORTED_QUALIFIER",
+          "UNSUPPORTED_QUALIFIER",
+          "UNSUPPORTED_BEHAVIOUR"
+        ],
+        "classical": [
+          "UNSUPPORTED_QUALIFIER",
+          "UNSUPPORTED_QUALIFIER",
+          "UNSUPPORTED_QUALIFIER",
+          "COUNT_UNKNOWN_OBJECT"
+        ]
+      }
+    }
+  ]
+}

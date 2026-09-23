@@ -76,14 +76,24 @@ def case_unreliable_field_still_rejected():
 
 
 def case_structural_dependency_missing_rejected():
-    """Round 2 finding: a spec naming only 'timestamp' for
-    repeated-failed-login-then-success (never requesting account_id, which
-    that recipe's groupingKey structurally requires) validated as
-    'supported'."""
-    spec = {"behaviourId": "repeated-failed-login-then-success", "requiredFields": ["timestamp"], "policyFields": []}
+    """Round 2 finding: a spec naming only 'timestamp' for repeated-failed-login-then-success (never
+    requesting account_id, which that recipe's groupingKey structurally requires) validated as 'supported'
+    even when account_id was unavailable. The recipe's dependencies are checked against the DATA whether or
+    not the spec listed them."""
+    spec = dict(VALID_B1_SPEC, requiredFields=["timestamp"])
     r = stage3.validate(spec, unavailable_fields={"account_id"})
     assert r.status == "rejected", "recipe's structural dependencies must be checked even when never requested"
     assert any("account_id" in n for n in r.notes)
+
+
+def case_incomplete_field_list_is_not_itself_a_reason_to_reject():
+    """AUDIT REGRESSION (2026-09): 8 of 40 supported reports were REFUSED because the extractor's field
+    list omitted something the recipe reads anyway (e.g. `source_host`). The rule would have read the
+    field correctly, and the data has it - the gap was in a model's list, not in the data. Rejection must
+    follow the data, not the list."""
+    spec = dict(VALID_B1_SPEC, requiredFields=["timestamp"])
+    r = stage3.validate(spec)
+    assert r.status == "supported", r.notes
 
 
 def case_fractional_threshold_rejected():
