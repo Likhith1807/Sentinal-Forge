@@ -36,7 +36,7 @@
       "field": "policy.expected_auth_method"
     }
   ],
-  "behaviourId": "service-account-interactive-auth",
+  "behaviourId": "auth-method-policy-violation",
   "requiredFields": [
     "account_id",
     "auth_method",

@@ -60,7 +60,7 @@ object DetectionSemanticsCheck {
   )
 
   private val mfaSpec = CompiledSpec(
-    behaviourId = "mfa-bypass-on-required-account",
+    behaviourId = "mfa-missing-on-required-account",
     recipe = "PolicyCompare",
     groupingKey = None,
     timeWindowSeconds = None,
@@ -76,7 +76,7 @@ object DetectionSemanticsCheck {
   )
 
   private val serviceAccountSpec = CompiledSpec(
-    behaviourId = "service-account-interactive-auth",
+    behaviourId = "auth-method-policy-violation",
     recipe = "PolicyCompare",
     groupingKey = None,
     timeWindowSeconds = None,

@@ -17,9 +17,9 @@ COMPILED_DIR = REPO_ROOT / "data" / "samples" / "ir" / "compiled"
 
 B1 = "repeated-failed-login-then-success"
 B2 = "password-spray-across-accounts"
-B3 = "concurrent-sessions-different-hosts"
-B4 = "service-account-interactive-auth"
-B5 = "mfa-bypass-on-required-account"
+B3 = "multi-host-authentication"
+B4 = "auth-method-policy-violation"
+B5 = "mfa-missing-on-required-account"
 BEHAVIOUR_IDS = (B1, B2, B3, B4, B5)
 
 

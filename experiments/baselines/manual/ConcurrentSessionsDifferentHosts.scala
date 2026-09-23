@@ -44,7 +44,7 @@ object ConcurrentSessionsDifferentHosts {
         $"timestamp".as("detected_at"),
         $"source_host",
         $"distinct_hosts_recent",
-        lit("concurrent-sessions-different-hosts").as("behaviour_id")
+        lit("multi-host-authentication").as("behaviour_id")
       )
   }
 }

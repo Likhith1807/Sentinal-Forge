@@ -1,0 +1,1 @@
+{"behaviourId": "mfa-missing-on-required-account", "recipe": "PolicyCompare", "groupingKey": null, "timeWindowSeconds": null, "countEventType": null, "countThreshold": null, "triggerEventType": null, "distinctField": null, "distinctThreshold": null, "filterEventType": "login_success", "logField": "mfa_used", "policyField": "mfa_required", "comparisonOp": "falseWhenRequired"}

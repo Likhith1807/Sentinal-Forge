@@ -33,7 +33,7 @@ TOPICS = [
      "The account {acct} signed in successfully from two countries within a short window.",
      "The first success geolocated to one country and the second, {gap} minutes later, to another.",
      "Alert when the same account has successful logins from two different countries within {w} minutes.",
-     [("geo_country", "the country each sign-in geolocates to")], "concurrent-sessions-different-hosts"),
+     [("geo_country", "the country each sign-in geolocates to")], "multi-host-authentication"),
     ("ransomware-encryption", "Mass File Renames Consistent With Ransomware on {host}",
      "File-server auditing showed many files renamed with a new extension on {host}.",
      "In the observed burst, {n} files were renamed within a few minutes.",

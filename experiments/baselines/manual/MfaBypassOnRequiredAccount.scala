@@ -31,7 +31,7 @@ object MfaBypassOnRequiredAccount {
         $"mfa_used",
         $"mfa_required",
         $"status",
-        lit("mfa-bypass-on-required-account").as("behaviour_id")
+        lit("mfa-missing-on-required-account").as("behaviour_id")
       )
   }
 }

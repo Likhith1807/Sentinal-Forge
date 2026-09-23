@@ -25,13 +25,13 @@ ALL_FIELDS = LOG_FIELDS + POLICY_FIELDS
 # The 5 behaviours in docs/behaviours.md. Constraining behaviourId to this
 # list too (not just the field names) matters for the same reason: without
 # it, a semantically-correct but differently-worded id (e.g.
-# "simultaneous-access-different-hosts" for "concurrent-sessions-different-hosts")
+# "simultaneous-access-different-hosts" for "multi-host-authentication")
 # would score as wrong under exact-string matching, which tests vocabulary
 # guessing, not extraction quality.
 BEHAVIOUR_IDS = [
     "repeated-failed-login-then-success",
     "password-spray-across-accounts",
-    "concurrent-sessions-different-hosts",
-    "service-account-interactive-auth",
-    "mfa-bypass-on-required-account",
+    "multi-host-authentication",
+    "auth-method-policy-violation",
+    "mfa-missing-on-required-account",
 ]

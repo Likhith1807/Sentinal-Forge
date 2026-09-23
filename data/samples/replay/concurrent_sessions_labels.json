@@ -1,6 +1,6 @@
 {
   "description": "Independent ground-truth labels for concurrent_sessions_events.jsonl.",
-  "ruleUnderTest": "concurrent-sessions-different-hosts",
+  "ruleUnderTest": "multi-host-authentication",
   "scenarios": [
     {
       "scenarioId": "CS-POS",

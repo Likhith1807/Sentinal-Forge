@@ -58,7 +58,7 @@ class RuleCompilerSpec extends AnyFunSuite with BeforeAndAfterAll with Matchers 
   )
 
   private val mfaSpec = CompiledSpec(
-    behaviourId = "mfa-bypass-on-required-account", recipe = "PolicyCompare",
+    behaviourId = "mfa-missing-on-required-account", recipe = "PolicyCompare",
     groupingKey = None, timeWindowSeconds = None, countEventType = None, countThreshold = None,
     triggerEventType = None, distinctField = None, distinctThreshold = None,
     filterEventType = Some("login_success"), logField = Some("mfa_used"),

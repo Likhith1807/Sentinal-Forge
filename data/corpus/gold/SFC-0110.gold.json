@@ -58,7 +58,7 @@
       "field": "source_host"
     }
   ],
-  "behaviourId": "concurrent-sessions-different-hosts",
+  "behaviourId": "multi-host-authentication",
   "requiredFields": [
     "account_id",
     "event_type",

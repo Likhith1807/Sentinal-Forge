@@ -42,7 +42,7 @@ object ServiceAccountInteractiveAuth {
         $"auth_method",
         $"expected_auth_method",
         $"status",
-        lit("service-account-interactive-auth").as("behaviour_id")
+        lit("auth-method-policy-violation").as("behaviour_id")
       )
   }
 }

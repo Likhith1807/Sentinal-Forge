@@ -72,17 +72,17 @@ def test_hybrid_falls_back_when_an_unsupported_prediction_is_not_confident():
 
 
 def test_hybrid_falls_back_when_fine_tuned_confidence_is_low():
-    finetuned_extractor.extract = _fake_finetuned("mfa-bypass-on-required-account", 0.4)
-    transformer_extractor.extract = _fake_prompted("mfa-bypass-on-required-account", requiredFields=["mfa_used"])
+    finetuned_extractor.extract = _fake_finetuned("mfa-missing-on-required-account", 0.4)
+    transformer_extractor.extract = _fake_prompted("mfa-missing-on-required-account", requiredFields=["mfa_used"])
     result = hybrid_extractor.extract("some report text", confidence_threshold=0.6)
     assert result.source == "prompted-fallback" and result.fineTunedConfidence == 0.4
 
 
 def test_hybrid_respects_a_custom_confidence_threshold():
-    finetuned_extractor.extract = _fake_finetuned("mfa-bypass-on-required-account", 0.55)
+    finetuned_extractor.extract = _fake_finetuned("mfa-missing-on-required-account", 0.55)
     transformer_extractor.extract = _fake_prompted("SHOULD_NOT_BE_CALLED")
     assert hybrid_extractor.extract("x", confidence_threshold=0.5).source == "fine-tuned"
-    transformer_extractor.extract = _fake_prompted("mfa-bypass-on-required-account")
+    transformer_extractor.extract = _fake_prompted("mfa-missing-on-required-account")
     assert hybrid_extractor.extract("x", confidence_threshold=0.6).source == "prompted-fallback"
 
 
@@ -102,7 +102,7 @@ def test_consistency_majority_vote_on_behaviour_and_fields():
          "policyFields": [], "threshold": {"failureCount": 5}, "timeWindow": {"amount": 2, "unit": "minutes"}, "provenance": {}},
         {"behaviourId": "repeated-failed-login-then-success", "requiredFields": ["account_id", "timestamp"],
          "policyFields": [], "threshold": {"failureCount": 5}, "timeWindow": {"amount": 2, "unit": "minutes"}, "provenance": {}},
-        {"behaviourId": "concurrent-sessions-different-hosts", "requiredFields": ["account_id"],
+        {"behaviourId": "multi-host-authentication", "requiredFields": ["account_id"],
          "policyFields": [], "threshold": None, "timeWindow": None, "provenance": {}},
     ])
     transformer_extractor.extract = lambda text, model=None: next(calls)

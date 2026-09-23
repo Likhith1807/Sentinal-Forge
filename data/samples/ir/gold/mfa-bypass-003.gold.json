@@ -1,7 +1,7 @@
 {
   "reportFile": "data/samples/reports/mfa-bypass-003.md",
   "reportId": "SF-SAMPLE-015",
-  "behaviourId": "mfa-bypass-on-required-account",
+  "behaviourId": "mfa-missing-on-required-account",
   "requiredFields": ["account_id", "event_type", "mfa_used"],
   "policyFields": ["policy.mfa_required"],
   "excludedFields": ["auth_method"],

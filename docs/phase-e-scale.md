@@ -19,9 +19,9 @@ events/s on the *same* 48-event data between two runs). Run at two real scales �
 |---|---|---|---|
 | repeated-failed-login-then-success | 23.29s (1,575,261/s) | 48.06s (1,526,890/s) | 2.06x |
 | password-spray-across-accounts | 7.55s (4,861,488/s) | 13.77s (5,330,066/s) | 1.82x |
-| concurrent-sessions-different-hosts | 26.49s (1,384,958/s) | 64.07s (1,145,277/s) | **2.42x** |
-| service-account-interactive-auth | 4.98s (7,373,168/s) | 8.76s (8,380,758/s) | 1.76x |
-| mfa-bypass-on-required-account | 3.26s (11,235,909/s) | 8.66s (8,470,528/s) | **2.65x** |
+| multi-host-authentication | 26.49s (1,384,958/s) | 64.07s (1,145,277/s) | **2.42x** |
+| auth-method-policy-violation | 4.98s (7,373,168/s) | 8.76s (8,380,758/s) | 1.76x |
+| mfa-missing-on-required-account | 3.26s (11,235,909/s) | 8.66s (8,470,528/s) | **2.65x** |
 
 Real spread even at fixed scale, run-to-run: 1GB's B1 alone ranges 21.08–26.15s (a ~24% swing) on
 identical input — exactly the kind of variance a single-run number hides, and why every cell above
@@ -30,8 +30,8 @@ is a mean of 3 runs, not one.
 **Not uniformly linear, and that's the honest finding — not a clean "linear scaling" story.** The
 2 `PolicyCompare` recipes (B4, B5) and `password-spray-across-accounts` scale sub-2x (throughput
 actually improves slightly for B4/B5, plausibly amortized JVM/JIT warmup over a longer run) — but
-`concurrent-sessions-different-hosts` and `mfa-bypass-on-required-account` both cost **more than
-2x** for 2x the data (2.42x, 2.65x). `concurrent-sessions-different-hosts` uses the same
+`multi-host-authentication` and `mfa-missing-on-required-account` both cost **more than
+2x** for 2x the data (2.42x, 2.65x). `multi-host-authentication` uses the same
 `DistinctCountWithinWindow` window-function recipe as `password-spray-across-accounts` but scales
 noticeably worse than it — plausibly the larger per-account-id `collect_set` state its window holds
 (this recipe's distinct-tracking field is `source_host`, evaluated per-account, against
@@ -61,7 +61,7 @@ Spark `DataFrame`, local or distributed).
 ## 17. Failure recovery — a genuine kill and restart, not a description of one
 
 `StreamingRecoveryCheck.scala` runs the one streaming-capable recipe (`PolicyCompare`,
-`mfa-bypass-on-required-account`) through a real restart:
+`mfa-missing-on-required-account`) through a real restart:
 
 1. Start a real `StreamingQuery` (durable JSON sink, real checkpoint directory), process the first
    half of the real `mfa_bypass` replay events.
@@ -88,9 +88,9 @@ matches the same events run through the uninterrupted batch path exactly:
 |---|---|---|
 | repeated-failed-login-then-success | 2000 | 2000 |
 | password-spray-across-accounts | **1994** | 2000 |
-| concurrent-sessions-different-hosts | 2000 | 2000 |
-| service-account-interactive-auth | 2400 | 2400 |
-| mfa-bypass-on-required-account | 2500 | 2500 |
+| multi-host-authentication | 2000 | 2000 |
+| auth-method-policy-violation | 2400 | 2400 |
+| mfa-missing-on-required-account | 2500 | 2500 |
 
 **The real finding this scale run surfaced**: `PasswordSprayAcrossAccounts.scala` (the hand-written
 baseline) still calls `approx_count_distinct` — the exact HyperLogLog-based estimator the

@@ -92,7 +92,7 @@ def case_threshold_accepts_real_transformer_synonym():
     synonym, not a mislabelling. The threshold-key check must accept this
     real extractor output, not just the gold fixture's own spelling."""
     spec = {
-        "behaviourId": "concurrent-sessions-different-hosts",
+        "behaviourId": "multi-host-authentication",
         "requiredFields": ["account_id", "event_type", "timestamp", "source_host"],
         "policyFields": [],
         "threshold": {"loginCount": 2},
@@ -112,7 +112,7 @@ def case_unknown_behaviour_id_raises():
 
 
 def case_policy_compare_needs_no_numbers():
-    spec = {"behaviourId": "mfa-bypass-on-required-account", "requiredFields": ["account_id", "event_type", "mfa_used"],
+    spec = {"behaviourId": "mfa-missing-on-required-account", "requiredFields": ["account_id", "event_type", "mfa_used"],
             "policyFields": ["policy.mfa_required"], "threshold": None, "timeWindow": None}
     c = spec_bridge.build_compiled_spec(spec)
     assert c["recipe"] == "PolicyCompare"
@@ -126,7 +126,7 @@ def case_structural_dependencies_known_behaviour():
 
 
 def case_structural_dependencies_policy_compare():
-    log_fields, policy_fields = spec_bridge.structural_dependencies("mfa-bypass-on-required-account")
+    log_fields, policy_fields = spec_bridge.structural_dependencies("mfa-missing-on-required-account")
     assert {"account_id", "event_type", "mfa_used"} <= log_fields
     assert policy_fields == {"policy.mfa_required"}
 

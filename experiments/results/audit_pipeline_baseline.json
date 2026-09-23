@@ -1,0 +1,688 @@
+{
+  "counts": {
+    "wrong-spec-silent": 5,
+    "correct": 27,
+    "rejected-supported": 8,
+    "correctly-rejected": 2,
+    "silently-accepted": 2
+  },
+  "rows": [
+    {
+      "reportId": "SFC-0005",
+      "behaviour": "repeated-failed-login-then-success",
+      "outcome": "wrong-spec-silent",
+      "diff": {
+        "timeWindowSeconds": [
+          90,
+          5400
+        ]
+      },
+      "rejectReason": null,
+      "goldWindow": {
+        "amount": 90,
+        "unit": "seconds"
+      },
+      "predWindow": {
+        "amount": 90,
+        "unit": "minutes"
+      }
+    },
+    {
+      "reportId": "SFC-0006",
+      "behaviour": "repeated-failed-login-then-success",
+      "outcome": "wrong-spec-silent",
+      "diff": {
+        "timeWindowSeconds": [
+          90,
+          5400
+        ]
+      },
+      "rejectReason": null,
+      "goldWindow": {
+        "amount": 90,
+        "unit": "seconds"
+      },
+      "predWindow": {
+        "amount": 90,
+        "unit": "minutes"
+      }
+    },
+    {
+      "reportId": "SFC-0007",
+      "behaviour": "repeated-failed-login-then-success",
+      "outcome": "correct",
+      "diff": {},
+      "rejectReason": null,
+      "goldWindow": {
+        "amount": 10,
+        "unit": "minutes"
+      },
+      "predWindow": {
+        "amount": 10,
+        "unit": "minutes"
+      }
+    },
+    {
+      "reportId": "SFC-0008",
+      "behaviour": "repeated-failed-login-then-success",
+      "outcome": "correct",
+      "diff": {},
+      "rejectReason": null,
+      "goldWindow": {
+        "amount": 10,
+        "unit": "minutes"
+      },
+      "predWindow": {
+        "amount": 10,
+        "unit": "minutes"
+      }
+    },
+    {
+      "reportId": "SFC-0019",
+      "behaviour": "repeated-failed-login-then-success",
+      "outcome": "rejected-supported",
+      "diff": {},
+      "rejectReason": "stage3: 'timestamp' is required by the repeated-failed-login-then-success recipe but was never requested by the spec.",
+      "goldWindow": {
+        "amount": 30,
+        "unit": "seconds"
+      },
+      "predWindow": {
+        "amount": 30,
+        "unit": "minutes"
+      }
+    },
+    {
+      "reportId": "SFC-0020",
+      "behaviour": "repeated-failed-login-then-success",
+      "outcome": "rejected-supported",
+      "diff": {},
+      "rejectReason": "stage3: 'timestamp' is required by the repeated-failed-login-then-success recipe but was never requested by the spec.",
+      "goldWindow": {
+        "amount": 30,
+        "unit": "seconds"
+      },
+      "predWindow": {
+        "amount": 30,
+        "unit": "minutes"
+      }
+    },
+    {
+      "reportId": "SFC-0029",
+      "behaviour": "repeated-failed-login-then-success",
+      "outcome": "wrong-spec-silent",
+      "diff": {
+        "timeWindowSeconds": [
+          90,
+          5400
+        ]
+      },
+      "rejectReason": null,
+      "goldWindow": {
+        "amount": 90,
+        "unit": "seconds"
+      },
+      "predWindow": {
+        "amount": 90,
+        "unit": "minutes"
+      }
+    },
+    {
+      "reportId": "SFC-0030",
+      "behaviour": "repeated-failed-login-then-success",
+      "outcome": "wrong-spec-silent",
+      "diff": {
+        "timeWindowSeconds": [
+          90,
+          5400
+        ]
+      },
+      "rejectReason": null,
+      "goldWindow": {
+        "amount": 90,
+        "unit": "seconds"
+      },
+      "predWindow": {
+        "amount": 90,
+        "unit": "minutes"
+      }
+    },
+    {
+      "reportId": "SFC-0043",
+      "behaviour": "password-spray-across-accounts",
+      "outcome": "correct",
+      "diff": {},
+      "rejectReason": null,
+      "goldWindow": {
+        "amount": 30,
+        "unit": "minutes"
+      },
+      "predWindow": {
+        "amount": 30,
+        "unit": "minutes"
+      }
+    },
+    {
+      "reportId": "SFC-0044",
+      "behaviour": "password-spray-across-accounts",
+      "outcome": "correct",
+      "diff": {},
+      "rejectReason": null,
+      "goldWindow": {
+        "amount": 30,
+        "unit": "minutes"
+      },
+      "predWindow": {
+        "amount": 30,
+        "unit": "minutes"
+      }
+    },
+    {
+      "reportId": "SFC-0055",
+      "behaviour": "password-spray-across-accounts",
+      "outcome": "wrong-spec-silent",
+      "diff": {
+        "timeWindowSeconds": [
+          600,
+          36000
+        ]
+      },
+      "rejectReason": null,
+      "goldWindow": {
+        "amount": 10,
+        "unit": "minutes"
+      },
+      "predWindow": {
+        "amount": 10,
+        "unit": "hours"
+      }
+    },
+    {
+      "reportId": "SFC-0056",
+      "behaviour": "password-spray-across-accounts",
+      "outcome": "correct",
+      "diff": {},
+      "rejectReason": null,
+      "goldWindow": {
+        "amount": 10,
+        "unit": "minutes"
+      },
+      "predWindow": {
+        "amount": 10,
+        "unit": "minutes"
+      }
+    },
+    {
+      "reportId": "SFC-0057",
+      "behaviour": "password-spray-across-accounts",
+      "outcome": "correct",
+      "diff": {},
+      "rejectReason": null,
+      "goldWindow": {
+        "amount": 30,
+        "unit": "minutes"
+      },
+      "predWindow": {
+        "amount": 30,
+        "unit": "minutes"
+      }
+    },
+    {
+      "reportId": "SFC-0058",
+      "behaviour": "password-spray-across-accounts",
+      "outcome": "correct",
+      "diff": {},
+      "rejectReason": null,
+      "goldWindow": {
+        "amount": 30,
+        "unit": "minutes"
+      },
+      "predWindow": {
+        "amount": 30,
+        "unit": "minutes"
+      }
+    },
+    {
+      "reportId": "SFC-0061",
+      "behaviour": "password-spray-across-accounts",
+      "outcome": "correct",
+      "diff": {},
+      "rejectReason": null,
+      "goldWindow": {
+        "amount": 15,
+        "unit": "minutes"
+      },
+      "predWindow": {
+        "amount": 15,
+        "unit": "minutes"
+      }
+    },
+    {
+      "reportId": "SFC-0062",
+      "behaviour": "password-spray-across-accounts",
+      "outcome": "rejected-supported",
+      "diff": {},
+      "rejectReason": "stage3: 'source_host' is required by the password-spray-across-accounts recipe but was never requested by the spec.",
+      "goldWindow": {
+        "amount": 15,
+        "unit": "minutes"
+      },
+      "predWindow": {
+        "amount": 15,
+        "unit": "minutes"
+      }
+    },
+    {
+      "reportId": "SFC-0101",
+      "behaviour": "concurrent-sessions-different-hosts",
+      "outcome": "correct",
+      "diff": {},
+      "rejectReason": null,
+      "goldWindow": {
+        "amount": 10,
+        "unit": "minutes"
+      },
+      "predWindow": {
+        "amount": 10,
+        "unit": "minutes"
+      }
+    },
+    {
+      "reportId": "SFC-0102",
+      "behaviour": "concurrent-sessions-different-hosts",
+      "outcome": "rejected-supported",
+      "diff": {},
+      "rejectReason": "stage3: 'source_host' is required by the concurrent-sessions-different-hosts recipe but was never requested by the spec.",
+      "goldWindow": {
+        "amount": 10,
+        "unit": "minutes"
+      },
+      "predWindow": {
+        "amount": 10,
+        "unit": "minutes"
+      }
+    },
+    {
+      "reportId": "SFC-0115",
+      "behaviour": "concurrent-sessions-different-hosts",
+      "outcome": "rejected-supported",
+      "diff": {},
+      "rejectReason": "stage3: 'source_host' is required by the concurrent-sessions-different-hosts recipe but was never requested by the spec.",
+      "goldWindow": {
+        "amount": 15,
+        "unit": "minutes"
+      },
+      "predWindow": {
+        "amount": 15,
+        "unit": "minutes"
+      }
+    },
+    {
+      "reportId": "SFC-0116",
+      "behaviour": "concurrent-sessions-different-hosts",
+      "outcome": "rejected-supported",
+      "diff": {},
+      "rejectReason": "stage3: 'source_host' is required by the concurrent-sessions-different-hosts recipe but was never requested by the spec.",
+      "goldWindow": {
+        "amount": 15,
+        "unit": "minutes"
+      },
+      "predWindow": {
+        "amount": 15,
+        "unit": "minutes"
+      }
+    },
+    {
+      "reportId": "SFC-0117",
+      "behaviour": "concurrent-sessions-different-hosts",
+      "outcome": "rejected-supported",
+      "diff": {},
+      "rejectReason": "stage3: 'source_host' is required by the concurrent-sessions-different-hosts recipe but was never requested by the spec.; 'timestamp' is required by the concurrent-sess",
+      "goldWindow": {
+        "amount": 15,
+        "unit": "minutes"
+      },
+      "predWindow": {
+        "amount": 15,
+        "unit": "minutes"
+      }
+    },
+    {
+      "reportId": "SFC-0118",
+      "behaviour": "concurrent-sessions-different-hosts",
+      "outcome": "correct",
+      "diff": {},
+      "rejectReason": null,
+      "goldWindow": {
+        "amount": 15,
+        "unit": "minutes"
+      },
+      "predWindow": {
+        "amount": 15,
+        "unit": "minutes"
+      }
+    },
+    {
+      "reportId": "SFC-0119",
+      "behaviour": "concurrent-sessions-different-hosts",
+      "outcome": "rejected-supported",
+      "diff": {},
+      "rejectReason": "stage3: 'source_host' is required by the concurrent-sessions-different-hosts recipe but was never requested by the spec.; 'timestamp' is required by the concurrent-sess",
+      "goldWindow": {
+        "amount": 15,
+        "unit": "minutes"
+      },
+      "predWindow": {
+        "amount": 15,
+        "unit": "minutes"
+      }
+    },
+    {
+      "reportId": "SFC-0120",
+      "behaviour": "concurrent-sessions-different-hosts",
+      "outcome": "correct",
+      "diff": {},
+      "rejectReason": null,
+      "goldWindow": {
+        "amount": 15,
+        "unit": "minutes"
+      },
+      "predWindow": {
+        "amount": 15,
+        "unit": "minutes"
+      }
+    },
+    {
+      "reportId": "SFC-0121",
+      "behaviour": "service-account-interactive-auth",
+      "outcome": "correct",
+      "diff": {},
+      "rejectReason": null,
+      "goldWindow": null,
+      "predWindow": null
+    },
+    {
+      "reportId": "SFC-0122",
+      "behaviour": "service-account-interactive-auth",
+      "outcome": "correct",
+      "diff": {},
+      "rejectReason": null,
+      "goldWindow": null,
+      "predWindow": null
+    },
+    {
+      "reportId": "SFC-0125",
+      "behaviour": "service-account-interactive-auth",
+      "outcome": "correct",
+      "diff": {},
+      "rejectReason": null,
+      "goldWindow": null,
+      "predWindow": null
+    },
+    {
+      "reportId": "SFC-0126",
+      "behaviour": "service-account-interactive-auth",
+      "outcome": "correct",
+      "diff": {},
+      "rejectReason": null,
+      "goldWindow": null,
+      "predWindow": null
+    },
+    {
+      "reportId": "SFC-0127",
+      "behaviour": "service-account-interactive-auth",
+      "outcome": "correct",
+      "diff": {},
+      "rejectReason": null,
+      "goldWindow": null,
+      "predWindow": null
+    },
+    {
+      "reportId": "SFC-0128",
+      "behaviour": "service-account-interactive-auth",
+      "outcome": "correct",
+      "diff": {},
+      "rejectReason": null,
+      "goldWindow": null,
+      "predWindow": null
+    },
+    {
+      "reportId": "SFC-0135",
+      "behaviour": "service-account-interactive-auth",
+      "outcome": "correct",
+      "diff": {},
+      "rejectReason": null,
+      "goldWindow": null,
+      "predWindow": null
+    },
+    {
+      "reportId": "SFC-0136",
+      "behaviour": "service-account-interactive-auth",
+      "outcome": "correct",
+      "diff": {},
+      "rejectReason": null,
+      "goldWindow": null,
+      "predWindow": null
+    },
+    {
+      "reportId": "SFC-0163",
+      "behaviour": "mfa-bypass-on-required-account",
+      "outcome": "correct",
+      "diff": {},
+      "rejectReason": null,
+      "goldWindow": null,
+      "predWindow": null
+    },
+    {
+      "reportId": "SFC-0164",
+      "behaviour": "mfa-bypass-on-required-account",
+      "outcome": "correct",
+      "diff": {},
+      "rejectReason": null,
+      "goldWindow": null,
+      "predWindow": null
+    },
+    {
+      "reportId": "SFC-0173",
+      "behaviour": "mfa-bypass-on-required-account",
+      "outcome": "correct",
+      "diff": {},
+      "rejectReason": null,
+      "goldWindow": null,
+      "predWindow": null
+    },
+    {
+      "reportId": "SFC-0174",
+      "behaviour": "mfa-bypass-on-required-account",
+      "outcome": "correct",
+      "diff": {},
+      "rejectReason": null,
+      "goldWindow": null,
+      "predWindow": null
+    },
+    {
+      "reportId": "SFC-0179",
+      "behaviour": "mfa-bypass-on-required-account",
+      "outcome": "correct",
+      "diff": {},
+      "rejectReason": null,
+      "goldWindow": null,
+      "predWindow": null
+    },
+    {
+      "reportId": "SFC-0180",
+      "behaviour": "mfa-bypass-on-required-account",
+      "outcome": "correct",
+      "diff": {},
+      "rejectReason": null,
+      "goldWindow": null,
+      "predWindow": null
+    },
+    {
+      "reportId": "SFC-0191",
+      "behaviour": "mfa-bypass-on-required-account",
+      "outcome": "correct",
+      "diff": {},
+      "rejectReason": null,
+      "goldWindow": null,
+      "predWindow": null
+    },
+    {
+      "reportId": "SFC-0192",
+      "behaviour": "mfa-bypass-on-required-account",
+      "outcome": "correct",
+      "diff": {},
+      "rejectReason": null,
+      "goldWindow": null,
+      "predWindow": null
+    },
+    {
+      "reportId": "SFC-0211",
+      "behaviour": null,
+      "outcome": "correctly-rejected",
+      "diff": {},
+      "rejectReason": "stage3: behaviourId None does not match any of the 5 known, schema-validated behaviour patterns: ['concurrent-sessions-different-hosts', 'mfa-bypass-on-required-account",
+      "goldWindow": null,
+      "predWindow": null
+    },
+    {
+      "reportId": "SFC-0212",
+      "behaviour": null,
+      "outcome": "correctly-rejected",
+      "diff": {},
+      "rejectReason": "stage3: behaviourId None does not match any of the 5 known, schema-validated behaviour patterns: ['concurrent-sessions-different-hosts', 'mfa-bypass-on-required-account",
+      "goldWindow": null,
+      "predWindow": null
+    },
+    {
+      "reportId": "SFC-0215",
+      "behaviour": null,
+      "outcome": "silently-accepted",
+      "diff": {
+        "behaviourId": [
+          null,
+          "password-spray-across-accounts"
+        ],
+        "recipe": [
+          null,
+          "DistinctCountWithinWindow"
+        ],
+        "groupingKey": [
+          null,
+          "source_host"
+        ],
+        "timeWindowSeconds": [
+          null,
+          300
+        ],
+        "countEventType": [
+          null,
+          null
+        ],
+        "countThreshold": [
+          null,
+          null
+        ],
+        "triggerEventType": [
+          null,
+          null
+        ],
+        "distinctField": [
+          null,
+          "account_id"
+        ],
+        "distinctThreshold": [
+          null,
+          200
+        ],
+        "filterEventType": [
+          null,
+          "login_failure"
+        ],
+        "logField": [
+          null,
+          null
+        ],
+        "policyField": [
+          null,
+          null
+        ],
+        "comparisonOp": [
+          null,
+          null
+        ]
+      },
+      "rejectReason": null,
+      "goldWindow": null,
+      "predWindow": {
+        "amount": 5,
+        "unit": "minutes"
+      }
+    },
+    {
+      "reportId": "SFC-0216",
+      "behaviour": null,
+      "outcome": "silently-accepted",
+      "diff": {
+        "behaviourId": [
+          null,
+          "password-spray-across-accounts"
+        ],
+        "recipe": [
+          null,
+          "DistinctCountWithinWindow"
+        ],
+        "groupingKey": [
+          null,
+          "source_host"
+        ],
+        "timeWindowSeconds": [
+          null,
+          300
+        ],
+        "countEventType": [
+          null,
+          null
+        ],
+        "countThreshold": [
+          null,
+          null
+        ],
+        "triggerEventType": [
+          null,
+          null
+        ],
+        "distinctField": [
+          null,
+          "account_id"
+        ],
+        "distinctThreshold": [
+          null,
+          200
+        ],
+        "filterEventType": [
+          null,
+          "login_failure"
+        ],
+        "logField": [
+          null,
+          null
+        ],
+        "policyField": [
+          null,
+          null
+        ],
+        "comparisonOp": [
+          null,
+          null
+        ]
+      },
+      "rejectReason": null,
+      "goldWindow": null,
+      "predWindow": {
+        "amount": 5,
+        "unit": "minutes"
+      }
+    }
+  ]
+}

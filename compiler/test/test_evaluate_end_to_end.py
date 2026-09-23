@@ -54,7 +54,7 @@ def case_two_reports_same_behaviour_do_not_collide():
         # Two DIFFERENT reports, both (mis)classified as the SAME behaviourId —
         # exactly the collision scenario the review described.
         def fake_run_one(report_name: str) -> dict:
-            return _fake_row(report_name, "mfa-bypass-on-required-account")
+            return _fake_row(report_name, "mfa-missing-on-required-account")
 
         manifest = e2e.execute_run(["report-alpha", "report-beta"], REPO_ROOT, base_dir,
                                     pointer, run_one_fn=fake_run_one, run_id="run_test_collision")
@@ -138,7 +138,7 @@ def case_two_separate_runs_do_not_collide_across_runs():
     tmp, base_dir, pointer = _tmp_dirs()
     try:
         def run_one_a(report_name: str) -> dict:
-            return _fake_row(report_name, "concurrent-sessions-different-hosts")
+            return _fake_row(report_name, "multi-host-authentication")
 
         e2e.execute_run(["report-x"], REPO_ROOT, base_dir, pointer, run_one_fn=run_one_a, run_id="run_A")
         e2e.execute_run(["report-x"], REPO_ROOT, base_dir, pointer, run_one_fn=run_one_a, run_id="run_B")

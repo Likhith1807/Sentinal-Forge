@@ -26,11 +26,11 @@ object EndToEndCheck {
   private val LABELS_BY_BEHAVIOUR = Map(
     "repeated-failed-login-then-success" -> "login_brute_force_labels.json",
     "password-spray-across-accounts" -> "password_spray_labels.json",
-    "concurrent-sessions-different-hosts" -> "concurrent_sessions_labels.json",
-    "service-account-interactive-auth" -> "service_account_auth_labels.json",
-    "mfa-bypass-on-required-account" -> "mfa_bypass_labels.json",
+    "multi-host-authentication" -> "concurrent_sessions_labels.json",
+    "auth-method-policy-violation" -> "service_account_auth_labels.json",
+    "mfa-missing-on-required-account" -> "mfa_bypass_labels.json",
   )
-  private val ALERT_BEHAVIOURS = Set("repeated-failed-login-then-success", "password-spray-across-accounts", "concurrent-sessions-different-hosts")
+  private val ALERT_BEHAVIOURS = Set("repeated-failed-login-then-success", "password-spray-across-accounts", "multi-host-authentication")
 
   def main(args: Array[String]): Unit = {
     val repoRoot = new java.io.File(".").getCanonicalPath

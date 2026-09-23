@@ -30,9 +30,9 @@ NEGATION_CUES = [
 
 BEHAVIOUR_KEYWORDS = {
     "password-spray-across-accounts": ["distinct account", "spray", "distinct-account"],
-    "concurrent-sessions-different-hosts": ["different host", "two hosts", "unrelated host", "simultaneous", "concurrent"],
-    "service-account-interactive-auth": ["expected_auth_method", "provisioned for", "provisioned to", "certificate-only", "auth_method` !=", "does not match", "mismatch direction"],
-    "mfa-bypass-on-required-account": ["mfa_required", "mfa-required", "without mfa", "mfa bypass", "without a challenge", "without challenge"],
+    "multi-host-authentication": ["different host", "two hosts", "unrelated host", "simultaneous", "concurrent"],
+    "auth-method-policy-violation": ["expected_auth_method", "provisioned for", "provisioned to", "certificate-only", "auth_method` !=", "does not match", "mismatch direction"],
+    "mfa-missing-on-required-account": ["mfa_required", "mfa-required", "without mfa", "mfa bypass", "without a challenge", "without challenge"],
     "repeated-failed-login-then-success": ["failed sign-in", "failed authentication", "failed logon", "failed login", "consecutive failed", "back-to-back bad password", "bad-password"],
 }
 

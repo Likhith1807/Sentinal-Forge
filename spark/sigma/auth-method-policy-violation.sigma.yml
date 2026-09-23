@@ -1,5 +1,5 @@
-title: 'SENTINEL Forge: service-account-interactive-auth'
-name: service-account-interactive-auth_base
+title: 'SENTINEL Forge: auth-method-policy-violation'
+name: auth-method-policy-violation_base
 status: experimental
 author: SENTINEL Forge (generated)
 date: '2026-09-16'

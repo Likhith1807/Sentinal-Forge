@@ -25,7 +25,7 @@
   "unavailableFields": [
     "geo_country"
   ],
-  "looksLike": "concurrent-sessions-different-hosts",
+  "looksLike": "multi-host-authentication",
   "topic": "impossible-travel",
   "derivedFrom": "SFC-0207",
   "llmModel": "openai/gpt-oss-120b",

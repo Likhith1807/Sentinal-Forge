@@ -1,5 +1,5 @@
-title: 'SENTINEL Forge: mfa-bypass-on-required-account'
-name: mfa-bypass-on-required-account_base
+title: 'SENTINEL Forge: mfa-missing-on-required-account'
+name: mfa-missing-on-required-account_base
 status: experimental
 author: SENTINEL Forge (generated)
 date: '2026-09-16'

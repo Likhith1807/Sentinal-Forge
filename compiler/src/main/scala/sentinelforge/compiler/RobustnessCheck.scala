@@ -27,7 +27,7 @@ object RobustnessCheck {
       .select(explode(col("records")).as("r")).select("r.*")
 
     println("=== Test 1: policy source unavailable (empty policy table) ===")
-    val mfaSpec = CompiledSpec.load(spark, s"$repoRoot/data/samples/ir/compiled/mfa-bypass-on-required-account.compiled.json")
+    val mfaSpec = CompiledSpec.load(spark, s"$repoRoot/data/samples/ir/compiled/mfa-missing-on-required-account.compiled.json")
 
     println("-- baseline (real policy data available) --")
     RuleCompiler.compile(mfaSpec, events, Some(realPolicy))

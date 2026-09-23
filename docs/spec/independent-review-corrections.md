@@ -271,7 +271,7 @@ justified and evaluated." Checking the compiler against that standard
 found a real violation, not yet flagged by either review round:
 
 `RuleCompiler.scala`'s `DistinctCountWithinWindow` recipe — used by
-`password-spray-across-accounts` and `concurrent-sessions-different-hosts`,
+`password-spray-across-accounts` and `multi-host-authentication`,
 both threshold-triggered detections — called
 `approx_count_distinct(col(distinctCol)).over(byGroupTime)`, Spark's
 HyperLogLog-based approximate cardinality estimator, to decide a hard
@@ -332,7 +332,7 @@ checked against a **live run of the real extractor**
 (`nlp/src/transformer_extractor.py`) on the 3 held-out counting reports —
 not assumed from the gold files alone. `repeated-failed-login-then-success`
 and `password-spray-across-accounts` matched their gold key exactly, but
-`concurrent-sessions-different-hosts` came back `{"loginCount": 2}`, not
+`multi-host-authentication` came back `{"loginCount": 2}`, not
 gold's `{"successCount": 2}` — a reasonable synonym, not a mislabelling.
 A single hardcoded name would have made the validator reject this real,
 correct extraction, breaking the actual working pipeline. Caught before

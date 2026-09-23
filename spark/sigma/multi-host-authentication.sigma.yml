@@ -1,5 +1,5 @@
-title: concurrent-sessions-different-hosts (base event)
-name: concurrent-sessions-different-hosts_base
+title: multi-host-authentication (base event)
+name: multi-host-authentication_base
 status: experimental
 author: SENTINEL Forge (generated)
 date: '2026-09-16'
@@ -10,14 +10,14 @@ detection:
     event_type: login_success
   condition: selection
 ---
-title: 'SENTINEL Forge: concurrent-sessions-different-hosts'
+title: 'SENTINEL Forge: multi-host-authentication'
 status: experimental
 author: SENTINEL Forge (generated)
 date: '2026-09-16'
 correlation:
   type: value_count
   rules:
-  - concurrent-sessions-different-hosts_base
+  - multi-host-authentication_base
   group-by:
   - account_id
   timespan: 900s

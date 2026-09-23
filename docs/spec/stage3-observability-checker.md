@@ -48,7 +48,7 @@ All 17 passed. Full output in
 
 Case 3 includes the classical extractor's misclassification from Phase 2:
 for SF-SAMPLE-011 (a repeated-failed-login-then-success report), the
-classical extractor guessed `behaviourId: concurrent-sessions-different-hosts`
+classical extractor guessed `behaviourId: multi-host-authentication`
 — genuinely the wrong behaviour — but its `requiredFields`
 (`account_id`, `event_type`, `timestamp`) are all real, observable fields.
 **Stage 3 approved it.**

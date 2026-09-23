@@ -31,15 +31,15 @@ object ManualBaselineCheck {
       PasswordSprayAcrossAccounts.detect(spark, events).withColumnRenamed("source_host", "groupKey"),
       s"$repoRoot/data/samples/replay/password_spray_labels.json")
 
-    results ++= checkAlerts("concurrent-sessions-different-hosts",
+    results ++= checkAlerts("multi-host-authentication",
       ConcurrentSessionsDifferentHosts.detect(spark, events).withColumnRenamed("account_id", "groupKey"),
       s"$repoRoot/data/samples/replay/concurrent_sessions_labels.json")
 
-    results ++= checkStatus("service-account-interactive-auth",
+    results ++= checkStatus("auth-method-policy-violation",
       ServiceAccountInteractiveAuth.detect(spark, events, policy),
       s"$repoRoot/data/samples/replay/service_account_auth_labels.json")
 
-    results ++= checkStatus("mfa-bypass-on-required-account",
+    results ++= checkStatus("mfa-missing-on-required-account",
       MfaBypassOnRequiredAccount.detect(spark, events, policy),
       s"$repoRoot/data/samples/replay/mfa_bypass_labels.json")
 

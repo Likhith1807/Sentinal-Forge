@@ -43,7 +43,7 @@
       "field": "auth_method"
     }
   ],
-  "behaviourId": "mfa-bypass-on-required-account",
+  "behaviourId": "mfa-missing-on-required-account",
   "requiredFields": [
     "account_id",
     "event_type",

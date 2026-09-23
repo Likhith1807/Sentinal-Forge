@@ -52,9 +52,9 @@ app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], all
 BEHAVIOUR_MANIFEST = [
     {"id": "repeated-failed-login-then-success", "shortName": "Repeated Failed Login → Success", "attack": ["T1110", "T1078"]},
     {"id": "password-spray-across-accounts", "shortName": "Password Spray", "attack": ["T1110.003"]},
-    {"id": "concurrent-sessions-different-hosts", "shortName": "Concurrent Sessions", "attack": ["T1078"]},
-    {"id": "service-account-interactive-auth", "shortName": "Service Account Interactive Auth", "attack": ["T1078.003"]},
-    {"id": "mfa-bypass-on-required-account", "shortName": "MFA Bypass", "attack": ["T1621", "T1556"]},
+    {"id": "multi-host-authentication", "shortName": "Concurrent Sessions", "attack": ["T1078"]},
+    {"id": "auth-method-policy-violation", "shortName": "Service Account Interactive Auth", "attack": ["T1078.003"]},
+    {"id": "mfa-missing-on-required-account", "shortName": "MFA Bypass", "attack": ["T1621", "T1556"]},
 ]
 
 REPORT_MANIFEST = {
@@ -64,15 +64,15 @@ REPORT_MANIFEST = {
     "password-spray-001": {"behaviourId": "password-spray-across-accounts", "split": "train", "kind": "original"},
     "password-spray-002": {"behaviourId": "password-spray-across-accounts", "split": "train", "kind": "paraphrase"},
     "password-spray-003": {"behaviourId": "password-spray-across-accounts", "split": "held-out", "kind": "distinct-incident"},
-    "concurrent-sessions-001": {"behaviourId": "concurrent-sessions-different-hosts", "split": "train", "kind": "original"},
-    "concurrent-sessions-002": {"behaviourId": "concurrent-sessions-different-hosts", "split": "train", "kind": "paraphrase"},
-    "concurrent-sessions-003": {"behaviourId": "concurrent-sessions-different-hosts", "split": "held-out", "kind": "distinct-incident"},
-    "service-account-auth-001": {"behaviourId": "service-account-interactive-auth", "split": "train", "kind": "original"},
-    "service-account-auth-002": {"behaviourId": "service-account-interactive-auth", "split": "train", "kind": "paraphrase"},
-    "service-account-auth-003": {"behaviourId": "service-account-interactive-auth", "split": "held-out", "kind": "distinct-incident"},
-    "mfa-bypass-001": {"behaviourId": "mfa-bypass-on-required-account", "split": "train", "kind": "original"},
-    "mfa-bypass-002": {"behaviourId": "mfa-bypass-on-required-account", "split": "train", "kind": "paraphrase"},
-    "mfa-bypass-003": {"behaviourId": "mfa-bypass-on-required-account", "split": "held-out", "kind": "distinct-incident"},
+    "concurrent-sessions-001": {"behaviourId": "multi-host-authentication", "split": "train", "kind": "original"},
+    "concurrent-sessions-002": {"behaviourId": "multi-host-authentication", "split": "train", "kind": "paraphrase"},
+    "concurrent-sessions-003": {"behaviourId": "multi-host-authentication", "split": "held-out", "kind": "distinct-incident"},
+    "service-account-auth-001": {"behaviourId": "auth-method-policy-violation", "split": "train", "kind": "original"},
+    "service-account-auth-002": {"behaviourId": "auth-method-policy-violation", "split": "train", "kind": "paraphrase"},
+    "service-account-auth-003": {"behaviourId": "auth-method-policy-violation", "split": "held-out", "kind": "distinct-incident"},
+    "mfa-bypass-001": {"behaviourId": "mfa-missing-on-required-account", "split": "train", "kind": "original"},
+    "mfa-bypass-002": {"behaviourId": "mfa-missing-on-required-account", "split": "train", "kind": "paraphrase"},
+    "mfa-bypass-003": {"behaviourId": "mfa-missing-on-required-account", "split": "held-out", "kind": "distinct-incident"},
 }
 
 ADVERSARIAL_MANIFEST = {

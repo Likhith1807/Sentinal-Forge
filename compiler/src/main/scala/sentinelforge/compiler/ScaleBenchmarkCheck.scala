@@ -21,8 +21,8 @@ object ScaleBenchmarkCheck {
 
   private val allBehaviours = Seq(
     "repeated-failed-login-then-success", "password-spray-across-accounts",
-    "concurrent-sessions-different-hosts", "service-account-interactive-auth",
-    "mfa-bypass-on-required-account",
+    "multi-host-authentication", "auth-method-policy-violation",
+    "mfa-missing-on-required-account",
   )
 
   private def percentile(sorted: Seq[Double], p: Double): Double = {

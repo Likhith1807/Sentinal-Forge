@@ -1,6 +1,6 @@
 {
   "description": "Independent ground-truth labels for mfa_bypass_events.jsonl. Uses expectedStatus for the same reason as service_account_auth_labels.json.",
-  "ruleUnderTest": "mfa-bypass-on-required-account",
+  "ruleUnderTest": "mfa-missing-on-required-account",
   "scenarios": [
     {
       "scenarioId": "MFA-POS",

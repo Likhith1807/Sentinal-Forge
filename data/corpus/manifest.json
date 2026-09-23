@@ -15,11 +15,11 @@
     "train": 118
   },
   "byBehaviour": {
-    "concurrent-sessions-different-hosts": 38,
-    "mfa-bypass-on-required-account": 30,
+    "multi-host-authentication": 38,
+    "mfa-missing-on-required-account": 30,
     "password-spray-across-accounts": 39,
     "repeated-failed-login-then-success": 39,
-    "service-account-interactive-auth": 39,
+    "auth-method-policy-violation": 39,
     "unsupported": 16
   },
   "byStyle": {
@@ -34,23 +34,23 @@
     "soc-ticket": 28
   },
   "bySplitAndBehaviour": {
-    "dev/concurrent-sessions-different-hosts": 7,
-    "dev/mfa-bypass-on-required-account": 5,
+    "dev/multi-host-authentication": 7,
+    "dev/mfa-missing-on-required-account": 5,
     "dev/password-spray-across-accounts": 8,
     "dev/repeated-failed-login-then-success": 8,
-    "dev/service-account-interactive-auth": 8,
+    "dev/auth-method-policy-violation": 8,
     "dev/unsupported": 3,
-    "test/concurrent-sessions-different-hosts": 8,
-    "test/mfa-bypass-on-required-account": 8,
+    "test/multi-host-authentication": 8,
+    "test/mfa-missing-on-required-account": 8,
     "test/password-spray-across-accounts": 8,
     "test/repeated-failed-login-then-success": 8,
-    "test/service-account-interactive-auth": 8,
+    "test/auth-method-policy-violation": 8,
     "test/unsupported": 4,
-    "train/concurrent-sessions-different-hosts": 23,
-    "train/mfa-bypass-on-required-account": 17,
+    "train/multi-host-authentication": 23,
+    "train/mfa-missing-on-required-account": 17,
     "train/password-spray-across-accounts": 23,
     "train/repeated-failed-login-then-success": 23,
-    "train/service-account-interactive-auth": 23,
+    "train/auth-method-policy-violation": 23,
     "train/unsupported": 9
   },
   "llm": {

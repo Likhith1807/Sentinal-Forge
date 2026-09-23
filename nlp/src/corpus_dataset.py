@@ -20,7 +20,7 @@ train on. It does not invent new labels.
 | `windowAmountSpan` | character range | same | the `window_amount` span |
 | `windowUnitLabel` | 1-of-3 class (seconds/minutes/hours) | same | `timeWindow.unit` |
 
-B4/B5 (`service-account-interactive-auth`, `mfa-bypass-on-required-account`) and `unsupported`
+B4/B5 (`auth-method-policy-violation`, `mfa-missing-on-required-account`) and `unsupported`
 reports have no threshold or window; those examples are excluded from the corresponding loss terms
 (`hasThreshold`/`hasWindow` masks), not padded with a fake value.
 
@@ -55,7 +55,7 @@ UNIT_TO_IDX = {u: i for i, u in enumerate(WINDOW_UNITS)}
 THRESHOLD_KEY = {
     "repeated-failed-login-then-success": "failureCount",
     "password-spray-across-accounts": "distinctAccountCount",
-    "concurrent-sessions-different-hosts": "successCount",
+    "multi-host-authentication": "successCount",
 }
 
 

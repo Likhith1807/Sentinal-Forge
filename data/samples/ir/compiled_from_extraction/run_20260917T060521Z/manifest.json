@@ -18,7 +18,7 @@
       "compiledSpecPath": "data\\samples\\ir\\compiled_from_extraction\\run_20260917T060521Z\\password-spray-003.compiled.json"
     },
     "concurrent-sessions-003": {
-      "behaviourId": "concurrent-sessions-different-hosts",
+      "behaviourId": "multi-host-authentication",
       "stage3Status": "supported",
       "compiledSpecPath": "data\\samples\\ir\\compiled_from_extraction\\run_20260917T060521Z\\concurrent-sessions-003.compiled.json"
     }

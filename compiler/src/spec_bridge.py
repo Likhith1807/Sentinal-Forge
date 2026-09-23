@@ -40,20 +40,20 @@ RECIPE_TEMPLATES = {
         "distinctField": "account_id",
         "filterEventType": "login_failure",
     },
-    "concurrent-sessions-different-hosts": {
+    "multi-host-authentication": {
         "recipe": "DistinctCountWithinWindow",
         "groupingKey": "account_id",
         "distinctField": "source_host",
         "filterEventType": "login_success",
     },
-    "service-account-interactive-auth": {
+    "auth-method-policy-violation": {
         "recipe": "PolicyCompare",
         "filterEventType": "login_success",
         "logField": "auth_method",
         "policyField": "expected_auth_method",
         "comparisonOp": "notEqual",
     },
-    "mfa-bypass-on-required-account": {
+    "mfa-missing-on-required-account": {
         "recipe": "PolicyCompare",
         "filterEventType": "login_success",
         "logField": "mfa_used",
@@ -110,7 +110,7 @@ _UNIT_TO_SECONDS = {"seconds": 1, "second": 1, "minutes": 60, "minute": 60, "hou
 # reports (2026-09-17), not assumed from the gold files alone: that run
 # showed repeated-failed-login-then-success -> "failureCount" and
 # password-spray-across-accounts -> "distinctAccountCount" both matching
-# their gold key exactly, but concurrent-sessions-different-hosts came
+# their gold key exactly, but multi-host-authentication came
 # back as "loginCount", NOT gold's "successCount" — a reasonable synonym
 # for the same "count of qualifying login_success events" concept, not a
 # mislabelling. A single hardcoded name per behaviour would have rejected
@@ -123,7 +123,7 @@ _UNIT_TO_SECONDS = {"seconds": 1, "second": 1, "minutes": 60, "minute": 60, "hou
 EXPECTED_THRESHOLD_KEYS = {
     "repeated-failed-login-then-success": {"failureCount"},
     "password-spray-across-accounts": {"distinctAccountCount"},
-    "concurrent-sessions-different-hosts": {"successCount", "loginCount"},
+    "multi-host-authentication": {"successCount", "loginCount"},
 }
 
 

@@ -35,11 +35,11 @@ object ReplayCheck {
       s"$repoRoot/data/samples/replay/login_brute_force_labels.json")
     results ++= checkAlertBehaviour(spark, repoRoot, "password-spray-across-accounts", events,
       s"$repoRoot/data/samples/replay/password_spray_labels.json")
-    results ++= checkAlertBehaviour(spark, repoRoot, "concurrent-sessions-different-hosts", events,
+    results ++= checkAlertBehaviour(spark, repoRoot, "multi-host-authentication", events,
       s"$repoRoot/data/samples/replay/concurrent_sessions_labels.json")
-    results ++= checkStatusBehaviour(spark, repoRoot, "service-account-interactive-auth", events, policy,
+    results ++= checkStatusBehaviour(spark, repoRoot, "auth-method-policy-violation", events, policy,
       s"$repoRoot/data/samples/replay/service_account_auth_labels.json")
-    results ++= checkStatusBehaviour(spark, repoRoot, "mfa-bypass-on-required-account", events, policy,
+    results ++= checkStatusBehaviour(spark, repoRoot, "mfa-missing-on-required-account", events, policy,
       s"$repoRoot/data/samples/replay/mfa_bypass_labels.json")
 
     println("\n=== Phase 4 replay check ===")

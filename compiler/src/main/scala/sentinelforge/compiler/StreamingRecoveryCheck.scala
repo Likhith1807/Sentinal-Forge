@@ -66,7 +66,7 @@ object StreamingRecoveryCheck {
 
     val policy = spark.read.option("multiLine", "true").json(s"$repoRoot/data/samples/schema/account_policy_reference.json")
       .select(explode(col("records")).as("r")).select("r.*")
-    val spec = CompiledSpec.load(spark, s"$repoRoot/data/samples/ir/compiled/mfa-bypass-on-required-account.compiled.json")
+    val spec = CompiledSpec.load(spark, s"$repoRoot/data/samples/ir/compiled/mfa-missing-on-required-account.compiled.json")
 
     val allEvents = spark.read.json(s"$repoRoot/data/samples/replay/mfa_bypass_events.jsonl")
       .select(eventSchema.fieldNames.map(col): _*).collect()

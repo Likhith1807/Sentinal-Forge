@@ -32,9 +32,9 @@ object GeneratedDataCheck {
 
   private val B1 = "repeated-failed-login-then-success"
   private val B2 = "password-spray-across-accounts"
-  private val B3 = "concurrent-sessions-different-hosts"
-  private val B4 = "service-account-interactive-auth"
-  private val B5 = "mfa-bypass-on-required-account"
+  private val B3 = "multi-host-authentication"
+  private val B4 = "auth-method-policy-violation"
+  private val B5 = "mfa-missing-on-required-account"
   private val behaviours = Seq(B1, B2, B3, B4, B5)
   private val MaxCollected = 1000000
 

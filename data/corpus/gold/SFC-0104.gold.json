@@ -65,7 +65,7 @@
       "field": "auth_method"
     }
   ],
-  "behaviourId": "concurrent-sessions-different-hosts",
+  "behaviourId": "multi-host-authentication",
   "requiredFields": [
     "account_id",
     "event_type",

@@ -25,6 +25,6 @@
   "unavailableFields": [
     "geo_country"
   ],
-  "looksLike": "concurrent-sessions-different-hosts",
+  "looksLike": "multi-host-authentication",
   "topic": "impossible-travel"
 }

@@ -24,9 +24,9 @@ object ThroughputCheck {
     val specs = Seq(
       ("repeated-failed-login-then-success", None),
       ("password-spray-across-accounts", None),
-      ("concurrent-sessions-different-hosts", None),
-      ("service-account-interactive-auth", Some(policy)),
-      ("mfa-bypass-on-required-account", Some(policy)),
+      ("multi-host-authentication", None),
+      ("auth-method-policy-violation", Some(policy)),
+      ("mfa-missing-on-required-account", Some(policy)),
     ).map { case (id, pol) => (CompiledSpec.load(spark, s"$repoRoot/data/samples/ir/compiled/$id.compiled.json"), pol) }
 
     val runsPerSpec = 10

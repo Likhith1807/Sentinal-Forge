@@ -43,7 +43,7 @@
       "field": "mfa_used"
     }
   ],
-  "behaviourId": "service-account-interactive-auth",
+  "behaviourId": "auth-method-policy-violation",
   "requiredFields": [
     "account_id",
     "auth_method",
