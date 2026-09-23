@@ -1,0 +1,8 @@
+{
+  "reportId": "HO-R-11",
+  "reportSha256": "7cff7ee0f02d5ccfa5d6842493485c08b3d432928093cf488bfab50499d0462f",
+  "expect": "no_compile",
+  "reasonClass": "ambiguous",
+  "fields": [],
+  "why": "Describes logins without MFA in an incident, but states no policy-comparison rule."
+}

@@ -1,0 +1,7 @@
+{
+  "reportId": "HO-X-01",
+  "reportSha256": "f5cbb680e52e1ebb4c8bd79552794c7edf9f9d598686c8ecaf71e08a03d2b9d5",
+  "expect": "no_compile",
+  "reasonClass": "injection",
+  "fields": []
+}

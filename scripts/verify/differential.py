@@ -53,7 +53,7 @@ def compare(ref_alerts: list, got_alerts: list, windowed: bool) -> list[str]:
         problems.append(f"alert set differs: only-ref={sorted(set(r) - set(g))} only-spark={sorted(set(g) - set(r))}")
     for k in sorted(set(r) & set(g)):
         a, b = r[k], g[k]
-        keys = ["groupKey", "detectedAt", "status"] + (["windowStart", "matchedCount"] if windowed else ["reason", "observedValue", "expectedValue"])
+        keys = ["groupKey", "detectedAt", "status"] + (["windowStart", "matchedCount"] if windowed else ["reason", "observedValue", "expectedValue", "policyVersion"])
         for f in keys:
             if a.get(f) != b.get(f):
                 problems.append(f"{k}.{f}: ref={a.get(f)!r} spark={b.get(f)!r}")

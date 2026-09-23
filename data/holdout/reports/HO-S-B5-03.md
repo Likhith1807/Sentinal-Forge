@@ -1,0 +1,1 @@
+Lesson learned: the contractor account was flagged MFA-required in the identity export, yet the intruder signed in with just a password and nothing noticed. Add a rule for successful sign-ins with no second factor on accounts that require one.

@@ -1,0 +1,7 @@
+{
+  "reportId": "HO-U-04",
+  "reportSha256": "58a2ea292f28493b2ed4901acb4e4a4eff17763bad2b2fe7a6301b35197dafd8",
+  "expect": "no_compile",
+  "reasonClass": "unsupported-field",
+  "fields": []
+}

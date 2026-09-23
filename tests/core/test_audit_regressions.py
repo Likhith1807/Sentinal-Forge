@@ -281,6 +281,10 @@ class TestCompleteValidation:
     def test_counts_must_be_positive_whole_numbers(self, value):
         assert not validate_spec(_spec(threshold={"failureCount": value})).ok
 
+    def test_a_distinct_threshold_of_one_is_meaningless_and_rejected(self):
+        spec = {"behaviourId": "password-spray-across-accounts", "threshold": {"distinctAccountCount": 1}, "timeWindow": {"amount": 5, "unit": "minutes"}}
+        assert any(i.code == "COUNT_TOO_SMALL" for i in validate_spec(spec).issues)
+
     def test_out_of_range_values_are_rejected(self):
         assert not validate_spec(_spec(threshold={"failureCount": 10**9})).ok
         assert not validate_spec(_spec(timeWindow={"amount": 400, "unit": "days"})).ok

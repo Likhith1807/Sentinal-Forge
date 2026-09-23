@@ -1,0 +1,1 @@
+Following the ransomware exercise we want detection of mass file encryption: more than 300 files renamed with a new extension by one process within 2 minutes. Endpoint file-system telemetry is required.

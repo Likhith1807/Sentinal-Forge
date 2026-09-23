@@ -1,0 +1,1 @@
+hey team - can we get an alert for 5x failed logins in under 2min on the same acct, then a good login right after? saw it happen to jsmith yesterday and nobody noticed till the morning. uses account, result and time i think

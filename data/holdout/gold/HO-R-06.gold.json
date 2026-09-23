@@ -1,0 +1,8 @@
+{
+  "reportId": "HO-R-06",
+  "reportSha256": "f8c337d93993b3e90d46e13f244e9d8df3e1d3703316be3a2dec7182d52856a2",
+  "expect": "no_compile",
+  "reasonClass": "not-a-rule",
+  "fields": [],
+  "why": "A preventive recommendation."
+}

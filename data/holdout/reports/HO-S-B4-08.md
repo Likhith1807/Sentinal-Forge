@@ -1,0 +1,1 @@
+Audit finding 3: 11 service accounts authenticated with passwords during Q1 even though policy requires certificates. Management response: implement continuous monitoring that flags every successful login whose authentication method deviates from the method on record for that account.

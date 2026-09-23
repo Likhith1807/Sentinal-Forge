@@ -1,0 +1,1 @@
+If we were ever to build a rule for password guessing it might look at failed logins on an account followed by a success, perhaps 5 failures in a couple of minutes. We have not decided anything and there is no budget this year.

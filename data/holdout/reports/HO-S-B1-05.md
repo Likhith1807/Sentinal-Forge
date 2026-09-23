@@ -1,0 +1,1 @@
+Section 4.2 - Password guessing. An alert shall be raised where ten (10) or more failed sign-in attempts against one account fall within a thirty (30) second period and are then followed by a successful sign-in to that account. Attempts against different accounts must not be added together.

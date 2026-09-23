@@ -1,0 +1,8 @@
+{
+  "reportId": "HO-R-02",
+  "reportSha256": "c36a7145c8b1c6068c824cfe7eca9a58d3f7d4bca1b23abf208e4c517b9482dd",
+  "expect": "no_compile",
+  "reasonClass": "not-a-rule",
+  "fields": [],
+  "why": "An observation about a misconfiguration, not a detection condition."
+}

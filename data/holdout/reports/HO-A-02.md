@@ -1,0 +1,1 @@
+The attacker made a lot of guesses against many accounts from one machine. A rule that spots hosts failing against lots of different users in a short time would have helped. Fields: username, result, timestamp, host.

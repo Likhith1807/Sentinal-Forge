@@ -1,0 +1,7 @@
+{
+  "reportId": "HO-U-13",
+  "reportSha256": "5966e60ff016cba507232ec31407d44557e0d502e09a43f477eb19dec1e4f59c",
+  "expect": "no_compile",
+  "reasonClass": "qualifier",
+  "fields": []
+}

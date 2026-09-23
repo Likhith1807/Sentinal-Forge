@@ -72,14 +72,14 @@ MALFORMED = ["not-a-timestamp", "2026-03-01T00:00:00", "2026-03-01 00:00:00Z", "
              "2026-03-01T00:00:00.1234567Z", "", "2026-03-01T25:00:00.000Z", "1709251200"]
 
 
-def _inject_noise(events: list, sc: str, rng: random.Random, key_cols: list[str], tags: list) -> list:
+def _inject_noise(events: list, sc: str, rng: random.Random, key_cols: list[str], tags: list, streaming: bool = False) -> list:
     out = list(events)
     n = len(out)
     counter = 900
     if out and rng.random() < 0.25:                        # exact redelivery
         out.append(dict(rng.choice(out)))
         tags.append("dup-exact")
-    if out and rng.random() < 0.12:                        # conflicting duplicate: same id, different content
+    if out and rng.random() < 0.12 and not streaming:      # conflicting duplicate: same id, different content
         victim = dict(rng.choice(out))
         victim["source_host"] = "other-host"
         victim["auth_method"] = "token"
@@ -105,7 +105,7 @@ def _inject_noise(events: list, sc: str, rng: random.Random, key_cols: list[str]
     return out
 
 
-def gen_sequence(rng: random.Random, idx: int, w: int, n: int, behaviour: B.Behaviour) -> Scenario:
+def gen_sequence(rng: random.Random, idx: int, w: int, n: int, behaviour: B.Behaviour, streaming: bool = False) -> Scenario:
     sc = f"s{idx}"
     acct = f"{sc}-acct"
     tags: list = []
@@ -127,10 +127,10 @@ def gen_sequence(rng: random.Random, idx: int, w: int, n: int, behaviour: B.Beha
     for _ in range(rng.randint(0, 3)):
         k += 1
         events.append(_ev(sc, k, fmt_ts(t - rng.randint(0, w * US), rng), other, rng.choice(["login_failure", "login_success"]), f"{sc}-h2"))
-    return Scenario(sc, behaviour.id, _inject_noise(events, sc, rng, ["account_id"], tags), [], tags)
+    return Scenario(sc, behaviour.id, _inject_noise(events, sc, rng, ["account_id"], tags, streaming), [], tags)
 
 
-def gen_distinct(rng: random.Random, idx: int, w: int, n: int, behaviour: B.Behaviour) -> Scenario:
+def gen_distinct(rng: random.Random, idx: int, w: int, n: int, behaviour: B.Behaviour, streaming: bool = False) -> Scenario:
     sc = f"s{idx}"
     group_col, distinct_col = behaviour.grouping_key, behaviour.distinct_field
     tags: list = []
@@ -155,16 +155,16 @@ def gen_distinct(rng: random.Random, idx: int, w: int, n: int, behaviour: B.Beha
             tie[distinct_col] = rng.choice(pool)
             events.append(tie)
             tags.append("tie")
-    return Scenario(sc, behaviour.id, _inject_noise(events, sc, rng, [group_col, distinct_col], tags), [], tags)
+    return Scenario(sc, behaviour.id, _inject_noise(events, sc, rng, [group_col, distinct_col], tags, streaming), [], tags)
 
 
-def gen_policy(rng: random.Random, idx: int, behaviour: B.Behaviour) -> Scenario:
+def gen_policy(rng: random.Random, idx: int, behaviour: B.Behaviour, streaming: bool = False) -> Scenario:
     sc = f"s{idx}"
     tags: list = []
     accounts = [f"{sc}-a{i}" for i in range(rng.randint(1, 3))]
     policy, events, k = [], [], 0
     for a in accounts:
-        variant = rng.choice(["one", "one", "one", "none", "dup-same", "dup-conflict", "null-value"])
+        variant = rng.choice(["one", "one", "one", "none", "dup-same", "dup-conflict", "null-value", "versioned", "versioned"])
         tags.append(f"policy-{variant}")
         if behaviour.policy_field == "mfa_required":
             v1, v2 = rng.choice([True, False]), None
@@ -180,6 +180,12 @@ def gen_policy(rng: random.Random, idx: int, behaviour: B.Behaviour) -> Scenario
             policy += [{"account_id": a, behaviour.policy_field: v1}, {"account_id": a, behaviour.policy_field: v2}]
         elif variant == "null-value":
             policy.append({"account_id": a, behaviour.policy_field: None})
+        elif variant == "versioned":                        # policy changes over time; each event sees the row in force at ITS time
+            cut = BASE + rng.randint(20_000, 80_000) * US
+            policy += [{"account_id": a, behaviour.policy_field: v1, "effective_from": fmt_ts(cut - 40_000 * US, rng), "policy_version": 1},
+                       {"account_id": a, behaviour.policy_field: v2, "effective_from": fmt_ts(cut, rng), "policy_version": 2}]
+            if rng.random() < 0.3:                          # an unparseable effective_from is ignored, never guessed
+                policy.append({"account_id": a, behaviour.policy_field: v2, "effective_from": "not-a-time", "policy_version": 3})
         for _ in range(rng.randint(1, 3)):
             k += 1
             observed = rng.choice([True, False, None]) if behaviour.log_field == "mfa_used" else rng.choice(["password", "token", "certificate", None])
@@ -187,19 +193,19 @@ def gen_policy(rng: random.Random, idx: int, behaviour: B.Behaviour) -> Scenario
                     rng.choice(["login_success", "login_success", "login_failure"]), f"{sc}-h")
             e[behaviour.log_field] = observed
             events.append(e)
-    return Scenario(sc, behaviour.id, _inject_noise(events, sc, rng, ["account_id"], tags), policy, tags)
+    return Scenario(sc, behaviour.id, _inject_noise(events, sc, rng, ["account_id"], tags, streaming), policy, tags)
 
 
-def gen_scenarios(behaviour_id: str, n: int, seed: int, configs: list[tuple[int, int]] | None = None):
+def gen_scenarios(behaviour_id: str, n: int, seed: int, configs: list[tuple[int, int]] | None = None, streaming: bool = False):
     """-> {(window_s, threshold): [Scenario, ...]} - one Spark run per config, all scenarios for it inside."""
     beh = B.BEHAVIOURS[behaviour_id]
     rng = random.Random(f"{seed}:{behaviour_id}")
     if beh.recipe == B.POLICY_COMPARE:
-        return {(0, 0): [gen_policy(rng, i, beh) for i in range(n)]}
+        return {(0, 0): [gen_policy(rng, i, beh, streaming) for i in range(n)]}
     configs = configs or [(w, t) for w in rng.sample(WINDOWS, 3) for t in rng.sample(THRESHOLDS, 1)]
     out: dict = {c: [] for c in configs}
     for i in range(n):
         w, t = configs[i % len(configs)]
         gen = gen_sequence if beh.recipe == B.SEQUENCE_THEN_TRIGGER else gen_distinct
-        out[(w, t)].append(gen(rng, i, w, t, beh))
+        out[(w, t)].append(gen(rng, i, w, t, beh, streaming))
     return out

@@ -1,0 +1,88 @@
+{
+  "seed": 5,
+  "casesPerBehaviour": 24,
+  "seconds": 451.7,
+  "regimesWithDisagreement": 0,
+  "results": [
+    {
+      "behaviour": "repeated-failed-login-then-success",
+      "regime": "generous",
+      "latenessSeconds": 2592000,
+      "scenarios": 24,
+      "problems": [],
+      "late": 0,
+      "duplicates": 7,
+      "alerts": 28
+    },
+    {
+      "behaviour": "repeated-failed-login-then-success",
+      "regime": "tight",
+      "latenessSeconds": 120,
+      "scenarios": 24,
+      "problems": [],
+      "late": 6,
+      "duplicates": 7,
+      "alerts": 26
+    },
+    {
+      "behaviour": "password-spray-across-accounts",
+      "regime": "generous",
+      "latenessSeconds": 2592000,
+      "scenarios": 24,
+      "problems": [],
+      "late": 0,
+      "duplicates": 7,
+      "alerts": 13
+    },
+    {
+      "behaviour": "password-spray-across-accounts",
+      "regime": "tight",
+      "latenessSeconds": 120,
+      "scenarios": 24,
+      "problems": [],
+      "late": 8,
+      "duplicates": 7,
+      "alerts": 12
+    },
+    {
+      "behaviour": "multi-host-authentication",
+      "regime": "generous",
+      "latenessSeconds": 2592000,
+      "scenarios": 24,
+      "problems": [],
+      "late": 0,
+      "duplicates": 7,
+      "alerts": 16
+    },
+    {
+      "behaviour": "multi-host-authentication",
+      "regime": "tight",
+      "latenessSeconds": 120,
+      "scenarios": 24,
+      "problems": [],
+      "late": 0,
+      "duplicates": 7,
+      "alerts": 16
+    },
+    {
+      "behaviour": "auth-method-policy-violation",
+      "regime": "generous",
+      "latenessSeconds": 2592000,
+      "scenarios": 24,
+      "problems": [],
+      "late": 0,
+      "duplicates": 0,
+      "alerts": 51
+    },
+    {
+      "behaviour": "mfa-missing-on-required-account",
+      "regime": "generous",
+      "latenessSeconds": 2592000,
+      "scenarios": 24,
+      "problems": [],
+      "late": 0,
+      "duplicates": 0,
+      "alerts": 40
+    }
+  ]
+}

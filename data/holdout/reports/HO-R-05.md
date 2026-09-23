@@ -1,0 +1,1 @@
+In a separate incident, SVR actors used CVE-2019-19781, a zero-day exploit at the time, against a virtual private network (VPN) appliance to obtain network access. Following exploitation of the device in a way that exposed user credentials, the actors identified and authenticated to systems on the network using the exposed credentials.

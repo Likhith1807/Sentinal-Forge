@@ -20,7 +20,9 @@ Semantics implemented (v2):
   * DistinctCountWithinWindow: one alert per *incident* - the first event (ordered by timestamp, event_id) at
     which the exact distinct count reaches N after a non-breaching event (a "rising edge").
   * PolicyCompare: one result per matching event; policy rows are deduplicated per account (identical rows
-    collapse, conflicting rows make the account `insufficient_context`/`policy_conflict`).
+    collapse, conflicting rows make the account `insufficient_context`/`policy_conflict`). If the policy has an
+    `effective_from` column the row in force AT THE EVENT'S TIMESTAMP applies (latest effective_from <= event time);
+    each result records the `policy_version` it used.
 """
 from __future__ import annotations
 
@@ -171,26 +173,61 @@ def _distinct(c: dict, events: list[dict]) -> RefResult:
     return res
 
 
+def _policy_rows_for(rows: list[dict], event_micros: int, pol_f: str, versioned: bool):
+    """Rows of ONE account's policy that apply to an event at `event_micros`.
+
+    Without any `effective_from` column every row applies (the v1 behaviour). With one, the applicable rows are the
+    ones whose effective_from is at or before the event's timestamp, and only the LATEST such effective_from counts:
+    a policy change is not retroactive to earlier events and does not need to arrive before them. A row with an
+    unparseable effective_from is ignored. Returns (values, version) where `values` may hold several rows when they
+    share the latest effective_from (they then either agree or conflict).
+    """
+    if not versioned:
+        return [r.get(pol_f) for r in rows], _versions(rows)
+    usable = []
+    for r in rows:
+        eff = r.get("effective_from")
+        m = -(1 << 63) if eff is None else parse_micros(eff)
+        if m is None:
+            continue
+        if m <= event_micros:
+            usable.append((m, r))
+    if not usable:
+        return None, None
+    top = max(m for m, _ in usable)
+    chosen = [r for m, r in usable if m == top]
+    return [r.get(pol_f) for r in chosen], _versions(chosen)
+
+
+def _versions(rows: list[dict]):
+    vs = {r.get("policy_version") for r in rows if r.get("policy_version") is not None}
+    return next(iter(vs)) if len(vs) == 1 else None
+
+
 def _policy(c: dict, events: list[dict], policy: list[dict]) -> RefResult:
     log_f, pol_f, op = c["logField"], c["policyField"], c["comparisonOp"]
     clean, quarantine, stats = _prepare(events, ["account_id"])
     by_acct: dict = defaultdict(list)
     for p in policy:
         if p.get("account_id") is not None:
-            by_acct[p["account_id"]].append(p.get(pol_f))
+            by_acct[p["account_id"]].append(p)
+    versioned = any("effective_from" in p for p in policy)          # decided for the whole policy table, like a column
     res = RefResult(quarantine=quarantine, stats=stats)
     for e in sorted((x for x in clean if x["event_type"] == c["filterEventType"]),
                     key=lambda r: (r["_micros"], r["event_id"])):
-        vals = by_acct.get(e["account_id"])
+        rows = by_acct.get(e["account_id"])
         observed = e.get(log_f)
-        expected, status, reason = None, None, None
+        expected, status, reason, version = None, None, None, None
+        vals = None
+        if rows is not None:
+            vals, version = _policy_rows_for(rows, e["_micros"], pol_f, versioned)
         if vals is None:
             status, reason = "insufficient_context", "no_policy_record"
         else:
             non_null = {v for v in vals if v is not None}
             has_null = any(v is None for v in vals)
             if len(non_null) + (1 if has_null else 0) > 1:
-                status, reason = "insufficient_context", "policy_conflict"
+                status, reason, version = "insufficient_context", "policy_conflict", None
             elif not non_null:
                 status, reason = "insufficient_context", "policy_value_null"
             else:
@@ -202,7 +239,7 @@ def _policy(c: dict, events: list[dict], policy: list[dict]) -> RefResult:
                     status, reason = ("alert", "policy_violated") if violated else ("no_alert", "compliant")
         out = {"behaviourId": c["behaviourId"], "groupKey": e["account_id"], "triggeringEventId": e["event_id"],
                "detectedAt": e["timestamp"], "observedValue": observed, "expectedValue": expected,
-               "status": status, "reason": reason}
+               "status": status, "reason": reason, "policyVersion": None if version is None else str(version)}
         res.all_results.append(out)
         if status != "no_alert":
             res.alerts.append(out)

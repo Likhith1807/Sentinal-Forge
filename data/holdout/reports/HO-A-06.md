@@ -1,0 +1,1 @@
+Security wants an alert on 5 or more failed logins for one account within 2 minutes followed by a success. Audit insists on 15 or more failed logins within 2 minutes before the same alert fires. Please implement the detection.

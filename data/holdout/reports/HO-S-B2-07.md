@@ -1,0 +1,1 @@
+RS-131. An alert SHALL be generated for any source host from which unsuccessful authentication attempts are observed against no fewer than nine (9) distinct accounts within forty-five (45) minutes. The threshold applies to distinct accounts, not attempts.

@@ -175,6 +175,8 @@ def validate_spec(spec) -> SpecValidation:
                     issues.append(Issue("NON_POSITIVE_COUNT", where, f"count must be at least 1, got {v!r}."))
                 elif v > MAX_COUNT:
                     issues.append(Issue("COUNT_OUT_OF_RANGE", where, f"count {v!r} exceeds the supported maximum {MAX_COUNT}."))
+            if beh.recipe == B.DISTINCT_COUNT_WITHIN_WINDOW and _is_real_number(v) and float(v).is_integer() and 1 <= v < 2:
+                issues.append(Issue("COUNT_TOO_SMALL", where, "a distinct-count threshold of 1 is true for every event, so \"once per incident\" is undefined; use at least 2."))
             if sem is not None and beh.count_semantics is not None and sem != beh.count_semantics:
                 issues.append(Issue("COUNT_SEMANTICS_MISMATCH", where,
                                     f"{bid} counts {beh.count_semantics}, but the spec's count is {sem}."))

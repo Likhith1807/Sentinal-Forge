@@ -1,0 +1,1 @@
+In one 2018 compromise of a large network, SVR cyber actors used password spraying to identify a weak password associated with an administrative account. The actors conducted the password spraying activity in a “low and slow” manner, attempting a small number of passwords at infrequent intervals, possibly to avoid detection.

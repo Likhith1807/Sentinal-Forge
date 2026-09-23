@@ -1,0 +1,8 @@
+{
+  "reportId": "HO-R-12",
+  "reportSha256": "056b66a7b8b33a68ebcfcde5e3dd574cd354d86c5c078443045f389f6f1f9ecf",
+  "expect": "no_compile",
+  "reasonClass": "not-a-rule",
+  "fields": [],
+  "why": "A preventive control (lockout), not a detection."
+}

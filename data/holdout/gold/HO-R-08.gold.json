@@ -1,0 +1,8 @@
+{
+  "reportId": "HO-R-08",
+  "reportSha256": "ab7e3ecca220d979b20e9fca03e36ae8e455c2242a6ad71bfc6904a20ec25535",
+  "expect": "no_compile",
+  "reasonClass": "not-a-rule",
+  "fields": [],
+  "why": "A recommendation about configuration review."
+}

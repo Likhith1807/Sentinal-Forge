@@ -1,0 +1,1010 @@
+{
+ "name": "SENTINEL Forge frozen holdout",
+ "version": "1.0.0",
+ "frozenOn": "2026-09-24",
+ "reports": 112,
+ "counts": {
+  "authored": 96,
+  "real-public": 16
+ },
+ "byExpectation": {
+  "compiled": 41,
+  "no_compile": 71
+ },
+ "labelling": "single annotator (the author); a second independent review is tracked in review/ and is NOT complete unless review/RESULT.json says so",
+ "separation": "No report shares a template, family, or rewriting model with data/corpus (train/dev/test). Written before the extractor and parser were run on them; never tuned against.",
+ "entries": [
+  {
+   "reportId": "HO-A-01",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "chat-shorthand",
+   "family": "HF-HO-A-01",
+   "reasonClass": "ambiguous"
+  },
+  {
+   "reportId": "HO-A-02",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "narrative",
+   "family": "HF-HO-A-02",
+   "reasonClass": "ambiguous"
+  },
+  {
+   "reportId": "HO-A-03",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "terse-request",
+   "family": "HF-HO-A-03",
+   "reasonClass": "ambiguous"
+  },
+  {
+   "reportId": "HO-A-04",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "terse-request",
+   "family": "HF-HO-A-04",
+   "reasonClass": "ambiguous"
+  },
+  {
+   "reportId": "HO-A-05",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "terse-request",
+   "family": "HF-HO-A-05",
+   "reasonClass": "ambiguous"
+  },
+  {
+   "reportId": "HO-A-06",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "contradictory-stakeholders",
+   "family": "HF-HO-A-06",
+   "reasonClass": "contradictory"
+  },
+  {
+   "reportId": "HO-A-07",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "contradictory-stakeholders",
+   "family": "HF-HO-A-07",
+   "reasonClass": "contradictory"
+  },
+  {
+   "reportId": "HO-A-08",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "formal-spec",
+   "family": "HF-HO-A-08",
+   "reasonClass": "ambiguous"
+  },
+  {
+   "reportId": "HO-A-09",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "hypothetical",
+   "family": "HF-HO-A-09",
+   "reasonClass": "not-a-rule"
+  },
+  {
+   "reportId": "HO-A-10",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "history",
+   "family": "HF-HO-A-10",
+   "reasonClass": "not-a-rule"
+  },
+  {
+   "reportId": "HO-A-11",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "opinion",
+   "family": "HF-HO-A-11",
+   "reasonClass": "not-a-rule"
+  },
+  {
+   "reportId": "HO-A-12",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "policy-statement",
+   "family": "HF-HO-A-12",
+   "reasonClass": "not-a-rule"
+  },
+  {
+   "reportId": "HO-A-13",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "ambiguous-window",
+   "family": "HF-HO-A-13",
+   "reasonClass": "ambiguous"
+  },
+  {
+   "reportId": "HO-A-14",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "upper-bound",
+   "family": "HF-HO-A-14",
+   "reasonClass": "ambiguous"
+  },
+  {
+   "reportId": "HO-A-15",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "negated",
+   "family": "HF-HO-A-15",
+   "reasonClass": "not-a-rule"
+  },
+  {
+   "reportId": "HO-A-16",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "mixed-behaviours",
+   "family": "HF-HO-A-16",
+   "reasonClass": "ambiguous"
+  },
+  {
+   "reportId": "HO-A-17",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "unit-missing",
+   "family": "HF-HO-A-17",
+   "reasonClass": "ambiguous"
+  },
+  {
+   "reportId": "HO-A-18",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "relative",
+   "family": "HF-HO-A-18",
+   "reasonClass": "ambiguous"
+  },
+  {
+   "reportId": "HO-A-19",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "approximate",
+   "family": "HF-HO-A-19",
+   "reasonClass": "ambiguous"
+  },
+  {
+   "reportId": "HO-A-20",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "policy-vague",
+   "family": "HF-HO-A-20",
+   "reasonClass": "ambiguous"
+  },
+  {
+   "reportId": "HO-R-01",
+   "expect": "no_compile",
+   "source": "real-public",
+   "style": "advisory-excerpt",
+   "family": "HF-HO-R-01",
+   "reasonClass": "ambiguous",
+   "citation": {
+    "title": "Russian Foreign Intelligence Service (SVR) Cyber Operations: Trends and Best Practices for Network Defenders (AA21-116A)",
+    "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa21-116a",
+    "retrieved": "2026-09-24",
+    "license": "US Government work (public domain), CISA/FBI joint advisory"
+   }
+  },
+  {
+   "reportId": "HO-R-02",
+   "expect": "no_compile",
+   "source": "real-public",
+   "style": "advisory-excerpt",
+   "family": "HF-HO-R-02",
+   "reasonClass": "not-a-rule",
+   "citation": {
+    "title": "Russian Foreign Intelligence Service (SVR) Cyber Operations: Trends and Best Practices for Network Defenders (AA21-116A)",
+    "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa21-116a",
+    "retrieved": "2026-09-24",
+    "license": "US Government work (public domain), CISA/FBI joint advisory"
+   }
+  },
+  {
+   "reportId": "HO-R-03",
+   "expect": "no_compile",
+   "source": "real-public",
+   "style": "advisory-excerpt",
+   "family": "HF-HO-R-03",
+   "reasonClass": "not-a-rule",
+   "citation": {
+    "title": "Russian Foreign Intelligence Service (SVR) Cyber Operations: Trends and Best Practices for Network Defenders (AA21-116A)",
+    "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa21-116a",
+    "retrieved": "2026-09-24",
+    "license": "US Government work (public domain), CISA/FBI joint advisory"
+   }
+  },
+  {
+   "reportId": "HO-R-04",
+   "expect": "no_compile",
+   "source": "real-public",
+   "style": "advisory-excerpt",
+   "family": "HF-HO-R-04",
+   "reasonClass": "not-a-rule",
+   "citation": {
+    "title": "Russian Foreign Intelligence Service (SVR) Cyber Operations: Trends and Best Practices for Network Defenders (AA21-116A)",
+    "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa21-116a",
+    "retrieved": "2026-09-24",
+    "license": "US Government work (public domain), CISA/FBI joint advisory"
+   }
+  },
+  {
+   "reportId": "HO-R-05",
+   "expect": "no_compile",
+   "source": "real-public",
+   "style": "advisory-excerpt",
+   "family": "HF-HO-R-05",
+   "reasonClass": "unsupported-behaviour",
+   "citation": {
+    "title": "Russian Foreign Intelligence Service (SVR) Cyber Operations: Trends and Best Practices for Network Defenders (AA21-116A)",
+    "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa21-116a",
+    "retrieved": "2026-09-24",
+    "license": "US Government work (public domain), CISA/FBI joint advisory"
+   }
+  },
+  {
+   "reportId": "HO-R-06",
+   "expect": "no_compile",
+   "source": "real-public",
+   "style": "advisory-excerpt",
+   "family": "HF-HO-R-06",
+   "reasonClass": "not-a-rule",
+   "citation": {
+    "title": "Russian Foreign Intelligence Service (SVR) Cyber Operations: Trends and Best Practices for Network Defenders (AA21-116A)",
+    "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa21-116a",
+    "retrieved": "2026-09-24",
+    "license": "US Government work (public domain), CISA/FBI joint advisory"
+   }
+  },
+  {
+   "reportId": "HO-R-07",
+   "expect": "no_compile",
+   "source": "real-public",
+   "style": "advisory-excerpt",
+   "family": "HF-HO-R-07",
+   "reasonClass": "not-a-rule",
+   "citation": {
+    "title": "Russian State-Sponsored Cyber Actors Gain Network Access by Exploiting Default Multifactor Authentication Protocols and PrintNightmare Vulnerability (AA22-074A)",
+    "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-074a",
+    "retrieved": "2026-09-24",
+    "license": "US Government work (public domain), CISA/FBI joint advisory"
+   }
+  },
+  {
+   "reportId": "HO-R-08",
+   "expect": "no_compile",
+   "source": "real-public",
+   "style": "advisory-excerpt",
+   "family": "HF-HO-R-08",
+   "reasonClass": "not-a-rule",
+   "citation": {
+    "title": "Russian State-Sponsored Cyber Actors Gain Network Access by Exploiting Default Multifactor Authentication Protocols and PrintNightmare Vulnerability (AA22-074A)",
+    "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-074a",
+    "retrieved": "2026-09-24",
+    "license": "US Government work (public domain), CISA/FBI joint advisory"
+   }
+  },
+  {
+   "reportId": "HO-R-09",
+   "expect": "no_compile",
+   "source": "real-public",
+   "style": "advisory-excerpt",
+   "family": "HF-HO-R-09",
+   "reasonClass": "not-a-rule",
+   "citation": {
+    "title": "Russian State-Sponsored Cyber Actors Gain Network Access by Exploiting Default Multifactor Authentication Protocols and PrintNightmare Vulnerability (AA22-074A)",
+    "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-074a",
+    "retrieved": "2026-09-24",
+    "license": "US Government work (public domain), CISA/FBI joint advisory"
+   }
+  },
+  {
+   "reportId": "HO-R-10",
+   "expect": "no_compile",
+   "source": "real-public",
+   "style": "advisory-excerpt",
+   "family": "HF-HO-R-10",
+   "reasonClass": "not-a-rule",
+   "citation": {
+    "title": "Russian State-Sponsored Cyber Actors Gain Network Access by Exploiting Default Multifactor Authentication Protocols and PrintNightmare Vulnerability (AA22-074A)",
+    "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-074a",
+    "retrieved": "2026-09-24",
+    "license": "US Government work (public domain), CISA/FBI joint advisory"
+   }
+  },
+  {
+   "reportId": "HO-R-11",
+   "expect": "no_compile",
+   "source": "real-public",
+   "style": "advisory-excerpt",
+   "family": "HF-HO-R-11",
+   "reasonClass": "ambiguous",
+   "citation": {
+    "title": "Russian State-Sponsored Cyber Actors Gain Network Access by Exploiting Default Multifactor Authentication Protocols and PrintNightmare Vulnerability (AA22-074A)",
+    "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-074a",
+    "retrieved": "2026-09-24",
+    "license": "US Government work (public domain), CISA/FBI joint advisory"
+   }
+  },
+  {
+   "reportId": "HO-R-12",
+   "expect": "no_compile",
+   "source": "real-public",
+   "style": "advisory-excerpt",
+   "family": "HF-HO-R-12",
+   "reasonClass": "not-a-rule",
+   "citation": {
+    "title": "Russian State-Sponsored Cyber Actors Gain Network Access by Exploiting Default Multifactor Authentication Protocols and PrintNightmare Vulnerability (AA22-074A)",
+    "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-074a",
+    "retrieved": "2026-09-24",
+    "license": "US Government work (public domain), CISA/FBI joint advisory"
+   }
+  },
+  {
+   "reportId": "HO-R-13",
+   "expect": "no_compile",
+   "source": "real-public",
+   "style": "advisory-excerpt",
+   "family": "HF-HO-R-13",
+   "reasonClass": "ambiguous",
+   "citation": {
+    "title": "Russian State-Sponsored Cyber Actors Gain Network Access by Exploiting Default Multifactor Authentication Protocols and PrintNightmare Vulnerability (AA22-074A)",
+    "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-074a",
+    "retrieved": "2026-09-24",
+    "license": "US Government work (public domain), CISA/FBI joint advisory"
+   }
+  },
+  {
+   "reportId": "HO-R-14",
+   "expect": "no_compile",
+   "source": "real-public",
+   "style": "advisory-excerpt",
+   "family": "HF-HO-R-14",
+   "reasonClass": "not-a-rule",
+   "citation": {
+    "title": "Russian State-Sponsored Cyber Actors Gain Network Access by Exploiting Default Multifactor Authentication Protocols and PrintNightmare Vulnerability (AA22-074A)",
+    "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-074a",
+    "retrieved": "2026-09-24",
+    "license": "US Government work (public domain), CISA/FBI joint advisory"
+   }
+  },
+  {
+   "reportId": "HO-R-15",
+   "expect": "no_compile",
+   "source": "real-public",
+   "style": "advisory-excerpt",
+   "family": "HF-HO-R-15",
+   "reasonClass": "not-a-rule",
+   "citation": {
+    "title": "Russian State-Sponsored Cyber Actors Gain Network Access by Exploiting Default Multifactor Authentication Protocols and PrintNightmare Vulnerability (AA22-074A)",
+    "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-074a",
+    "retrieved": "2026-09-24",
+    "license": "US Government work (public domain), CISA/FBI joint advisory"
+   }
+  },
+  {
+   "reportId": "HO-R-16",
+   "expect": "no_compile",
+   "source": "real-public",
+   "style": "advisory-excerpt",
+   "family": "HF-HO-R-16",
+   "reasonClass": "not-a-rule",
+   "citation": {
+    "title": "Russian State-Sponsored Cyber Actors Gain Network Access by Exploiting Default Multifactor Authentication Protocols and PrintNightmare Vulnerability (AA22-074A)",
+    "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-074a",
+    "retrieved": "2026-09-24",
+    "license": "US Government work (public domain), CISA/FBI joint advisory"
+   }
+  },
+  {
+   "reportId": "HO-S-B1-01",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "chat-shorthand",
+   "family": "HF-HO-S-B1-01",
+   "behaviourId": "repeated-failed-login-then-success"
+  },
+  {
+   "reportId": "HO-S-B1-02",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "formal-spec",
+   "family": "HF-HO-S-B1-02",
+   "behaviourId": "repeated-failed-login-then-success"
+  },
+  {
+   "reportId": "HO-S-B1-03",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "markdown-table",
+   "family": "HF-HO-S-B1-03",
+   "behaviourId": "repeated-failed-login-then-success"
+  },
+  {
+   "reportId": "HO-S-B1-04",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "non-native-english",
+   "family": "HF-HO-S-B1-04",
+   "behaviourId": "repeated-failed-login-then-success"
+  },
+  {
+   "reportId": "HO-S-B1-05",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "numerals-with-parentheses",
+   "family": "HF-HO-S-B1-05",
+   "behaviourId": "repeated-failed-login-then-success"
+  },
+  {
+   "reportId": "HO-S-B1-06",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "executive-narrative",
+   "family": "HF-HO-S-B1-06",
+   "behaviourId": "repeated-failed-login-then-success"
+  },
+  {
+   "reportId": "HO-S-B1-07",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "key-value-block",
+   "family": "HF-HO-S-B1-07",
+   "behaviourId": "repeated-failed-login-then-success"
+  },
+  {
+   "reportId": "HO-S-B1-08",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "qa-format",
+   "family": "HF-HO-S-B1-08",
+   "behaviourId": "repeated-failed-login-then-success"
+  },
+  {
+   "reportId": "HO-S-B2-01",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "terse-request",
+   "family": "HF-HO-S-B2-01",
+   "behaviourId": "password-spray-across-accounts"
+  },
+  {
+   "reportId": "HO-S-B2-02",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "markdown-table",
+   "family": "HF-HO-S-B2-02",
+   "behaviourId": "password-spray-across-accounts"
+  },
+  {
+   "reportId": "HO-S-B2-04",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "narrative-with-rule",
+   "family": "HF-HO-S-B2-04",
+   "behaviourId": "password-spray-across-accounts"
+  },
+  {
+   "reportId": "HO-S-B2-05",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "imperative-recipe",
+   "family": "HF-HO-S-B2-05",
+   "behaviourId": "password-spray-across-accounts"
+  },
+  {
+   "reportId": "HO-S-B2-06",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "non-native-english",
+   "family": "HF-HO-S-B2-06",
+   "behaviourId": "password-spray-across-accounts"
+  },
+  {
+   "reportId": "HO-S-B2-07",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "formal-spec",
+   "family": "HF-HO-S-B2-07",
+   "behaviourId": "password-spray-across-accounts"
+  },
+  {
+   "reportId": "HO-S-B2-08",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "chat-shorthand",
+   "family": "HF-HO-S-B2-08",
+   "behaviourId": "password-spray-across-accounts"
+  },
+  {
+   "reportId": "HO-S-B3-01",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "arrow-shorthand",
+   "family": "HF-HO-S-B3-01",
+   "behaviourId": "multi-host-authentication"
+  },
+  {
+   "reportId": "HO-S-B3-02",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "formal",
+   "family": "HF-HO-S-B3-02",
+   "behaviourId": "multi-host-authentication"
+  },
+  {
+   "reportId": "HO-S-B3-03",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "markdown-table",
+   "family": "HF-HO-S-B3-03",
+   "behaviourId": "multi-host-authentication"
+  },
+  {
+   "reportId": "HO-S-B3-04",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "hr-forwarded",
+   "family": "HF-HO-S-B3-04",
+   "behaviourId": "multi-host-authentication"
+  },
+  {
+   "reportId": "HO-S-B3-05",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "numerals-with-parentheses",
+   "family": "HF-HO-S-B3-05",
+   "behaviourId": "multi-host-authentication"
+  },
+  {
+   "reportId": "HO-S-B3-06",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "non-native-english",
+   "family": "HF-HO-S-B3-06",
+   "behaviourId": "multi-host-authentication"
+  },
+  {
+   "reportId": "HO-S-B3-07",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "chat-shorthand",
+   "family": "HF-HO-S-B3-07",
+   "behaviourId": "multi-host-authentication"
+  },
+  {
+   "reportId": "HO-S-B3-08",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "key-value-block",
+   "family": "HF-HO-S-B3-08",
+   "behaviourId": "multi-host-authentication"
+  },
+  {
+   "reportId": "HO-S-B4-01",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "terse-request",
+   "family": "HF-HO-S-B4-01",
+   "behaviourId": "auth-method-policy-violation"
+  },
+  {
+   "reportId": "HO-S-B4-02",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "formal-spec",
+   "family": "HF-HO-S-B4-02",
+   "behaviourId": "auth-method-policy-violation"
+  },
+  {
+   "reportId": "HO-S-B4-03",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "incident-followup",
+   "family": "HF-HO-S-B4-03",
+   "behaviourId": "auth-method-policy-violation"
+  },
+  {
+   "reportId": "HO-S-B4-04",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "non-native-english",
+   "family": "HF-HO-S-B4-04",
+   "behaviourId": "auth-method-policy-violation"
+  },
+  {
+   "reportId": "HO-S-B4-05",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "chat-shorthand",
+   "family": "HF-HO-S-B4-05",
+   "behaviourId": "auth-method-policy-violation"
+  },
+  {
+   "reportId": "HO-S-B4-06",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "markdown-table",
+   "family": "HF-HO-S-B4-06",
+   "behaviourId": "auth-method-policy-violation"
+  },
+  {
+   "reportId": "HO-S-B4-07",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "qa-format",
+   "family": "HF-HO-S-B4-07",
+   "behaviourId": "auth-method-policy-violation"
+  },
+  {
+   "reportId": "HO-S-B4-08",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "executive-narrative",
+   "family": "HF-HO-S-B4-08",
+   "behaviourId": "auth-method-policy-violation"
+  },
+  {
+   "reportId": "HO-S-B5-01",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "terse-request",
+   "family": "HF-HO-S-B5-01",
+   "behaviourId": "mfa-missing-on-required-account"
+  },
+  {
+   "reportId": "HO-S-B5-02",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "formal-spec",
+   "family": "HF-HO-S-B5-02",
+   "behaviourId": "mfa-missing-on-required-account"
+  },
+  {
+   "reportId": "HO-S-B5-03",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "incident-followup",
+   "family": "HF-HO-S-B5-03",
+   "behaviourId": "mfa-missing-on-required-account"
+  },
+  {
+   "reportId": "HO-S-B5-04",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "non-native-english",
+   "family": "HF-HO-S-B5-04",
+   "behaviourId": "mfa-missing-on-required-account"
+  },
+  {
+   "reportId": "HO-S-B5-05",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "chat-shorthand",
+   "family": "HF-HO-S-B5-05",
+   "behaviourId": "mfa-missing-on-required-account"
+  },
+  {
+   "reportId": "HO-S-B5-06",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "markdown-table",
+   "family": "HF-HO-S-B5-06",
+   "behaviourId": "mfa-missing-on-required-account"
+  },
+  {
+   "reportId": "HO-S-B5-07",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "qa-format",
+   "family": "HF-HO-S-B5-07",
+   "behaviourId": "mfa-missing-on-required-account"
+  },
+  {
+   "reportId": "HO-S-B5-08",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "executive-narrative",
+   "family": "HF-HO-S-B5-08",
+   "behaviourId": "mfa-missing-on-required-account"
+  },
+  {
+   "reportId": "HO-U-01",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "terse-request",
+   "family": "HF-HO-U-01",
+   "reasonClass": "unsupported-behaviour"
+  },
+  {
+   "reportId": "HO-U-02",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "formal-spec",
+   "family": "HF-HO-U-02",
+   "reasonClass": "unsupported-behaviour"
+  },
+  {
+   "reportId": "HO-U-03",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "chat-shorthand",
+   "family": "HF-HO-U-03",
+   "reasonClass": "unsupported-behaviour"
+  },
+  {
+   "reportId": "HO-U-04",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "incident-followup",
+   "family": "HF-HO-U-04",
+   "reasonClass": "unsupported-field"
+  },
+  {
+   "reportId": "HO-U-05",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "qa-format",
+   "family": "HF-HO-U-05",
+   "reasonClass": "unsupported-behaviour"
+  },
+  {
+   "reportId": "HO-U-06",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "markdown-table",
+   "family": "HF-HO-U-06",
+   "reasonClass": "unsupported-field"
+  },
+  {
+   "reportId": "HO-U-07",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "executive-narrative",
+   "family": "HF-HO-U-07",
+   "reasonClass": "unsupported-behaviour"
+  },
+  {
+   "reportId": "HO-U-08",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "non-native-english",
+   "family": "HF-HO-U-08",
+   "reasonClass": "unsupported-behaviour"
+  },
+  {
+   "reportId": "HO-U-09",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "formal-spec",
+   "family": "HF-HO-U-09",
+   "reasonClass": "unsupported-behaviour"
+  },
+  {
+   "reportId": "HO-U-10",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "chat-shorthand",
+   "family": "HF-HO-U-10",
+   "reasonClass": "unsupported-behaviour"
+  },
+  {
+   "reportId": "HO-U-11",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "terse-request",
+   "family": "HF-HO-U-11",
+   "reasonClass": "qualifier"
+  },
+  {
+   "reportId": "HO-U-12",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "terse-request",
+   "family": "HF-HO-U-12",
+   "reasonClass": "qualifier"
+  },
+  {
+   "reportId": "HO-U-13",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "formal-spec",
+   "family": "HF-HO-U-13",
+   "reasonClass": "qualifier"
+  },
+  {
+   "reportId": "HO-U-14",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "chat-shorthand",
+   "family": "HF-HO-U-14",
+   "reasonClass": "qualifier"
+  },
+  {
+   "reportId": "HO-U-15",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "qa-format",
+   "family": "HF-HO-U-15",
+   "reasonClass": "qualifier"
+  },
+  {
+   "reportId": "HO-U-16",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "incident-followup",
+   "family": "HF-HO-U-16",
+   "reasonClass": "qualifier"
+  },
+  {
+   "reportId": "HO-U-17",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "formal-spec",
+   "family": "HF-HO-U-17",
+   "reasonClass": "unsupported-behaviour"
+  },
+  {
+   "reportId": "HO-U-18",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "markdown-table",
+   "family": "HF-HO-U-18",
+   "reasonClass": "unsupported-behaviour"
+  },
+  {
+   "reportId": "HO-U-19",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "terse-request",
+   "family": "HF-HO-U-19",
+   "reasonClass": "unsupported-behaviour"
+  },
+  {
+   "reportId": "HO-U-20",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "executive-narrative",
+   "family": "HF-HO-U-20",
+   "reasonClass": "unsupported-behaviour"
+  },
+  {
+   "reportId": "HO-U-21",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "chat-shorthand",
+   "family": "HF-HO-U-21",
+   "reasonClass": "unsupported-behaviour"
+  },
+  {
+   "reportId": "HO-U-22",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "formal-spec",
+   "family": "HF-HO-U-22",
+   "reasonClass": "unsupported-field"
+  },
+  {
+   "reportId": "HO-U-23",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "non-native-english",
+   "family": "HF-HO-U-23",
+   "reasonClass": "unsupported-behaviour"
+  },
+  {
+   "reportId": "HO-U-24",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "qa-format",
+   "family": "HF-HO-U-24",
+   "reasonClass": "unsupported-behaviour"
+  },
+  {
+   "reportId": "HO-U-25",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "terse-request",
+   "family": "HF-HO-U-25",
+   "reasonClass": "qualifier"
+  },
+  {
+   "reportId": "HO-X-01",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "injection",
+   "family": "HF-HO-X-01",
+   "reasonClass": "injection"
+  },
+  {
+   "reportId": "HO-X-02",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "injection",
+   "family": "HF-HO-X-02",
+   "behaviourId": "repeated-failed-login-then-success"
+  },
+  {
+   "reportId": "HO-X-03",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "benign-with-scary-words",
+   "family": "HF-HO-X-03",
+   "reasonClass": "not-a-rule"
+  },
+  {
+   "reportId": "HO-X-04",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "html-noise",
+   "family": "HF-HO-X-04",
+   "reasonClass": "ambiguous"
+  },
+  {
+   "reportId": "HO-X-05",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "long-numbers",
+   "family": "HF-HO-X-05",
+   "behaviourId": "repeated-failed-login-then-success"
+  },
+  {
+   "reportId": "HO-X-06",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "fraction-unit",
+   "family": "HF-HO-X-06",
+   "reasonClass": "ambiguous"
+  },
+  {
+   "reportId": "HO-X-07",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "negative",
+   "family": "HF-HO-X-07",
+   "reasonClass": "ambiguous"
+  },
+  {
+   "reportId": "HO-X-08",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "two-units",
+   "family": "HF-HO-X-08",
+   "reasonClass": "contradictory"
+  },
+  {
+   "reportId": "HO-X-09",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "wrong-language",
+   "family": "HF-HO-X-09",
+   "reasonClass": "ambiguous"
+  },
+  {
+   "reportId": "HO-X-10",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "empty-ish",
+   "family": "HF-HO-X-10",
+   "reasonClass": "not-a-rule"
+  },
+  {
+   "reportId": "HO-X-11",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "code-block",
+   "family": "HF-HO-X-11",
+   "reasonClass": "ambiguous"
+  },
+  {
+   "reportId": "HO-X-12",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "huge-window",
+   "family": "HF-HO-X-12",
+   "reasonClass": "ambiguous"
+  }
+ ]
+}

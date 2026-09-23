@@ -1,0 +1,1 @@
+Board question: are we sure privileged staff always use MFA? We are not, because we do not measure it. Action: build a control that reports every successful sign-in lacking a second factor for any account that policy says must use one.

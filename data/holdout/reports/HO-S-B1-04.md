@@ -1,0 +1,1 @@
+Please make one detection for user who is fail login for minimum 4 time in 10 minute and after this he login success. This is for finding the attacker who guess the password. Thank you very much for help.

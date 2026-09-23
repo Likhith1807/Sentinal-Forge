@@ -1,0 +1,1 @@
+After effectively disabling MFA, Russian state-sponsored cyber actors were able to successfully authenticate to the victim’s virtual private network (VPN) as non-administrator users and make Remote Desktop Protocol (RDP) connections to Windows domain controllers

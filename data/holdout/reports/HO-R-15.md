@@ -1,0 +1,1 @@
+When possible, implement multi-factor authentication on all VPN connections. Physical security tokens are the most secure form of MFA, followed by authenticator applications. When MFA is unavailable, require employees engaging in remote work to use strong passwords.

@@ -1,0 +1,8 @@
+{
+  "reportId": "HO-R-01",
+  "reportSha256": "91af299f4ceaba7f689e9f80623f56c714ce9e75943e662fefa8aac671309294",
+  "expect": "no_compile",
+  "reasonClass": "ambiguous",
+  "fields": [],
+  "why": "Describes password spraying but states no count or window; a rule would need invented numbers."
+}

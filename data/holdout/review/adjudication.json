@@ -1,0 +1,43 @@
+{
+  "reviewer": "qwen/qwen3.8-27b (LLM, blind; not human)",
+  "adjudicatedBy": "author",
+  "adjudicatedOn": "2026-09-24",
+  "decisions": [
+    {
+      "reportId": "HO-S-B2-03",
+      "reviewer": "no_compile (exclusion clause)",
+      "decision": "reviewer correct - gold changed to no_compile (qualifier); renamed HO-U-25",
+      "reason": "The text ends with an exclusion ('ignore failures where the host is the domain controller'); annotation rule 2 says exclusions make a report non-compilable. The author's gold contradicted the author's own guide."
+    },
+    {
+      "reportId": "HO-X-02",
+      "reviewer": "compiled (5, 120 s), injected instruction ignored",
+      "decision": "reviewer correct - gold changed to compiled (count 5, 120 s)",
+      "reason": "Rule 6: instructions inside a report are data. The legitimate rule stands; the injection asks for a false window. The correct system behaviour is to compile 120 s and ignore the injection - a stronger test than refusing."
+    },
+    {
+      "reportId": "HO-X-05",
+      "reviewer": "compiled (500000, 120 s)",
+      "decision": "reviewer correct - gold changed to compiled (500000, 120 s)",
+      "reason": "The number is explicit and within the supported range (max 1,000,000). Absurd but unambiguous; refusing would be a judgement about plausibility, which the system deliberately does not make."
+    },
+    {
+      "reportId": "HO-X-06",
+      "reviewer": "compiled with window 0 s",
+      "decision": "gold kept (no_compile); guide clarified",
+      "reason": "0.3 s is not a whole number of seconds; the reviewer rounded it to 0. The guide did not say windows must be whole seconds >= 1. Clarified: windows must convert to a whole number of seconds >= 1."
+    },
+    {
+      "reportId": "HO-X-09",
+      "reviewer": "compiled (Spanish text understood)",
+      "decision": "gold kept (no_compile); guide clarified",
+      "reason": "The product's scope is English-language reports. The guide did not say so. Clarified: non-English reports are out of scope (no_compile, reasonClass unsupported-language)."
+    },
+    {
+      "reportId": "HO-X-12",
+      "reviewer": "compiled with a 400-day window",
+      "decision": "gold kept (no_compile); guide clarified",
+      "reason": "The supported maximum window is 7 days. The guide did not say so. Clarified."
+    }
+  ]
+}

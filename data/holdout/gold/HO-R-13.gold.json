@@ -1,0 +1,8 @@
+{
+  "reportId": "HO-R-13",
+  "reportSha256": "ecc304840d7884ea6efb996f7325ac7c7eb2158d870d00e56de5a7cae7c23a17",
+  "expect": "no_compile",
+  "reasonClass": "ambiguous",
+  "fields": [],
+  "why": "Asks for monitoring of 'unusual login attempts' with no definition of unusual."
+}

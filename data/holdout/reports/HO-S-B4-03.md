@@ -1,0 +1,1 @@
+Post-incident action 7: svc-payroll is provisioned for certificate authentication only, but an attacker used its password. We need a rule that catches any login whose method contradicts what the account is supposed to use - not just this case.

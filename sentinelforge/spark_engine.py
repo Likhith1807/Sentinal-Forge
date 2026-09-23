@@ -104,6 +104,17 @@ def jvm_command(java: Java, heap: str = "2g") -> list[str]:
     return cmd
 
 
+def child_env() -> dict:
+    """Environment for the child JVM. On Windows Spark's Hadoop client needs winutils.exe / hadoop.dll (a repo-local
+    toolchain under .tools/hadoop, see docs/spec/stage4-scala-toolchain.md); elsewhere nothing is added."""
+    env = dict(os.environ)
+    hadoop = REPO_ROOT / ".tools" / "hadoop"
+    if os.name == "nt" and hadoop.exists():
+        env["HADOOP_HOME"] = str(hadoop)
+        env["PATH"] = str(hadoop / "bin") + os.pathsep + env.get("PATH", "")
+    return env
+
+
 def run_rule(spec_path: Path, events_path: Path, out_dir: Path, policy_path: Path | None = None, heap: str = "2g",
              extra: list[str] | None = None, timeout: float | None = 900) -> dict:
     """Run RunRule; returns the parsed run.json (status "completed" or "failed"). Raises only when the engine
@@ -118,7 +129,7 @@ def run_rule(spec_path: Path, events_path: Path, out_dir: Path, policy_path: Pat
     cmd = jvm_command(java, heap) + ["-cp", cp, "sentinelforge.compiler.RunRule"] + args + (extra or [])
     with open(out_dir / "engine.log", "wb") as log:
         try:
-            proc = subprocess.run(cmd, cwd=REPO_ROOT, stdout=log, stderr=subprocess.STDOUT, timeout=timeout)
+            proc = subprocess.run(cmd, cwd=REPO_ROOT, stdout=log, stderr=subprocess.STDOUT, timeout=timeout, env=child_env())
             code = proc.returncode
         except subprocess.TimeoutExpired:
             code = -9

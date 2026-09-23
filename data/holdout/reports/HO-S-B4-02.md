@@ -1,0 +1,1 @@
+RS-052. For each successful authentication event, compare the authentication method recorded in the log with the expected method recorded for the account in the policy reference. Raise an alert when they differ, irrespective of which method was expected.

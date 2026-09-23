@@ -1,0 +1,29 @@
+{
+  "reportId": "HO-S-B3-06",
+  "reportSha256": "dec20a2452289076c069bd4924146dba7c9812c4aaa4fa19f81991354f1b1b0e",
+  "expect": "compiled",
+  "behaviourId": "multi-host-authentication",
+  "fields": [
+    "timestamp",
+    "event_type",
+    "account_id",
+    "source_host"
+  ],
+  "count": {
+    "value": 2,
+    "semantics": "distinct_hosts",
+    "evidence": {
+      "start": 50,
+      "end": 66,
+      "quote": "2 different host"
+    }
+  },
+  "window": {
+    "seconds": 300,
+    "evidence": {
+      "start": 70,
+      "end": 78,
+      "quote": "5 minute"
+    }
+  }
+}

@@ -1,0 +1,1 @@
+RS-077. Raise an alert for every successful authentication event where the mfa_used indicator is false and the account's policy record has mfa_required set to true. Events for accounts without a policy record cannot be evaluated and must be reported as such.

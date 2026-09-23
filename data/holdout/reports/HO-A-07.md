@@ -1,0 +1,1 @@
+Spray rule: alert when one host fails against 4 or more distinct accounts within 10 minutes. (Update from the last meeting: use a 60 minute window instead - 4 or more distinct accounts from one host within 60 minutes.)

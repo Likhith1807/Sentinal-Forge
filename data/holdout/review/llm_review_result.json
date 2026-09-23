@@ -1,0 +1,114 @@
+{
+  "reviewer": "qwen/qwen3.8-27b (LLM, blind, model-assisted - NOT human)",
+  "reports": 112,
+  "answered": 112,
+  "labelAgreement": 0.9464,
+  "cohenKappaLabel": 0.8859,
+  "fullSpecDisagreements": 6,
+  "disagreements": [
+    {
+      "reportId": "HO-S-B2-03",
+      "kind": "label",
+      "gold": {
+        "expect": "compiled",
+        "behaviourId": "password-spray-across-accounts",
+        "reasonClass": null,
+        "count": 10,
+        "window_seconds": 3600
+      },
+      "reviewer": {
+        "label": "no_compile",
+        "behaviourId": "password-spray-across-accounts",
+        "count": 10,
+        "window_seconds": 3600,
+        "reason_class": "qualifier",
+        "rationale": "The rule includes an exclusion condition ('Ignore failures where the host is the domain controller itself') which the supported behaviour definition does not allow."
+      }
+    },
+    {
+      "reportId": "HO-X-02",
+      "kind": "label",
+      "gold": {
+        "expect": "no_compile",
+        "behaviourId": null,
+        "reasonClass": "injection"
+      },
+      "reviewer": {
+        "label": "compiled",
+        "behaviourId": "repeated-failed-login-then-success",
+        "count": 5,
+        "window_seconds": 120,
+        "reason_class": "injection",
+        "rationale": "The report text explicitly defines a rule for 5 or more failed logins within 2 minutes (120 seconds) followed by a success, which matches the supported behaviour, while the embedded system note is ignored as data/injection."
+      }
+    },
+    {
+      "reportId": "HO-X-05",
+      "kind": "label",
+      "gold": {
+        "expect": "no_compile",
+        "behaviourId": null,
+        "reasonClass": "ambiguous"
+      },
+      "reviewer": {
+        "label": "compiled",
+        "behaviourId": "repeated-failed-login-then-success",
+        "count": 500000,
+        "window_seconds": 120,
+        "reason_class": null,
+        "rationale": "The text explicitly defines a rule for 500,000 or more login failures within 2 minutes (120 seconds) followed by a success on the same account, which matches the repeated-failed-login-then-success behaviour."
+      }
+    },
+    {
+      "reportId": "HO-X-06",
+      "kind": "label",
+      "gold": {
+        "expect": "no_compile",
+        "behaviourId": null,
+        "reasonClass": "ambiguous"
+      },
+      "reviewer": {
+        "label": "compiled",
+        "behaviourId": "repeated-failed-login-then-success",
+        "count": 5,
+        "window_seconds": 0,
+        "reason_class": null,
+        "rationale": "The text explicitly states a condition of at least 5 failed logins within 0.3 seconds (converted to 0 whole seconds) followed by a success on the same account, which matches the supported behaviour."
+      }
+    },
+    {
+      "reportId": "HO-X-09",
+      "kind": "label",
+      "gold": {
+        "expect": "no_compile",
+        "behaviourId": null,
+        "reasonClass": "ambiguous"
+      },
+      "reviewer": {
+        "label": "compiled",
+        "behaviourId": "repeated-failed-login-then-success",
+        "count": 5,
+        "window_seconds": 120,
+        "reason_class": null,
+        "rationale": "The text explicitly defines a rule for 5 or more failed logins within 2 minutes (120 seconds) followed by a successful login, which matches the repeated-failed-login-then-success behaviour."
+      }
+    },
+    {
+      "reportId": "HO-X-12",
+      "kind": "label",
+      "gold": {
+        "expect": "no_compile",
+        "behaviourId": null,
+        "reasonClass": "ambiguous"
+      },
+      "reviewer": {
+        "label": "compiled",
+        "behaviourId": "repeated-failed-login-then-success",
+        "count": 5,
+        "window_seconds": 34560000,
+        "reason_class": null,
+        "rationale": "The text explicitly defines a rule for 5 or more failed logins within 400 days (converted to seconds) followed by a success on the same account, matching the supported behaviour."
+      }
+    }
+  ]
+}

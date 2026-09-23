@@ -1,0 +1,7 @@
+{
+  "reportId": "HO-A-08",
+  "reportSha256": "e4f1b8d76197f4cb585e45e836c024e52c4a9f6c650a3f0469baed63c8c6c45a",
+  "expect": "no_compile",
+  "reasonClass": "ambiguous",
+  "fields": []
+}

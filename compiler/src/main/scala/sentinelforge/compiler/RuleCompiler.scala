@@ -35,7 +35,7 @@ object RuleCompiler {
     extends IllegalArgumentException("event data cannot evaluate this rule: " + problems.map(p => s"${p.column}: ${p.problem}").mkString("; "))
 
   /** Microseconds since the epoch as a Long, or null when the string is not a valid RFC 3339 instant. */
-  private def parseMicros(c: Column): Column =
+  private[compiler] def parseMicros(c: Column): Column =
     when(c.rlike(TimestampPattern), (c.cast("timestamp").cast("decimal(20,6)") * lit(1000000)).cast("long"))
 
   /** Renders epoch microseconds as `yyyy-MM-ddTHH:mm:ss.SSSZ` in UTC regardless of the session time zone:
@@ -202,7 +202,8 @@ object RuleCompiler {
   }
 
   /** One row per account: identical duplicates collapse, conflicting ones are flagged and their policy value nulled. */
-  private def dedupePolicy(policy: DataFrame, policyField: String): DataFrame =
+  private def dedupePolicy(policy: DataFrame, policyField: String): DataFrame = {
+    val versionCol = if (policy.columns.contains("policy_version")) col("policy_version").cast("string") else lit(null).cast("string")
     policy
       .filter(col("account_id").isNotNull)
       .groupBy("account_id")
@@ -210,14 +211,52 @@ object RuleCompiler {
         countDistinct(col(policyField)).as("_distinct_values"),
         max(when(col(policyField).isNull, 1).otherwise(0)).as("_has_null"),
         first(col(policyField), ignoreNulls = true).as("_value"),
-        count(lit(1)).as("_rows"),
+        countDistinct(versionCol).as("_distinct_versions"),
+        first(versionCol, ignoreNulls = true).as("_version"),
       )
       .select(
         col("account_id"),
         lit(true).as("_has_policy"),
         (col("_distinct_values") + col("_has_null") > 1).as("_policy_conflict"),
         when(col("_distinct_values") + col("_has_null") > 1, lit(null)).otherwise(col("_value")).as(policyField),
+        when(col("_distinct_values") + col("_has_null") > 1, lit(null).cast("string"))
+          .when(col("_distinct_versions") === 1, col("_version")).as("policyVersion"),
       )
+  }
+
+  /** Events joined to the policy row IN FORCE AT EACH EVENT'S TIMESTAMP. Used when the policy carries an
+    * `effective_from` column: the latest row whose effective_from is at or before the event applies, so a policy
+    * change is not retroactive and does not have to arrive before the events it governs. Rows sharing the latest
+    * effective_from either agree or conflict (-> insufficient_context). A row with an unparseable (non-null)
+    * effective_from is ignored; a null one is treated as "always in force". Each result records the
+    * `policy_version` it used. Output columns match `dedupePolicy`'s join. */
+  private def joinVersionedPolicy(events: DataFrame, policy: DataFrame, policyField: String): DataFrame = {
+    val parsed = parseMicros(col("effective_from").cast("string"))
+    val p = policy.filter(col("account_id").isNotNull)
+      .filter(col("effective_from").isNull || parsed.isNotNull)
+      .select(
+        col("account_id").as("p_account"),
+        coalesce(parsed, lit(Long.MinValue)).as("p_eff"),
+        col(policyField).as("p_value"),
+        (if (policy.columns.contains("policy_version")) col("policy_version").cast("string") else lit(null).cast("string")).as("p_version"))
+    val joined = events.join(p, events("account_id") === p("p_account") && p("p_eff") <= events("ts_micros"), "left")
+    val inForce = joined
+      .withColumn("_max_eff", max("p_eff").over(Window.partitionBy("event_id")))
+      .filter(col("p_eff").isNull || col("p_eff") === col("_max_eff"))
+    val perEvent = inForce.groupBy("event_id").agg(
+      count(when(col("p_account").isNotNull, 1)).as("_n"),
+      countDistinct(col("p_value")).as("_dv"),
+      max(when(col("p_value").isNull && col("p_account").isNotNull, 1).otherwise(0)).as("_hn"),
+      first(col("p_value"), ignoreNulls = true).as("_val"),
+      countDistinct(col("p_version")).as("_dver"),
+      first(col("p_version"), ignoreNulls = true).as("_ver"))
+    events.join(perEvent, Seq("event_id"), "left")
+      .withColumn("_has_policy", when(col("_n") > 0, lit(true)))
+      .withColumn("_policy_conflict", col("_dv") + col("_hn") > 1)
+      .withColumn(policyField, when(col("_dv") + col("_hn") > 1, lit(null)).otherwise(col("_val")))
+      .withColumn("policyVersion", when(col("_dv") + col("_hn") > 1, lit(null).cast("string")).when(col("_dver") === 1, col("_ver")))
+      .drop("_n", "_dv", "_hn", "_val", "_dver", "_ver")
+  }
 
   private def policyCompare(spec: CompiledSpec, events: DataFrame, policy: DataFrame): DataFrame = {
     val filterType  = spec.filterEventType.get
@@ -249,9 +288,12 @@ object RuleCompiler {
         .when(comparisonExpr, lit("policy_violated"))
         .otherwise(lit("compliant"))
 
-    events
-      .filter(col("event_type") === filterType)
-      .join(dedupePolicy(policy, policyField), Seq("account_id"), "left")
+    val relevant = events.filter(col("event_type") === filterType)
+    val withPolicy =
+      if (policy.columns.contains("effective_from")) joinVersionedPolicy(relevant, policy, policyField)
+      else relevant.join(dedupePolicy(policy, policyField), Seq("account_id"), "left")
+
+    withPolicy
       .withColumn("status", statusExpr)
       .withColumn("reason", reasonExpr)
       .select(
@@ -261,6 +303,7 @@ object RuleCompiler {
         col("ts_micros").as("detectedAtMicros"),
         col(logField).as("observedValue"),
         col(policyField).as("expectedValue"),
+        col("policyVersion"),
         col("status"),
         col("reason"),
         lit(spec.behaviourId).as("behaviourId"),

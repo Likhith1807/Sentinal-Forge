@@ -1,0 +1,8 @@
+{
+  "reportId": "HO-R-04",
+  "reportSha256": "94741ef7859194a78753c8e6843a72598fc8a93a948d132222a7246f1a18cda4",
+  "expect": "no_compile",
+  "reasonClass": "not-a-rule",
+  "fields": [],
+  "why": "An operational recommendation about lockout procedures."
+}

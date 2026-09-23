@@ -1,0 +1,1 @@
+Timeline: 09:02 first failed login on jdoe; 09:03 second and third; 09:04 fourth, fifth and sixth failed logins; 09:05 successful login from an unknown host. The SOC noticed at 11:40. No detection rule existed.

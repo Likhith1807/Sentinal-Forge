@@ -1,0 +1,1 @@
+RS-300. An alert shall be raised when fewer than 3 failed logins are followed by a successful login for the same account within 1 minute - this pattern indicates a password that was guessed on the first tries.

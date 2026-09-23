@@ -1,0 +1,7 @@
+{
+  "reportId": "HO-U-24",
+  "reportSha256": "f8c3c119c6efaf57e7051b9d764c7319b11522add57f21d2f5b1a2180339976c",
+  "expect": "no_compile",
+  "reasonClass": "unsupported-behaviour",
+  "fields": []
+}

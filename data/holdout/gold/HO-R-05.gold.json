@@ -1,0 +1,8 @@
+{
+  "reportId": "HO-R-05",
+  "reportSha256": "94ef4324483a2baeccb42e9169cf5a05d37f318ab6e322e656eb5c410204354f",
+  "expect": "no_compile",
+  "reasonClass": "unsupported-behaviour",
+  "fields": [],
+  "why": "Exploitation of a VPN appliance; not an authentication-log pattern."
+}
