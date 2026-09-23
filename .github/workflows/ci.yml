@@ -25,8 +25,11 @@ jobs:
           cache: pip
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt
+          pip install -r requirements-train.txt
           pip install pytest hypothesis
+        # requirements-train.txt (which includes requirements.txt) rather than the dashboard's
+        # slim requirements.txt alone — nlp/test/test_hybrid_and_consistency.py imports
+        # finetuned_extractor, which needs torch/transformers.
       - name: Run the offline test suite
         run: pytest -v
         # testpaths in pyproject.toml already excludes real-API evaluation scripts

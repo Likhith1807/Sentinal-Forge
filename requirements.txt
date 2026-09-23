@@ -7,10 +7,8 @@ fastapi
 uvicorn
 numpy
 
-# Phase C: fine-tuned extractor (nlp/src/train_transformer.py etc.) — see docs/phase-c-extraction.md.
-# torch is installed separately per-platform (see https://pytorch.org/get-started/locally/); a
-# CUDA build is used here but is not a hard requirement (CPU fine-tuning works, just far slower).
-transformers
-accelerate
-scikit-learn
-sentencepiece
+# Phase C fine-tuning/eval (torch, transformers, ...) lives in requirements-train.txt, not here.
+# Nothing on the dashboard's runtime import path (dashboard/backend/main.py -> classical_extractor,
+# transformer_extractor, injection_guard, observability_checker) touches those packages — see
+# requirements-train.txt's header for the modules that do. Keeping them out of this file is what
+# keeps `docker compose build` a ~200MB FastAPI image instead of pulling a multi-GB CUDA toolchain.

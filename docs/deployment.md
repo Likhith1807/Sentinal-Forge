@@ -32,8 +32,9 @@ locally.
    `render.yaml` at the repo root automatically.
 3. In the created service's **Environment** tab, set `GROQ_API_KEY` (the blueprint deliberately
    leaves this blank — `sync: false` — so it's never in git history).
-4. Click **Deploy**. First build takes a few minutes (installs `requirements.txt`, including
-   `transformers`/`torch` — the same weight the local Docker build has).
+4. Click **Deploy**. First build takes under a minute or two (installs `requirements.txt`'s
+   FastAPI/pandas/groq stack only — no torch/transformers; the same weight the local Docker build
+   has).
 5. Render gives you a `https://sentinel-forge-dashboard-<hash>.onrender.com` URL.
 
 **Free-tier caveat to mention out loud in a demo, not hide**: Render's free web services sleep
