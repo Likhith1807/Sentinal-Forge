@@ -14,10 +14,11 @@ locally.
 
 ## Before either path
 
-1. Push this repo to GitHub if it isn't already (`git remote -v` is currently empty — both
-   Render and Fly can deploy from a local `Dockerfile` directly via their CLI without GitHub,
-   but a GitHub remote is what makes `.github/workflows/ci.yml` start running too, which is
-   worth doing at the same time).
+1. Push this repo to GitHub — already done
+   ([github.com/Likhith1807/Sentinal-Forge](https://github.com/Likhith1807/Sentinal-Forge)), which
+   is also what makes `.github/workflows/ci.yml` run (see the badge at the top of `README.md`).
+   Render and Fly can also deploy straight from a local `Dockerfile` via their CLI without GitHub,
+   if you'd rather not connect the repo.
 2. Have a Groq API key ready (`.env.example` shows the variable name) if you want the live
    prompted-extraction panel to work publicly. Everything else — classical extraction, Stage 3
    validation, the replay/compiler results panels — works with no key at all.

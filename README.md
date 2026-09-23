@@ -1,7 +1,6 @@
 # SENTINEL Forge
 
-<!-- Once pushed to GitHub, replace <owner>/<repo> below to get a live badge:
-![CI](https://github.com/<owner>/<repo>/actions/workflows/ci.yml/badge.svg) -->
+![CI](https://github.com/Likhith1807/Sentinal-Forge/actions/workflows/ci.yml/badge.svg)
 
 Evidence-grounded threat-report-to-detection compiler. Takes a permitted threat report, extracts
 the attacker behaviour it describes, checks whether the documented log schema can actually observe
@@ -102,8 +101,7 @@ no GPU, and no generated dataset. `pyproject.toml` scopes `pytest` to the real u
 excludes real-API evaluation scripts (`evaluate_*.py`, the differential property test, adversarial
 extraction fixtures) from routine runs — those are separately-run evaluations with their own real
 results already committed under `experiments/results/`, not something a CI run re-executes on
-every push. CI (`.github/workflows/ci.yml`) runs both suites on every push once this repo has a
-GitHub remote.
+every push. CI (`.github/workflows/ci.yml`) runs both suites on every push — see the badge above.
 
 The larger, real-scale checks (`GeneratedDataCheck` on 36.7M events, `ScaleBenchmarkCheck`,
 `differential_property_test.py` at full scenario count) are run manually, documented with their
