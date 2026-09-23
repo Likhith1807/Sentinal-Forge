@@ -1,0 +1,80 @@
+{
+  "seed": 4,
+  "casesPerBehaviour": 90,
+  "totalScenarios": 180,
+  "mismatched": 0,
+  "engineFailures": 0,
+  "seconds": 112.1,
+  "results": [
+    {
+      "behaviourId": "password-spray-across-accounts",
+      "configs": [
+        {
+          "window": 2,
+          "threshold": 4,
+          "scenarios": 30,
+          "events": 314,
+          "alerts": 7,
+          "mismatches": 0,
+          "seconds": 18.6
+        },
+        {
+          "window": 1,
+          "threshold": 3,
+          "scenarios": 30,
+          "events": 278,
+          "alerts": 16,
+          "mismatches": 0,
+          "seconds": 18.7
+        },
+        {
+          "window": 60,
+          "threshold": 3,
+          "scenarios": 30,
+          "events": 299,
+          "alerts": 19,
+          "mismatches": 0,
+          "seconds": 18.9
+        }
+      ],
+      "scenarios": 90,
+      "mismatchedScenarios": 0,
+      "problems": []
+    },
+    {
+      "behaviourId": "multi-host-authentication",
+      "configs": [
+        {
+          "window": 10,
+          "threshold": 3,
+          "scenarios": 30,
+          "events": 340,
+          "alerts": 16,
+          "mismatches": 0,
+          "seconds": 18.5
+        },
+        {
+          "window": 1,
+          "threshold": 3,
+          "scenarios": 30,
+          "events": 324,
+          "alerts": 15,
+          "mismatches": 0,
+          "seconds": 18.8
+        },
+        {
+          "window": 60,
+          "threshold": 2,
+          "scenarios": 30,
+          "events": 310,
+          "alerts": 27,
+          "mismatches": 0,
+          "seconds": 18.5
+        }
+      ],
+      "scenarios": 90,
+      "mismatchedScenarios": 0,
+      "problems": []
+    }
+  ]
+}

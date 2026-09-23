@@ -12,22 +12,38 @@ val sparkVersion = "3.5.3"
 // `Test / javaOptions` is a separate scope from `Compile / run / javaOptions` — without this,
 // `sbt test` fails with the same UnsatisfiedLinkError `stage4-scala-toolchain.md` documents for
 // `sbt run`.
-val sparkAddOpens = Seq(
-  "--add-opens=java.base/java.lang=ALL-UNNAMED",
-  "--add-opens=java.base/java.lang.invoke=ALL-UNNAMED",
-  "--add-opens=java.base/java.lang.reflect=ALL-UNNAMED",
-  "--add-opens=java.base/java.io=ALL-UNNAMED",
-  "--add-opens=java.base/java.net=ALL-UNNAMED",
-  "--add-opens=java.base/java.nio=ALL-UNNAMED",
-  "--add-opens=java.base/java.util=ALL-UNNAMED",
-  "--add-opens=java.base/java.util.concurrent=ALL-UNNAMED",
-  "--add-opens=java.base/java.util.concurrent.atomic=ALL-UNNAMED",
-  "--add-opens=java.base/sun.nio.ch=ALL-UNNAMED",
-  "--add-opens=java.base/sun.nio.cs=ALL-UNNAMED",
-  "--add-opens=java.base/sun.security.action=ALL-UNNAMED",
-  "--add-opens=java.base/sun.util.calendar=ALL-UNNAMED",
-  "-Djdk.reflect.useDirectMethodHandle=false",
-)
+// --add-opens is a Java 9+ flag; a JDK 8 JVM refuses to start when given it. The build therefore asks the JVM
+// that will actually fork the run which major version it is, instead of assuming one machine's toolchain.
+val javaMajor: Int = {
+  val spec = sys.props("java.specification.version")
+  if (spec.startsWith("1.")) spec.drop(2).toInt else spec.takeWhile(_.isDigit).toInt
+}
+val sparkAddOpens: Seq[String] =
+  if (javaMajor < 9) Seq.empty
+  else Seq(
+    "--add-opens=java.base/java.lang=ALL-UNNAMED",
+    "--add-opens=java.base/java.lang.invoke=ALL-UNNAMED",
+    "--add-opens=java.base/java.lang.reflect=ALL-UNNAMED",
+    "--add-opens=java.base/java.io=ALL-UNNAMED",
+    "--add-opens=java.base/java.net=ALL-UNNAMED",
+    "--add-opens=java.base/java.nio=ALL-UNNAMED",
+    "--add-opens=java.base/java.util=ALL-UNNAMED",
+    "--add-opens=java.base/java.util.concurrent=ALL-UNNAMED",
+    "--add-opens=java.base/java.util.concurrent.atomic=ALL-UNNAMED",
+    "--add-opens=java.base/sun.nio.ch=ALL-UNNAMED",
+    "--add-opens=java.base/sun.nio.cs=ALL-UNNAMED",
+    "--add-opens=java.base/sun.security.action=ALL-UNNAMED",
+    "--add-opens=java.base/sun.util.calendar=ALL-UNNAMED",
+    "-Djdk.reflect.useDirectMethodHandle=false",
+  )
+
+// Windows only: Spark's bundled Hadoop client calls native file APIs (winutils.exe) even for local Parquet.
+// Point it at the repo-local toolchain when present (see docs/spec/stage4-scala-toolchain.md), never at a path
+// that only exists on one machine.
+val hadoopHomeOpt: Seq[String] = {
+  val local = new java.io.File(".tools/hadoop").getAbsoluteFile
+  if (sys.props("os.name").toLowerCase.contains("win") && local.exists) Seq(s"-Dhadoop.home.dir=${local.getPath}") else Seq.empty
+}
 
 lazy val root = (project in file("."))
   .settings(
@@ -58,7 +74,7 @@ lazy val root = (project in file("."))
     fork := true,
     // Opt-in heap for large local runs: sbt -Dsf.heap=10g "runMain ..."
     Compile / run / javaOptions ++= sys.props.get("sf.heap").map(h => s"-Xmx$h").toSeq,
-    Compile / run / javaOptions ++= sparkAddOpens,
+    Compile / run / javaOptions ++= sparkAddOpens ++ hadoopHomeOpt,
     Test / javaOptions ++= sys.props.get("sf.heap").map(h => s"-Xmx$h").toSeq,
-    Test / javaOptions ++= sparkAddOpens,
+    Test / javaOptions ++= sparkAddOpens ++ hadoopHomeOpt,
   )

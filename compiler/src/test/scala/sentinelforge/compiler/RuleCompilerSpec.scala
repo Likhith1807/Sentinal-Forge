@@ -132,4 +132,105 @@ class RuleCompilerSpec extends AnyFunSuite with BeforeAndAfterAll with Matchers 
     val events = spark.createDataset(Seq(RuleCompilerSpecEvent("e1", "2026-01-01T00:00:00.000Z", "acct", "login_failure", "h"))).toDF()
     an[IllegalArgumentException] should be thrownBy RuleCompiler.compile(badSpec, events)
   }
+
+  // ---------------------------------------------------------------------------------------------------
+  // AUDIT REGRESSIONS (2026-09): event-processing defects. Each test names the defect it pins.
+  // ---------------------------------------------------------------------------------------------------
+
+  private val b1Spec2 = b1Spec.copy(countThreshold = Some(2L), timeWindowSeconds = Some(10L))
+
+  test("timestamp precision: an event 1 ms outside the window is OUTSIDE (whole-second truncation used to include it)") {
+    // failure at 00:00:00.000, success at 00:00:10.001 -> the failure is 10.001 s earlier, window is 10 s.
+    val events = spark.createDataset(Seq(
+      RuleCompilerSpecEvent("f1", "2026-01-01T00:00:00.500Z", "acct", "login_failure", "h"),
+      RuleCompilerSpecEvent("f2", "2026-01-01T00:00:05.000Z", "acct", "login_failure", "h"),
+      RuleCompilerSpecEvent("s1", "2026-01-01T00:00:10.501Z", "acct", "login_success", "h"), // f1 is 10.001 s back
+    )).toDF()
+    RuleCompiler.compile(b1Spec2, events).count() shouldBe 0L
+    val inside = spark.createDataset(Seq(
+      RuleCompilerSpecEvent("f1", "2026-01-01T00:00:00.500Z", "acct", "login_failure", "h"),
+      RuleCompilerSpecEvent("f2", "2026-01-01T00:00:05.000Z", "acct", "login_failure", "h"),
+      RuleCompilerSpecEvent("s1", "2026-01-01T00:00:10.500Z", "acct", "login_success", "h"), // exactly 10.000 s back: closed
+    )).toDF()
+    RuleCompiler.compile(b1Spec2, inside).count() shouldBe 1L
+  }
+
+  test("duplicate delivery: a redelivered event_id counts once and cannot multiply alerts") {
+    val events = spark.createDataset(Seq(
+      RuleCompilerSpecEvent("f1", "2026-01-01T00:00:00.000Z", "acct", "login_failure", "h"),
+      RuleCompilerSpecEvent("f1", "2026-01-01T00:00:00.000Z", "acct", "login_failure", "h"), // exact redelivery
+      RuleCompilerSpecEvent("s1", "2026-01-01T00:00:02.000Z", "acct", "login_success", "h"),
+      RuleCompilerSpecEvent("s1", "2026-01-01T00:00:02.000Z", "acct", "login_success", "h"),
+    )).toDF()
+    // threshold 2: one real failure (delivered twice) must NOT satisfy it
+    RuleCompiler.compile(b1Spec2, events).count() shouldBe 0L
+  }
+
+  test("malformed timestamps are quarantined with a reason, never silently dropped or sorted as null") {
+    val events = spark.createDataset(Seq(
+      RuleCompilerSpecEvent("f1", "2026-01-01T00:00:00.000Z", "acct", "login_failure", "h"),
+      RuleCompilerSpecEvent("f2", "not-a-timestamp", "acct", "login_failure", "h"),
+      RuleCompilerSpecEvent("f3", "2026-01-01T00:00:03", "acct", "login_failure", "h"),        // no zone: ambiguous
+      RuleCompilerSpecEvent("f4", "2026-13-45T00:00:00.000Z", "acct", "login_failure", "h"),   // matches shape, not a date
+      RuleCompilerSpecEvent("f5", null, "acct", "login_failure", "h"),
+      RuleCompilerSpecEvent("s1", "2026-01-01T00:00:02.000Z", "acct", "login_success", "h"),
+    )).toDF()
+    val (clean, quarantine) = RuleCompiler.prepare(b1Spec2, events)
+    clean.count() shouldBe 2L
+    quarantine.select("event_id", "reason").collect().map(r => r.getString(0) -> r.getString(1)).toMap shouldBe
+      Map("f2" -> "malformed_timestamp", "f3" -> "malformed_timestamp", "f4" -> "malformed_timestamp", "f5" -> "null_timestamp")
+    // only ONE valid failure survives, so threshold 2 is not met — the bad rows did not become failures either
+    RuleCompiler.compile(b1Spec2, events).count() shouldBe 0L
+  }
+
+  test("timestamps with a numeric UTC offset are normalised, not treated as UTC") {
+    val events = spark.createDataset(Seq(
+      RuleCompilerSpecEvent("f1", "2026-01-01T02:00:00.000+02:00", "acct", "login_failure", "h"), // = 00:00:00Z
+      RuleCompilerSpecEvent("f2", "2026-01-01T00:00:05.000Z", "acct", "login_failure", "h"),
+      RuleCompilerSpecEvent("s1", "2026-01-01T00:00:08.000Z", "acct", "login_success", "h"),
+    )).toDF()
+    RuleCompiler.compile(b1Spec2, events).count() shouldBe 1L
+  }
+
+  test("duplicate policy rows cannot multiply alerts: identical rows collapse, conflicting rows -> insufficient_context") {
+    val events = spark.createDataset(Seq(
+      RuleCompilerSpecEvent("e1", "2026-01-01T00:00:00.000Z", "same", "login_success", "h"),
+      RuleCompilerSpecEvent("e2", "2026-01-01T00:00:01.000Z", "clash", "login_success", "h"),
+    )).toDF().withColumn("mfa_used", lit(false))
+    val policy = spark.createDataset(Seq(
+      RuleCompilerSpecPolicyRow("same", mfa_required = true), RuleCompilerSpecPolicyRow("same", mfa_required = true),
+      RuleCompilerSpecPolicyRow("clash", mfa_required = true), RuleCompilerSpecPolicyRow("clash", mfa_required = false),
+    )).toDF()
+    val out = RuleCompiler.compile(mfaSpec, events, Some(policy)).select("groupKey", "status", "reason").collect()
+      .map(r => r.getString(0) -> (r.getString(1), r.getString(2))).toMap
+    RuleCompiler.compile(mfaSpec, events, Some(policy)).count() shouldBe 2L                  // one result per event, not per policy row
+    out("same") shouldBe (("alert", "policy_violated"))
+    out("clash") shouldBe (("insufficient_context", "policy_conflict"))
+  }
+
+  test("data that cannot evaluate the rule fails with a structured schema error, not a Spark stack trace") {
+    val noHost = spark.createDataset(Seq(RuleCompilerSpecEvent("e1", "2026-01-01T00:00:00.000Z", "a", "login_failure", "h"))).toDF().drop("source_host")
+    val ex = the[RuleCompiler.SchemaMismatchException] thrownBy RuleCompiler.compile(b2Spec, noHost)
+    ex.problems.map(_.column) should contain ("source_host")
+    val wrongType = spark.createDataset(Seq(RuleCompilerSpecEvent("e1", "2026-01-01T00:00:00.000Z", "a", "login_success", "h")))
+      .toDF().withColumn("mfa_used", lit("false"))
+    val pol = spark.createDataset(Seq(RuleCompilerSpecPolicyRow("a", mfa_required = true))).toDF()
+    val ex2 = the[RuleCompiler.SchemaMismatchException] thrownBy RuleCompiler.compile(mfaSpec, wrongType, Some(pol))
+    ex2.problems.map(_.column) should contain ("mfa_used")
+  }
+
+  test("evidence: an alert lists exactly the events inside its window, oldest first") {
+    val events = spark.createDataset(Seq(
+      RuleCompilerSpecEvent("old", "2026-01-01T00:00:00.000Z", "a1", "login_failure", "h"),   // outside (600 s window)
+      RuleCompilerSpecEvent("e1", "2026-01-01T01:00:00.000Z", "a1", "login_failure", "h"),
+      RuleCompilerSpecEvent("e2", "2026-01-01T01:00:01.000Z", "a2", "login_failure", "h"),
+      RuleCompilerSpecEvent("e3", "2026-01-01T01:00:02.000Z", "a3", "login_failure", "h"),
+    )).toDF()
+    val alert = RuleCompiler.compileWithEvidence(b2Spec, events).collect().head
+    alert.getAs[String]("triggeringEventId") shouldBe "e3"
+    alert.getAs[String]("windowStart") shouldBe "2026-01-01T00:50:02.000Z"   // detectedAt - 600 s, rendered in UTC
+    alert.getAs[String]("detectedAt") shouldBe "2026-01-01T01:00:02.000Z"
+    val ids = alert.getSeq[org.apache.spark.sql.Row](alert.fieldIndex("evidence")).map(_.getAs[String]("eventId"))
+    ids shouldBe Seq("e1", "e2", "e3")
+  }
 }

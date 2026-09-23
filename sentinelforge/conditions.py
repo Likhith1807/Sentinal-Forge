@@ -286,7 +286,11 @@ _WINDOW_CUE = re.compile(
 _AFTER_WINDOW = re.compile(r"^\s*-?\s*(?:rolling\s+|sliding\s+)?(window|period|interval|span|timeframe|time frame)\b")
 _TIME = re.compile(rf"(?<![\w.:])(?P<n>{_N})(?:\s*-\s*|\s+)(?P<u>{_UNIT_RE})\b")
 _A_UNIT = re.compile(r"\b(?P<art>an?|half an?)\s+(?P<u>hour|minute|second|day)\b")
-_NARRATIVE_AFTER = re.compile(r"^\s*(?:later|apart|ago|earlier|before|after|old|into|prior)\b")
+_NARRATIVE_AFTER = re.compile(r"^\s*(?:later|apart|ago|earlier)\b")
+# "5 minutes before/after X" is narration unless a window word ("within 30 minutes before a success") frames it
+_NARRATIVE_WEAK = re.compile(r"^\s*(?:before|after|old|into|prior)\b")
+_STRONG_CUES = {"within", "inside", "rolling", "sliding", "window", "period", "interval", "span", "timeframe",
+                "preceding", "previous", "last", "past"}
 
 
 def _find_windows(text: str, low: str, sents) -> list[WindowCandidate]:
@@ -303,6 +307,8 @@ def _find_windows(text: str, low: str, sents) -> list[WindowCandidate]:
         aft_m = _AFTER_WINDOW.match(after)
         hyphenated = "-" in low[m.end("n"):m.start("u")]
         cue = (cue_m.group(1) or cue_m.group(2)) if cue_m else ("window" if aft_m else ("hyphenated" if hyphenated else None))
+        if _NARRATIVE_WEAK.match(after) and cue not in _STRONG_CUES:
+            continue                                       # "5 minutes before the login": narration, not a window
         unit = canonical_unit(m.group("u"))
         out.append(WindowCandidate(amount=float(n), unit=unit, seconds=float(n) * UNIT_SECONDS[unit],
                                    cue=cue, approximate=bool(_APPROX.search(before)),
@@ -477,11 +483,15 @@ def _find_qualifiers(text: str, low: str, sents, rule_sents) -> list[Qualifier]:
 
 # ------------------------------------------------------------------------------- behaviour cues
 
+_SUBJ = r"(?:(?:it|they|he|she|the (?:same )?(?:account|user|identity|attacker|actor)|one|that account)\s+)?"
 _THEN_SUCCESS = re.compile(
-    r"(?:then|and then|and subsequently|subsequently|followed by(?: a)?|and)\s+(?:then\s+)?(?:succeeds?|succeed\w*|logs? in|log-?ins?|"
-    r"authenticates?|achieves (?:a )?success|(?:a )?success(?:ful)?)|(?:before|prior to) (?:a )?success|followed by a (?:successful|success)|"
+    rf"(?:then|and then|and subsequently|subsequently|afterwards?|followed by(?: a)?|and)\s+(?:then\s+)?{_SUBJ}"
+    r"(?:succeeds?|succeeded|succeed\w*|logs? in|logged in|log-?ins?|signs? in|signed in|authenticates?|authenticated|gets? in|"
+    r"is (?:granted|authenticated|let in)|achieves (?:a )?success|(?:a )?success(?:ful)?)|"
+    r"(?:before|prior to) (?:a )?success|followed by a (?:successful|success)|"
     r"succeeds? (?:on|at|after)|then (?:a )?successful|(?:next|following|subsequent|immediately following)\s+(?:record|event|login|entry|attempt|sign-?in)[^.]{0,80}succe|"
-    r"immediately followed by[^.]{0,20}succe|(?:followed|preceded) by[^.]{0,30}(?:successful|success)")
+    r"immediately followed by[^.]{0,20}succe|(?:followed|preceded) by[^.]{0,30}(?:successful|success)|"
+    r"(?:then|eventually|finally|ultimately)\s+(?:a\s+)?successful")
 _ONE_ACCOUNT = re.compile(
     r"\b(?:same|one|single|an?|any|every|each|per|individual)\s+[\"']?(?:user )?(?:account_id|account|identity|user|username)\b|"
     r"\bper[- ]account\b|\bagainst (?:an|one|a single|the same) account|\b(?:the|that|this)\s+(?:target |given |specific |same )?(?:user )?account\b|\bfor the (?:target )?account\b")

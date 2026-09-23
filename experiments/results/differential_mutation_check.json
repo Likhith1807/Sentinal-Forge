@@ -1,0 +1,307 @@
+{
+  "seed": 11,
+  "casesPerBehaviour": 60,
+  "mutants": {
+    "open-window-lower-bound": {
+      "behaviours": [
+        "repeated-failed-login-then-success",
+        "password-spray-across-accounts",
+        "multi-host-authentication"
+      ],
+      "models": "boundary event exactly W earlier excluded",
+      "killedIn": [
+        {
+          "behaviour": "repeated-failed-login-then-success",
+          "window": 60,
+          "threshold": 4,
+          "scenariosDisagreeing": 11
+        },
+        {
+          "behaviour": "repeated-failed-login-then-success",
+          "window": 300,
+          "threshold": 3,
+          "scenariosDisagreeing": 8
+        },
+        {
+          "behaviour": "repeated-failed-login-then-success",
+          "window": 5,
+          "threshold": 2,
+          "scenariosDisagreeing": 8
+        },
+        {
+          "behaviour": "password-spray-across-accounts",
+          "window": 30,
+          "threshold": 2,
+          "scenariosDisagreeing": 2
+        },
+        {
+          "behaviour": "password-spray-across-accounts",
+          "window": 1,
+          "threshold": 2,
+          "scenariosDisagreeing": 2
+        },
+        {
+          "behaviour": "multi-host-authentication",
+          "window": 60,
+          "threshold": 3,
+          "scenariosDisagreeing": 1
+        }
+      ]
+    },
+    "truncate-to-seconds": {
+      "behaviours": [
+        "repeated-failed-login-then-success",
+        "password-spray-across-accounts",
+        "multi-host-authentication"
+      ],
+      "models": "sub-second precision discarded before window arithmetic",
+      "killedIn": [
+        {
+          "behaviour": "repeated-failed-login-then-success",
+          "window": 60,
+          "threshold": 4,
+          "scenariosDisagreeing": 8
+        },
+        {
+          "behaviour": "repeated-failed-login-then-success",
+          "window": 300,
+          "threshold": 3,
+          "scenariosDisagreeing": 9
+        },
+        {
+          "behaviour": "repeated-failed-login-then-success",
+          "window": 5,
+          "threshold": 2,
+          "scenariosDisagreeing": 4
+        },
+        {
+          "behaviour": "password-spray-across-accounts",
+          "window": 300,
+          "threshold": 3,
+          "scenariosDisagreeing": 7
+        },
+        {
+          "behaviour": "password-spray-across-accounts",
+          "window": 30,
+          "threshold": 2,
+          "scenariosDisagreeing": 10
+        },
+        {
+          "behaviour": "password-spray-across-accounts",
+          "window": 1,
+          "threshold": 2,
+          "scenariosDisagreeing": 11
+        },
+        {
+          "behaviour": "multi-host-authentication",
+          "window": 2,
+          "threshold": 4,
+          "scenariosDisagreeing": 5
+        },
+        {
+          "behaviour": "multi-host-authentication",
+          "window": 60,
+          "threshold": 3,
+          "scenariosDisagreeing": 9
+        },
+        {
+          "behaviour": "multi-host-authentication",
+          "window": 300,
+          "threshold": 4,
+          "scenariosDisagreeing": 8
+        }
+      ]
+    },
+    "no-deduplication": {
+      "behaviours": [
+        "repeated-failed-login-then-success",
+        "password-spray-across-accounts",
+        "multi-host-authentication"
+      ],
+      "models": "redelivered events counted twice",
+      "killedIn": [
+        {
+          "behaviour": "repeated-failed-login-then-success",
+          "window": 60,
+          "threshold": 4,
+          "scenariosDisagreeing": 6
+        },
+        {
+          "behaviour": "repeated-failed-login-then-success",
+          "window": 300,
+          "threshold": 3,
+          "scenariosDisagreeing": 3
+        },
+        {
+          "behaviour": "repeated-failed-login-then-success",
+          "window": 5,
+          "threshold": 2,
+          "scenariosDisagreeing": 3
+        },
+        {
+          "behaviour": "password-spray-across-accounts",
+          "window": 30,
+          "threshold": 2,
+          "scenariosDisagreeing": 1
+        },
+        {
+          "behaviour": "password-spray-across-accounts",
+          "window": 1,
+          "threshold": 2,
+          "scenariosDisagreeing": 2
+        },
+        {
+          "behaviour": "multi-host-authentication",
+          "window": 2,
+          "threshold": 4,
+          "scenariosDisagreeing": 1
+        },
+        {
+          "behaviour": "multi-host-authentication",
+          "window": 60,
+          "threshold": 3,
+          "scenariosDisagreeing": 3
+        },
+        {
+          "behaviour": "multi-host-authentication",
+          "window": 300,
+          "threshold": 4,
+          "scenariosDisagreeing": 1
+        }
+      ]
+    },
+    "events-not-distinct": {
+      "behaviours": [
+        "password-spray-across-accounts",
+        "multi-host-authentication"
+      ],
+      "models": "count of events instead of distinct values",
+      "killedIn": [
+        {
+          "behaviour": "password-spray-across-accounts",
+          "window": 300,
+          "threshold": 3,
+          "scenariosDisagreeing": 12
+        },
+        {
+          "behaviour": "password-spray-across-accounts",
+          "window": 30,
+          "threshold": 2,
+          "scenariosDisagreeing": 16
+        },
+        {
+          "behaviour": "password-spray-across-accounts",
+          "window": 1,
+          "threshold": 2,
+          "scenariosDisagreeing": 13
+        },
+        {
+          "behaviour": "multi-host-authentication",
+          "window": 2,
+          "threshold": 4,
+          "scenariosDisagreeing": 12
+        },
+        {
+          "behaviour": "multi-host-authentication",
+          "window": 60,
+          "threshold": 3,
+          "scenariosDisagreeing": 14
+        },
+        {
+          "behaviour": "multi-host-authentication",
+          "window": 300,
+          "threshold": 4,
+          "scenariosDisagreeing": 13
+        }
+      ]
+    },
+    "no-rising-edge": {
+      "behaviours": [
+        "password-spray-across-accounts",
+        "multi-host-authentication"
+      ],
+      "models": "alert on every breaching event, not once per incident",
+      "killedIn": [
+        {
+          "behaviour": "password-spray-across-accounts",
+          "window": 300,
+          "threshold": 3,
+          "scenariosDisagreeing": 7
+        },
+        {
+          "behaviour": "password-spray-across-accounts",
+          "window": 30,
+          "threshold": 2,
+          "scenariosDisagreeing": 9
+        },
+        {
+          "behaviour": "password-spray-across-accounts",
+          "window": 1,
+          "threshold": 2,
+          "scenariosDisagreeing": 9
+        },
+        {
+          "behaviour": "multi-host-authentication",
+          "window": 2,
+          "threshold": 4,
+          "scenariosDisagreeing": 3
+        },
+        {
+          "behaviour": "multi-host-authentication",
+          "window": 60,
+          "threshold": 3,
+          "scenariosDisagreeing": 7
+        },
+        {
+          "behaviour": "multi-host-authentication",
+          "window": 300,
+          "threshold": 4,
+          "scenariosDisagreeing": 8
+        }
+      ]
+    },
+    "null-log-value-as-compliant": {
+      "behaviours": [
+        "auth-method-policy-violation",
+        "mfa-missing-on-required-account"
+      ],
+      "models": "an unobserved value treated as compliant",
+      "killedIn": [
+        {
+          "behaviour": "auth-method-policy-violation",
+          "window": 0,
+          "threshold": 0,
+          "scenariosDisagreeing": 10
+        },
+        {
+          "behaviour": "mfa-missing-on-required-account",
+          "window": 0,
+          "threshold": 0,
+          "scenariosDisagreeing": 21
+        }
+      ]
+    },
+    "policy-conflict-first-wins": {
+      "behaviours": [
+        "auth-method-policy-violation",
+        "mfa-missing-on-required-account"
+      ],
+      "models": "conflicting policy rows silently resolved",
+      "killedIn": [
+        {
+          "behaviour": "auth-method-policy-violation",
+          "window": 0,
+          "threshold": 0,
+          "scenariosDisagreeing": 13
+        },
+        {
+          "behaviour": "mfa-missing-on-required-account",
+          "window": 0,
+          "threshold": 0,
+          "scenariosDisagreeing": 13
+        }
+      ]
+    }
+  },
+  "survivors": []
+}
