@@ -1,0 +1,25 @@
+{
+  "behaviourId": "repeated-failed-login-then-success",
+  "recipe": "SequenceThenTrigger",
+  "groupingKey": "account_id",
+  "timeWindowSeconds": 90,
+  "countEventType": "login_failure",
+  "countThreshold": 6,
+  "triggerEventType": "login_success",
+  "distinctField": null,
+  "distinctThreshold": null,
+  "filterEventType": null,
+  "logField": null,
+  "policyField": null,
+  "comparisonOp": null,
+  "specVersion": "2",
+  "compilerVersion": "2.0.0",
+  "countSemantics": "event_count",
+  "processing": {
+    "timestampPrecision": "millisecond",
+    "duplicateEvents": "keep-first-by-event_id",
+    "malformedTimestamp": "quarantine-and-count",
+    "policyConflict": "insufficient_context"
+  },
+  "ruleHash": "70023f91fc70f6c2"
+}

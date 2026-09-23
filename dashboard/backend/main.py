@@ -206,6 +206,22 @@ def create_app(settings: Settings | None = None, workspace: Workspace | None = N
         a["job"] = ws().jobs.get(a["jobId"]) if a.get("jobId") else None
         return a
 
+    @app.get("/api/analyses/{analysis_id}/data-support")
+    def data_support(analysis_id: str, datasetId: Optional[str] = Query(None, max_length=64), p: Principal = Depends(user)):
+        """Which conditions of the analysed behaviour the chosen dataset can (not) evaluate, field by field."""
+        from sentinelforge.service import datasets as ds
+        from sentinelforge.service.schema_impact import analyse_rule
+        a = ws().get_analysis(analysis_id)
+        res = a.get("result") or {}
+        bid = (res.get("reconciliation") or {}).get("behaviourId")
+        if not bid:
+            return {"behaviourId": None, "dataset": None, "dependencies": [], "conditions": []}
+        d = ws().get_dataset(datasetId or (res.get("dataset") or {}).get("id") or "demo-auth")
+        out = analyse_rule(bid, res.get("compiled") or {}, d["profile"])
+        return {"behaviourId": bid, "dataset": {k: d[k] for k in ("id", "name", "kind", "version", "fingerprint")},
+                "supported": not out["affected"], "dependencies": out["dependencies"],
+                "conditions": out["blockedConditions"] + out["evaluableConditions"], "blocked": out["blockedConditions"]}
+
     @app.post("/api/analyses/{analysis_id}/rule", status_code=201)
     def make_rule(analysis_id: str, p: Principal = Depends(writer)):
         return ws().create_rule_version(analysis_id, p.name)

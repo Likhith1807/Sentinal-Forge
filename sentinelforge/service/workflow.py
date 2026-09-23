@@ -551,7 +551,7 @@ class Workspace:
         by_state: dict = {}
         for r in self.store.q("SELECT state, COUNT(*) AS n FROM rule_versions GROUP BY state"):
             by_state[r["state"]] = r["n"]
-        recent = [self.get_run(r["id"]) for r in self.store.q("SELECT id FROM runs ORDER BY created_at DESC LIMIT 8")]
+        recent = [{k: v for k, v in self.get_run(r["id"]).items() if k != "run_dir"} for r in self.store.q("SELECT id FROM runs ORDER BY created_at DESC LIMIT 8")]
         health = []
         for rv in rules:
             if rv["state"] == "paused":

@@ -563,7 +563,7 @@ def _signals(text: str, low: str, sents, rule_sents, counts, fields, incidental)
     cues, missing = [], []
     ec = [c for c in by_sem.get(EVENT_COUNT, []) if c.eventKind == "login_failure"]
     (cues.append(ec[0].evidence) if ec else missing.append("a minimum number of FAILED login events"))
-    then = ev(_THEN_SUCCESS, narrated)
+    then = ev(_THEN_SUCCESS) or ev(_THEN_SUCCESS, narrated)      # prefer the sentence that states the rule, not a title
     (cues.append(then[0]) if then else missing.append("a successful login that follows the failures"))
     sig.append(BehaviourSignal("repeated-failed-login-then-success", cues, missing))
 

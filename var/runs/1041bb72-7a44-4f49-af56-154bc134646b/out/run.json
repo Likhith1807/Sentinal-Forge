@@ -1,0 +1,57 @@
+{
+  "runId" : "out",
+  "engine" : "spark-batch",
+  "startedAt" : "2026-09-23T23:14:10.636Z",
+  "javaVersion" : "1.8.0_491",
+  "input" : {
+    "events" : "D:\\SENTINEL_Forge\\var\\datasets\\demo-auth\\v1\\auth_events.jsonl",
+    "policy" : "D:\\SENTINEL_Forge\\var\\datasets\\demo-auth\\v1\\account_policy.json",
+    "spec" : "D:\\SENTINEL_Forge\\var\\runs\\1041bb72-7a44-4f49-af56-154bc134646b\\rule.compiled.json"
+  },
+  "sparkVersion" : "3.5.3",
+  "behaviourId" : "repeated-failed-login-then-success",
+  "ruleHash" : "70023f91fc70f6c2",
+  "compilerVersion" : "2.0.0",
+  "eventSchema" : {
+    "account_id" : "string",
+    "auth_method" : "string",
+    "event_id" : "string",
+    "event_type" : "string",
+    "mfa_used" : "boolean",
+    "session_id" : "string",
+    "source_host" : "string",
+    "source_ip" : "string",
+    "timestamp" : "string"
+  },
+  "policySchema" : {
+    "account_id" : "string",
+    "account_type" : "string",
+    "expected_auth_method" : "string",
+    "mfa_required" : "boolean"
+  },
+  "counts" : {
+    "eventsRead" : 725,
+    "eventsEvaluated" : 720,
+    "quarantined" : 2,
+    "duplicatesDropped" : 3,
+    "quarantineByReason" : {
+      "malformed_timestamp" : 2
+    },
+    "resultsByStatus" : {
+      "alert" : 2
+    },
+    "alertsWritten" : 2,
+    "alertsTruncated" : false
+  },
+  "timings" : {
+    "loadSeconds" : 12.759534299,
+    "executeSeconds" : 6.107133401
+  },
+  "options" : {
+    "dedupe" : true,
+    "evidence" : "true"
+  },
+  "status" : "completed",
+  "finishedAt" : "2026-09-23T23:14:31.796Z",
+  "elapsedSeconds" : 21.0678976
+}

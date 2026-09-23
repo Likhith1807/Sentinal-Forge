@@ -2,22 +2,27 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>SENTINEL Forge — Analyst Review</title>
+<title>SENTINEL Forge</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Evidence-backed compilation of threat reports into executable detections.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232b4a7d'/%3E%3Cpath d='M9 17l5 5 9-12' stroke='white' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<div id="app">
-  <aside id="sidebar">
-    <h1>SENTINEL Forge</h1>
-    <p class="tagline">Analyst review dashboard</p>
-    <div id="report-list"></div>
-  </aside>
-  <main id="main">
-    <div class="empty-state" id="empty-state">Select a report on the left to begin.</div>
-    <div id="report-view" style="display:none"></div>
-  </main>
-</div>
-<script src="app.js"></script>
+<a class="skip" href="#view">Skip to content</a>
+<header class="topbar">
+  <a class="brand" href="#/" aria-label="SENTINEL Forge home"><span class="brand-mark" aria-hidden="true"></span>SENTINEL Forge</a>
+  <nav id="nav" aria-label="Primary">
+    <a href="#/" data-route="overview">Overview</a>
+    <a href="#/workspace" data-route="workspace">Report workspace</a>
+    <a href="#/validation" data-route="validation">Validation review</a>
+    <a href="#/investigation" data-route="investigation">Investigation</a>
+    <a href="#/evaluation" data-route="evaluation">Evaluation</a>
+  </nav>
+  <div class="topbar-right" id="whoami" aria-live="polite"></div>
+</header>
+<main id="view" tabindex="-1"><div class="state" role="status"><span class="spin"></span>Loading…</div></main>
+<div id="toasts" class="toasts" role="status" aria-live="polite"></div>
+<script type="module" src="js/main.js"></script>
 </body>
 </html>
