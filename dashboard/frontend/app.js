@@ -219,10 +219,10 @@ function renderAnalysis(container) {
   if (a.confidence) {
     const c = a.confidence;
     const confPanel = el("div", { class: "panel" });
-    confPanel.appendChild(el("h3", {}, "Confidence (cross-extractor agreement)"));
+    confPanel.appendChild(el("h3", {}, "Cross-extractor agreement (live diagnostic, not a calibrated score)"));
     confPanel.appendChild(el("div", {}, [
       el("span", { class: "status-pill " + (c.level === "high" ? "alert-good" : "insufficient_context") },
-        c.level === "high" ? "high confidence" : "low confidence — recommend review"),
+        c.level === "high" ? "full agreement" : "extractors disagree — recommend review"),
       el("span", { html: `&nbsp;&nbsp;agreement: <code>${c.agreement}</code>` }),
     ]));
     if (c.recommendReview) {

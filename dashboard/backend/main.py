@@ -93,10 +93,19 @@ def _write_audit_log(entries: list) -> None:
 
 
 def _jaccard(a: set, b: set) -> float:
-    """Same formula as experiments/results/calibration_analysis.py, which
-    validated this signal (Pearson r=0.919, n=5) as a real proxy for
-    transformer-extraction correctness — see experiments/results/README.md.
-    Not a new score invented for the dashboard; the same one, reused."""
+    """Same formula as experiments/results/calibration_analysis.py.
+
+    CORRECTION (found while verifying this dashboard boots under the exact deps its Dockerfile
+    installs, not by a code review — 2026-09-23): that script's original n=5 run claimed this
+    predicted extraction correctness (Pearson r=0.919); a rewrite at n=44 (the corpus's real test
+    split) found the claim does NOT hold for classical vs. the fine-tuned model — agreement
+    collapses to near-zero regardless of correctness, because classical is just too weak an
+    extractor overall (Phase C: field F1 0.051) to be a meaningful second opinion, not because of
+    which system it's paired against. This dashboard pairs classical with the live PROMPTED
+    extractor specifically, which has NOT been re-tested at n=44 (would cost 44 more live Groq
+    calls against a quota already documented as fragile — see docs/phase-c-extraction.md — so this
+    is a real, stated gap, not silently assumed fine by association). Treat this signal as a free,
+    live diagnostic worth showing, not a validated confidence score."""
     if not a and not b:
         return 1.0
     return len(a & b) / len(a | b)
@@ -181,9 +190,13 @@ def analyze(req: AnalyzeRequest):
             "recommendReview": agreement < 1.0,
             "classicalFields": sorted(classical_fields),
             "transformerFields": sorted(transformer_fields),
-            "note": "Cross-extractor agreement (classical vs transformer field sets) - validated in "
-                    "Phase 5 as a real confidence proxy (Pearson r=0.919, n=5): full agreement predicted "
-                    "correct extraction in every held-out case; any disagreement predicted an imperfect one.",
+            "note": "Cross-extractor agreement (classical vs the live prompted extractor's field sets). "
+                    "Phase 5's original n=5 test called this a validated confidence proxy (Pearson r=0.919) "
+                    "- a larger n=44 re-test found that does NOT hold for classical vs the fine-tuned model "
+                    "(agreement collapses to near the base rate, since classical is weak in general, not "
+                    "specifically miscalibrated against one system). This exact classical-vs-prompted "
+                    "pairing hasn't been re-tested at that scale. Shown as a free, live diagnostic, not a "
+                    "calibrated confidence score.",
         }
 
     # CORRECTION (found by an independent external review, 2026-09-16): this

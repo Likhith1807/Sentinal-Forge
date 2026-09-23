@@ -56,19 +56,35 @@ extraction rather than being hijacked by the embedded injection text — the
 constrained-vocabulary prompt (see `nlp/src/transformer_extractor.py`) is
 a second layer of defense independent of the guard, and it held.
 
-## Confidence (added to close a real Phase 6 gap)
+## Confidence (added to close a real Phase 6 gap; corrected 2026-09-23)
 
 The evidence/limitations/approve-refine flow existed from the first pass,
 but nothing showed a confidence signal — because nothing in the project
-computed one. Rather than inventing a new score for the UI, this reuses
-the real signal Phase 5's calibration analysis already validated
-(`experiments/results/calibration_analysis.py`): cross-extractor agreement
-between classical and transformer field sets, Pearson r=0.919 against
-actual correctness across the 5 held-out reports (n=5, stated as a small
-sample). When analyzing with the transformer extractor, classical also
-runs automatically as a free second opinion (pure regex, no network call),
-and full disagreement surfaces as "low confidence — recommend review,"
-exactly the decision rule Phase 5 validated.
+computed one. Rather than inventing a new score for the UI, this reuses a
+real, free, already-available signal: cross-extractor agreement between
+classical and the live prompted extractor's field sets. When analyzing
+with the transformer extractor, classical also runs automatically as a
+free second opinion (pure regex, no network call), and full disagreement
+surfaces as "extractors disagree — recommend review."
+
+**Correction, found while verifying this dashboard's Docker deployability
+(not by a code review):** this section originally claimed Phase 5's n=5
+calibration test (Pearson r=0.919) validated this signal as a real
+confidence proxy. A rewrite of that analysis at n=44 — the corpus's real
+test split — found the claim does **not** hold for classical vs. the
+fine-tuned model: agreement collapses to near-zero regardless of
+correctness, because classical is simply too weak an extractor overall
+(Phase C: field F1 0.051) to be a meaningful second opinion, independent
+of which system it's paired against. This dashboard specifically pairs
+classical with the *prompted* extractor, not the fine-tuned one, and that
+exact pairing hasn't been re-tested at n=44 — doing so would cost 44 more
+live Groq calls against a quota already documented as fragile
+(`docs/phase-c-extraction.md`), a real cost/time tradeoff left for the
+project owner to decide on, not spent here without asking. The panel is
+now labelled and documented as a live diagnostic, not a calibrated
+confidence score — see `experiments/results/README.md`'s calibration
+section and `dashboard/backend/main.py`'s `_jaccard` docstring for the
+full account.
 
 ## Audit log version diffs (added to close a real Phase 6 gap)
 
