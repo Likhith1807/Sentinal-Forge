@@ -105,29 +105,35 @@ deploys clean, and never fires, silently, forever.** That's arguably worse
 than a false positive: nothing about it looks broken from the outside.
 The gate turns that into an explicit, visible rejection instead.
 
-## Calibration: cross-extractor agreement as a real confidence proxy
+## Calibration: cross-extractor agreement and self-reported confidence, re-run at n=44
 
-No system in this project emits a self-reported confidence score — building
-one and calibrating it would have been new scope, not a missing
-measurement, and LLM self-reported confidences are notoriously poorly
-calibrated anyway. Instead, `calibration_analysis.py` uses a real,
-already-computed signal: agreement between the two independently-implemented
-Phase 2 extractors (classical vs. transformer) on the required-field set.
-Result: [`phase5_calibration_check.json`](phase5_calibration_check.json).
+**Updated since the first pass — the n=5 finding below did not survive a larger, more relevant
+sample, and that's reported honestly rather than left standing.** The original version of this
+section ran on 5 held-out reports (the only held-out set that existed before the v2 corpus) and
+found Pearson r = 0.919 between classical/transformer agreement and F1 — but "transformer" there
+meant the Phase 2 prompted LLM, before a fine-tuned model existed. `docs/phase-c-extraction.md`'s
+44-report test split (never touched during Phase C's training or model selection) is now the
+larger held-out set this section's own "What's honestly still missing" called for, and
+`calibration_analysis.py` was rewritten to use it — see that file's module docstring for the full
+account of what changed and why. Result:
+[`phase5_calibration_check.json`](phase5_calibration_check.json).
 
-| Report | Agreement (Jaccard) | Transformer F1 |
-|---|---|---|
-| SF-SAMPLE-013 | 1.000 | 1.000 |
-| SF-SAMPLE-011 | 1.000 | 1.000 |
-| SF-SAMPLE-012 | 1.000 | 1.000 |
-| SF-SAMPLE-014 | 0.750 | 0.857 |
-| SF-SAMPLE-015 | 0.500 | 0.857 |
+**The disagreement rule does not replicate at scale.** Classical is near-universally in
+disagreement with the fine-tuned model (Phase C's ablation already found classical "far too weak
+on this corpus to usefully vote on anything" — this is that same weakness, now visible as a
+calibration signal): Pearson r (agreement vs. fine-tuned F1) = **0.099**, and "disagreement → flag
+for review" flags 44/44 reports, i.e. everything — precision 0.295, exactly the base rate of
+imperfect extractions in this split. A rule that flags every report is not a useful rule.
 
-Pearson r = **0.919** (n=5, stated plainly as a small sample, not claimed
-as general significance). The simple decision rule this suggests —
-*disagreement between the two extractors → flag for mandatory analyst
-review* — would have flagged exactly the 2 reports with F1 < 1.0 and
-none of the 3 perfect ones, in this data.
+**What actually works: the fine-tuned model's own confidence.** `finetuned_extractor.py` now
+returns a real softmax confidence per prediction — unavailable at n=5, when this section was
+written. Pearson r (confidence vs. fine-tuned F1) = **0.767**. Gating on
+`hybrid_extractor.DEFAULT_CONFIDENCE_THRESHOLD` (0.6) — the same threshold the hybrid design
+already ships — flags 5/44 reports at **precision 1.0** (every flagged report really was
+imperfect) but **recall 0.385** (it misses 8 of 13 imperfect reports that stayed above threshold
+anyway). That precision/recall tradeoff, not a single clean number, is the honest, actionable
+result: confidence-gating is a precise but not very sensitive review trigger, which is exactly the
+role it already plays in `hybrid_extractor.py`, not a new, independent finding.
 
 ## Adversarial test set, broadened beyond prompt injection
 
@@ -167,10 +173,16 @@ support.
 
 ## What's honestly still missing
 
-- **Failure recovery at scale** — the missing-field robustness test is one
-  real data point; nothing systematic was measured under sustained load
-  or partial-cluster failure (this dataset and single-machine setup
-  couldn't support that kind of test meaningfully anyway).
-- A **larger held-out set** for the calibration and extraction-F1 numbers
-  — n=5 is real but small; the finding (agreement correlates with
-  correctness) is worth re-checking as report volume grows.
+- ~~Failure recovery at scale~~ — **closed in Phase E**:
+  `StreamingRecoveryCheck.scala` runs a real `StreamingQuery` kill and
+  restart against real checkpoint recovery
+  (`docs/phase-e-scale.md`, item 17, PASS). Real cluster / multi-node
+  failure is a separate, still-open item there (item 16), blocked on
+  cloud account access this environment doesn't have — not a Phase 5 gap.
+- ~~A larger held-out set for calibration~~ — **closed above**:
+  re-run at n=44 (the corpus's real test split), see the calibration
+  section. The finding changed, not just the sample size: cross-extractor
+  agreement doesn't hold up at scale, but the fine-tuned model's own
+  confidence does — a real update, not a confirmation of the n=5 result.
+  Extraction F1 itself was already re-measured at n=44 independently in
+  `docs/phase-c-extraction.md`'s main comparison, with bootstrap CIs.

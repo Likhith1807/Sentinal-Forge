@@ -1,43 +1,468 @@
 {
-  "n": 5,
+  "n": 44,
+  "split": "test",
+  "supersedes": "the n=5 v1 run (classical vs. prompted-LLM), see this file's module docstring",
+  "secondSystem": "fine-tuned (roberta-base)",
   "rows": [
     {
-      "report": "SF-SAMPLE-013",
-      "agreement": 1.0,
-      "transformerF1": 1.0,
-      "classicalF1": 1.0,
-      "fullAgreement": true
-    },
-    {
-      "report": "SF-SAMPLE-011",
-      "agreement": 1.0,
-      "transformerF1": 1.0,
-      "classicalF1": 1.0,
-      "fullAgreement": true
-    },
-    {
-      "report": "SF-SAMPLE-015",
-      "agreement": 0.5,
-      "transformerF1": 0.857,
-      "classicalF1": 0.857,
+      "report": "SFC-0005",
+      "tier": "template",
+      "supported": true,
+      "agreement": 0.0,
+      "classicalF1": 0.0,
+      "finetunedF1": 1.0,
+      "finetunedConfidence": 0.945,
       "fullAgreement": false
     },
     {
-      "report": "SF-SAMPLE-012",
-      "agreement": 1.0,
-      "transformerF1": 1.0,
-      "classicalF1": 1.0,
-      "fullAgreement": true
+      "report": "SFC-0006",
+      "tier": "llm-rewrite",
+      "supported": true,
+      "agreement": 0.0,
+      "classicalF1": 0.0,
+      "finetunedF1": 1.0,
+      "finetunedConfidence": 0.913,
+      "fullAgreement": false
     },
     {
-      "report": "SF-SAMPLE-014",
-      "agreement": 0.75,
-      "transformerF1": 0.857,
+      "report": "SFC-0007",
+      "tier": "template",
+      "supported": true,
+      "agreement": 0.0,
+      "classicalF1": 0.0,
+      "finetunedF1": 1.0,
+      "finetunedConfidence": 0.831,
+      "fullAgreement": false
+    },
+    {
+      "report": "SFC-0008",
+      "tier": "llm-rewrite",
+      "supported": true,
+      "agreement": 0.0,
+      "classicalF1": 0.0,
+      "finetunedF1": 1.0,
+      "finetunedConfidence": 0.939,
+      "fullAgreement": false
+    },
+    {
+      "report": "SFC-0019",
+      "tier": "template",
+      "supported": true,
+      "agreement": 0.0,
+      "classicalF1": 0.0,
+      "finetunedF1": 0.8,
+      "finetunedConfidence": 0.581,
+      "fullAgreement": false
+    },
+    {
+      "report": "SFC-0020",
+      "tier": "llm-rewrite",
+      "supported": true,
+      "agreement": 0.0,
+      "classicalF1": 0.0,
+      "finetunedF1": 0.8,
+      "finetunedConfidence": 0.644,
+      "fullAgreement": false
+    },
+    {
+      "report": "SFC-0029",
+      "tier": "template",
+      "supported": true,
+      "agreement": 0.0,
+      "classicalF1": 0.0,
+      "finetunedF1": 1.0,
+      "finetunedConfidence": 0.956,
+      "fullAgreement": false
+    },
+    {
+      "report": "SFC-0030",
+      "tier": "llm-rewrite",
+      "supported": true,
+      "agreement": 0.0,
+      "classicalF1": 0.0,
+      "finetunedF1": 1.0,
+      "finetunedConfidence": 0.902,
+      "fullAgreement": false
+    },
+    {
+      "report": "SFC-0043",
+      "tier": "template",
+      "supported": true,
+      "agreement": 0.0,
+      "classicalF1": 0.0,
+      "finetunedF1": 1.0,
+      "finetunedConfidence": 0.905,
+      "fullAgreement": false
+    },
+    {
+      "report": "SFC-0044",
+      "tier": "llm-rewrite",
+      "supported": true,
+      "agreement": 0.0,
+      "classicalF1": 0.0,
+      "finetunedF1": 1.0,
+      "finetunedConfidence": 0.851,
+      "fullAgreement": false
+    },
+    {
+      "report": "SFC-0055",
+      "tier": "template",
+      "supported": true,
+      "agreement": 0.0,
+      "classicalF1": 0.0,
+      "finetunedF1": 1.0,
+      "finetunedConfidence": 0.795,
+      "fullAgreement": false
+    },
+    {
+      "report": "SFC-0056",
+      "tier": "llm-rewrite",
+      "supported": true,
+      "agreement": 0.0,
+      "classicalF1": 0.0,
+      "finetunedF1": 1.0,
+      "finetunedConfidence": 0.838,
+      "fullAgreement": false
+    },
+    {
+      "report": "SFC-0057",
+      "tier": "template",
+      "supported": true,
+      "agreement": 0.5,
+      "classicalF1": 0.667,
+      "finetunedF1": 1.0,
+      "finetunedConfidence": 0.85,
+      "fullAgreement": false
+    },
+    {
+      "report": "SFC-0058",
+      "tier": "llm-rewrite",
+      "supported": true,
+      "agreement": 0.0,
+      "classicalF1": 0.0,
+      "finetunedF1": 1.0,
+      "finetunedConfidence": 0.87,
+      "fullAgreement": false
+    },
+    {
+      "report": "SFC-0061",
+      "tier": "template",
+      "supported": true,
+      "agreement": 0.0,
+      "classicalF1": 0.0,
+      "finetunedF1": 1.0,
+      "finetunedConfidence": 0.893,
+      "fullAgreement": false
+    },
+    {
+      "report": "SFC-0062",
+      "tier": "llm-rewrite",
+      "supported": true,
+      "agreement": 0.0,
+      "classicalF1": 0.0,
+      "finetunedF1": 0.857,
+      "finetunedConfidence": 0.444,
+      "fullAgreement": false
+    },
+    {
+      "report": "SFC-0101",
+      "tier": "template",
+      "supported": true,
+      "agreement": 0.0,
+      "classicalF1": 0.0,
+      "finetunedF1": 1.0,
+      "finetunedConfidence": 0.908,
+      "fullAgreement": false
+    },
+    {
+      "report": "SFC-0102",
+      "tier": "llm-rewrite",
+      "supported": true,
+      "agreement": 0.0,
+      "classicalF1": 0.0,
+      "finetunedF1": 0.857,
+      "finetunedConfidence": 0.81,
+      "fullAgreement": false
+    },
+    {
+      "report": "SFC-0115",
+      "tier": "template",
+      "supported": true,
+      "agreement": 0.0,
+      "classicalF1": 0.0,
+      "finetunedF1": 0.857,
+      "finetunedConfidence": 0.731,
+      "fullAgreement": false
+    },
+    {
+      "report": "SFC-0116",
+      "tier": "llm-rewrite",
+      "supported": true,
+      "agreement": 0.0,
+      "classicalF1": 0.0,
+      "finetunedF1": 0.857,
+      "finetunedConfidence": 0.61,
+      "fullAgreement": false
+    },
+    {
+      "report": "SFC-0117",
+      "tier": "template",
+      "supported": true,
+      "agreement": 0.0,
+      "classicalF1": 0.0,
+      "finetunedF1": 0.667,
+      "finetunedConfidence": 0.74,
+      "fullAgreement": false
+    },
+    {
+      "report": "SFC-0118",
+      "tier": "llm-rewrite",
+      "supported": true,
+      "agreement": 0.0,
+      "classicalF1": 0.0,
+      "finetunedF1": 1.0,
+      "finetunedConfidence": 0.761,
+      "fullAgreement": false
+    },
+    {
+      "report": "SFC-0119",
+      "tier": "template",
+      "supported": true,
+      "agreement": 0.0,
+      "classicalF1": 0.0,
+      "finetunedF1": 0.667,
+      "finetunedConfidence": 0.681,
+      "fullAgreement": false
+    },
+    {
+      "report": "SFC-0120",
+      "tier": "llm-rewrite",
+      "supported": true,
+      "agreement": 0.0,
+      "classicalF1": 0.0,
+      "finetunedF1": 1.0,
+      "finetunedConfidence": 0.79,
+      "fullAgreement": false
+    },
+    {
+      "report": "SFC-0121",
+      "tier": "template",
+      "supported": true,
+      "agreement": 0.5,
+      "classicalF1": 0.667,
+      "finetunedF1": 1.0,
+      "finetunedConfidence": 0.929,
+      "fullAgreement": false
+    },
+    {
+      "report": "SFC-0122",
+      "tier": "llm-rewrite",
+      "supported": true,
+      "agreement": 0.0,
+      "classicalF1": 0.0,
+      "finetunedF1": 1.0,
+      "finetunedConfidence": 0.939,
+      "fullAgreement": false
+    },
+    {
+      "report": "SFC-0125",
+      "tier": "template",
+      "supported": true,
+      "agreement": 0.0,
+      "classicalF1": 0.0,
+      "finetunedF1": 1.0,
+      "finetunedConfidence": 0.975,
+      "fullAgreement": false
+    },
+    {
+      "report": "SFC-0126",
+      "tier": "llm-rewrite",
+      "supported": true,
+      "agreement": 0.0,
+      "classicalF1": 0.0,
+      "finetunedF1": 1.0,
+      "finetunedConfidence": 0.967,
+      "fullAgreement": false
+    },
+    {
+      "report": "SFC-0127",
+      "tier": "template",
+      "supported": true,
+      "agreement": 0.0,
+      "classicalF1": 0.0,
+      "finetunedF1": 1.0,
+      "finetunedConfidence": 0.923,
+      "fullAgreement": false
+    },
+    {
+      "report": "SFC-0128",
+      "tier": "llm-rewrite",
+      "supported": true,
+      "agreement": 0.0,
+      "classicalF1": 0.0,
+      "finetunedF1": 0.889,
+      "finetunedConfidence": 0.783,
+      "fullAgreement": false
+    },
+    {
+      "report": "SFC-0135",
+      "tier": "template",
+      "supported": true,
+      "agreement": 0.0,
+      "classicalF1": 0.0,
+      "finetunedF1": 1.0,
+      "finetunedConfidence": 0.979,
+      "fullAgreement": false
+    },
+    {
+      "report": "SFC-0136",
+      "tier": "llm-rewrite",
+      "supported": true,
+      "agreement": 0.0,
+      "classicalF1": 0.0,
+      "finetunedF1": 1.0,
+      "finetunedConfidence": 0.974,
+      "fullAgreement": false
+    },
+    {
+      "report": "SFC-0163",
+      "tier": "template",
+      "supported": true,
+      "agreement": 0.0,
+      "classicalF1": 0.0,
+      "finetunedF1": 1.0,
+      "finetunedConfidence": 0.988,
+      "fullAgreement": false
+    },
+    {
+      "report": "SFC-0164",
+      "tier": "llm-rewrite",
+      "supported": true,
+      "agreement": 0.0,
+      "classicalF1": 0.0,
+      "finetunedF1": 1.0,
+      "finetunedConfidence": 0.987,
+      "fullAgreement": false
+    },
+    {
+      "report": "SFC-0173",
+      "tier": "template",
+      "supported": true,
+      "agreement": 0.0,
+      "classicalF1": 0.0,
+      "finetunedF1": 1.0,
+      "finetunedConfidence": 0.978,
+      "fullAgreement": false
+    },
+    {
+      "report": "SFC-0174",
+      "tier": "llm-rewrite",
+      "supported": true,
+      "agreement": 0.0,
+      "classicalF1": 0.0,
+      "finetunedF1": 1.0,
+      "finetunedConfidence": 0.976,
+      "fullAgreement": false
+    },
+    {
+      "report": "SFC-0179",
+      "tier": "template",
+      "supported": true,
+      "agreement": 0.0,
+      "classicalF1": 0.0,
+      "finetunedF1": 1.0,
+      "finetunedConfidence": 0.966,
+      "fullAgreement": false
+    },
+    {
+      "report": "SFC-0180",
+      "tier": "llm-rewrite",
+      "supported": true,
+      "agreement": 0.0,
+      "classicalF1": 0.0,
+      "finetunedF1": 1.0,
+      "finetunedConfidence": 0.951,
+      "fullAgreement": false
+    },
+    {
+      "report": "SFC-0191",
+      "tier": "template",
+      "supported": true,
+      "agreement": 0.0,
+      "classicalF1": 0.0,
+      "finetunedF1": 1.0,
+      "finetunedConfidence": 0.982,
+      "fullAgreement": false
+    },
+    {
+      "report": "SFC-0192",
+      "tier": "llm-rewrite",
+      "supported": true,
+      "agreement": 0.0,
+      "classicalF1": 0.0,
+      "finetunedF1": 1.0,
+      "finetunedConfidence": 0.971,
+      "fullAgreement": false
+    },
+    {
+      "report": "SFC-0211",
+      "tier": "template",
+      "supported": false,
+      "agreement": 0.0,
       "classicalF1": 1.0,
+      "finetunedF1": 0.0,
+      "finetunedConfidence": 0.453,
+      "fullAgreement": false
+    },
+    {
+      "report": "SFC-0212",
+      "tier": "llm-rewrite",
+      "supported": false,
+      "agreement": 0.0,
+      "classicalF1": 1.0,
+      "finetunedF1": 0.0,
+      "finetunedConfidence": 0.342,
+      "fullAgreement": false
+    },
+    {
+      "report": "SFC-0215",
+      "tier": "template",
+      "supported": false,
+      "agreement": 0.0,
+      "classicalF1": 1.0,
+      "finetunedF1": 0.0,
+      "finetunedConfidence": 0.579,
+      "fullAgreement": false
+    },
+    {
+      "report": "SFC-0216",
+      "tier": "llm-rewrite",
+      "supported": false,
+      "agreement": 0.0,
+      "classicalF1": 1.0,
+      "finetunedF1": 0.0,
+      "finetunedConfidence": 0.617,
       "fullAgreement": false
     }
   ],
-  "pearsonR": 0.919,
-  "disagreementFlagsExactlyTheImperfectCases": true,
-  "caveat": "n=5, held-out set \u2014 a real signal on the data available, not a claim of general statistical significance."
+  "pearsonAgreementVsF1": 0.099,
+  "pearsonConfidenceVsF1": 0.767,
+  "baseRateImperfect": 0.295,
+  "disagreementRule": {
+    "flagged": 44,
+    "notFlagged": 0,
+    "precision": 0.295,
+    "recall": 1.0,
+    "imperfectButNotFlagged": 0
+  },
+  "confidenceThresholdRule": {
+    "threshold": 0.6,
+    "note": "matches hybrid_extractor.DEFAULT_CONFIDENCE_THRESHOLD",
+    "flagged": 5,
+    "notFlagged": 39,
+    "precision": 1.0,
+    "recall": 0.385,
+    "imperfectButNotFlagged": 8
+  },
+  "caveat": "n=44, the corpus's real test split, never touched during Phase C training or model selection \u2014 the largest held-out set available in this project, not a claim beyond what 44 reports supports."
 }
