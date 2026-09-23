@@ -1,0 +1,24 @@
+{
+  "samples": [
+    {"id": "brute-force-vpn", "file": "01-brute-force-vpn.md", "expect": "compiled", "behaviour": "repeated-failed-login-then-success",
+     "note": "An unfamiliar narrative advisory with several numbers; only the detection sentence states the rule (5 failures / 2 minutes)."},
+    {"id": "password-spray", "file": "02-password-spray.md", "expect": "compiled", "behaviour": "password-spray-across-accounts",
+     "note": "Counts distinct accounts (not attempts) per source host."},
+    {"id": "shared-credentials", "file": "03-shared-credentials.md", "expect": "compiled", "behaviour": "multi-host-authentication",
+     "note": "The report talks about people using an account 'at once'; the rule counts distinct hosts and says it cannot measure overlap."},
+    {"id": "auth-method-drift", "file": "04-auth-method-drift.md", "expect": "compiled", "behaviour": "auth-method-policy-violation",
+     "note": "Fires on ANY mismatch with the expected method - the report says 'in either direction'."},
+    {"id": "mfa-gap", "file": "05-mfa-gap.md", "expect": "compiled", "behaviour": "mfa-missing-on-required-account",
+     "note": "Detects a missing second factor, not a bypass technique."},
+    {"id": "ninety-seconds", "file": "06-ninety-seconds.md", "expect": "compiled", "behaviour": "repeated-failed-login-then-success",
+     "note": "The regression case for the audit's headline defect: '90 seconds' must compile to 90 s, never 90 minutes."},
+    {"id": "port-scan", "file": "07-port-scan.md", "expect": "rejected", "behaviour": null,
+     "note": "Counts destination ports - no supported behaviour does; the audit's silent false accept."},
+    {"id": "impossible-travel", "file": "08-impossible-travel.md", "expect": "rejected", "behaviour": null,
+     "note": "Needs geo_country, which the authentication log does not provide."},
+    {"id": "contradictory-windows", "file": "09-contradictory-windows.md", "expect": "rejected", "behaviour": null,
+     "note": "Two different windows for one rule: an unresolved contradiction is rejected, not resolved by guessing."},
+    {"id": "vague", "file": "10-vague.md", "expect": "needs_review", "behaviour": null,
+     "note": "No threshold and no window: nothing is invented; a person must supply them (see Refine)."}
+  ]
+}

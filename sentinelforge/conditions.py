@@ -455,6 +455,12 @@ _INCIDENTAL = re.compile(
     r"(?:continues?|continue) to ignore|not (?:required|needed) (?:for|by) the (?:rule|detection)")
 
 
+# Counter-examples: "slower guessing ... is a different problem; do not alert on it here" names a duration that is
+# explicitly NOT the rule. Such a sentence is not a source of rule windows (unless it also states a comparator).
+_NEGATED = re.compile(r"\b(?:do not|don't|should not|shouldn't|must not|never|not alert|out of scope|different problem|"
+                      r"handled by|not covered|is not the goal)\b")
+
+
 def _incidental_sentences(low: str, sents) -> set:
     return {(s, e) for s, e in sents if _INCIDENTAL.search(low[s:e])}
 
@@ -463,7 +469,9 @@ def _rule_sentences(low: str, sents, counts, windows, incidental) -> list[tuple[
     """Sentences that state (rather than narrate) a detection condition: they carry a rule cue word, or they
     put a comparator count and a cued time window together. A sentence that says an attribute is
     incidental is never a source of conditions."""
-    hits = {(s, e) for s, e in sents if _RULE_CUE.search(low[s:e]) and (s, e) not in incidental}
+    comparator_sents = {sentence_of(sents, c.evidence.start) for c in counts if c.comparator != "unspecified"}
+    hits = {(s, e) for s, e in sents if _RULE_CUE.search(low[s:e]) and (s, e) not in incidental
+            and not (_NEGATED.search(low[s:e]) and (s, e) not in comparator_sents)}
     for c in counts:
         sent = sentence_of(sents, c.evidence.start)
         if c.comparator != "unspecified" and sent not in incidental:

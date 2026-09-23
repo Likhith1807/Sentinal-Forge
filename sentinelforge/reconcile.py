@@ -238,6 +238,13 @@ def reconcile(report_text: str, extraction: dict | None = None) -> Reconciliatio
             return finish(NEEDS_REVIEW, None, None)
         else:
             reasons.extend(hard_general)
+            partial = [s for s in rep.signals if s.cues]
+            if not hard_general and len(partial) == 1:
+                p = partial[0]
+                reasons.append(Reason("UNDERSPECIFIED_BEHAVIOUR", "review",
+                                      f"The passage resembles {B.BEHAVIOURS[p.behaviourId].display_name} but does not state: "
+                                      f"{'; '.join(p.missing)}. Nothing was guessed.", [c for c in p.cues[:2]]))
+                return finish(NEEDS_REVIEW, None, None)
             reasons.append(Reason("UNSUPPORTED_BEHAVIOUR", "reject", "No supported recipe's conditions were found in the passage.", []))
             return finish(REJECTED, None, None)
 
