@@ -1,0 +1,634 @@
+{
+ "description": "Planted incidents in auth_events.jsonl. `expect` is what a correct rule must find; window/threshold values in a report decide which of these a compiled rule can catch.",
+ "synthetic": true,
+ "seed": 20260302,
+ "events": 725,
+ "incidents": [
+  {
+   "kind": "repeated-failed-login-then-success",
+   "label": "3 failures over 20s then success",
+   "params": {
+    "failures": 3,
+    "spreadSeconds": 20,
+    "account": "amir0"
+   },
+   "expect": {
+    "minFailuresAtLeast": 3,
+    "windowAtLeastSeconds": 23
+   },
+   "eventIds": [
+    "d00567",
+    "d00568",
+    "d00569",
+    "d00570"
+   ]
+  },
+  {
+   "kind": "repeated-failed-login-then-success",
+   "label": "4 failures over 45s then success",
+   "params": {
+    "failures": 4,
+    "spreadSeconds": 45,
+    "account": "bianca1"
+   },
+   "expect": {
+    "minFailuresAtLeast": 4,
+    "windowAtLeastSeconds": 48
+   },
+   "eventIds": [
+    "d00571",
+    "d00572",
+    "d00573",
+    "d00574",
+    "d00575"
+   ]
+  },
+  {
+   "kind": "repeated-failed-login-then-success",
+   "label": "5 failures over 30s then success",
+   "params": {
+    "failures": 5,
+    "spreadSeconds": 30,
+    "account": "carlos2"
+   },
+   "expect": {
+    "minFailuresAtLeast": 5,
+    "windowAtLeastSeconds": 33
+   },
+   "eventIds": [
+    "d00576",
+    "d00577",
+    "d00578",
+    "d00579",
+    "d00580",
+    "d00581"
+   ]
+  },
+  {
+   "kind": "repeated-failed-login-then-success",
+   "label": "6 failures over 90s then success",
+   "params": {
+    "failures": 6,
+    "spreadSeconds": 90,
+    "account": "dana3"
+   },
+   "expect": {
+    "minFailuresAtLeast": 6,
+    "windowAtLeastSeconds": 93
+   },
+   "eventIds": [
+    "d00582",
+    "d00583",
+    "d00584",
+    "d00585",
+    "d00586",
+    "d00587",
+    "d00588"
+   ]
+  },
+  {
+   "kind": "repeated-failed-login-then-success",
+   "label": "8 failures over 120s then success",
+   "params": {
+    "failures": 8,
+    "spreadSeconds": 120,
+    "account": "elif4"
+   },
+   "expect": {
+    "minFailuresAtLeast": 8,
+    "windowAtLeastSeconds": 123
+   },
+   "eventIds": [
+    "d00589",
+    "d00590",
+    "d00591",
+    "d00592",
+    "d00593",
+    "d00594",
+    "d00595",
+    "d00596",
+    "d00597"
+   ]
+  },
+  {
+   "kind": "repeated-failed-login-then-success",
+   "label": "10 failures over 240s then success",
+   "params": {
+    "failures": 10,
+    "spreadSeconds": 240,
+    "account": "farid5"
+   },
+   "expect": {
+    "minFailuresAtLeast": 10,
+    "windowAtLeastSeconds": 243
+   },
+   "eventIds": [
+    "d00598",
+    "d00599",
+    "d00600",
+    "d00601",
+    "d00602",
+    "d00603",
+    "d00604",
+    "d00605",
+    "d00606",
+    "d00607",
+    "d00608"
+   ]
+  },
+  {
+   "kind": "repeated-failed-login-then-success",
+   "label": "12 failures over 400s then success",
+   "params": {
+    "failures": 12,
+    "spreadSeconds": 400,
+    "account": "grace6"
+   },
+   "expect": {
+    "minFailuresAtLeast": 12,
+    "windowAtLeastSeconds": 403
+   },
+   "eventIds": [
+    "d00609",
+    "d00610",
+    "d00611",
+    "d00612",
+    "d00613",
+    "d00614",
+    "d00615",
+    "d00616",
+    "d00617",
+    "d00618",
+    "d00619",
+    "d00620",
+    "d00621"
+   ]
+  },
+  {
+   "kind": "repeated-failed-login-then-success",
+   "label": "15 failures over 55s then success",
+   "params": {
+    "failures": 15,
+    "spreadSeconds": 55,
+    "account": "hiro7"
+   },
+   "expect": {
+    "minFailuresAtLeast": 15,
+    "windowAtLeastSeconds": 58
+   },
+   "eventIds": [
+    "d00622",
+    "d00623",
+    "d00624",
+    "d00625",
+    "d00626",
+    "d00627",
+    "d00628",
+    "d00629",
+    "d00630",
+    "d00631",
+    "d00632",
+    "d00633",
+    "d00634",
+    "d00635",
+    "d00636",
+    "d00637"
+   ]
+  },
+  {
+   "kind": "password-spray-across-accounts",
+   "label": "2 accounts from one host over 40s",
+   "params": {
+    "distinctAccounts": 2,
+    "spreadSeconds": 40,
+    "host": "ATTACKER-08"
+   },
+   "expect": {
+    "minDistinctAccountsAtLeast": 2,
+    "windowAtLeastSeconds": 40
+   },
+   "eventIds": [
+    "d00638",
+    "d00639"
+   ]
+  },
+  {
+   "kind": "password-spray-across-accounts",
+   "label": "3 accounts from one host over 90s",
+   "params": {
+    "distinctAccounts": 3,
+    "spreadSeconds": 90,
+    "host": "ATTACKER-09"
+   },
+   "expect": {
+    "minDistinctAccountsAtLeast": 3,
+    "windowAtLeastSeconds": 90
+   },
+   "eventIds": [
+    "d00640",
+    "d00641",
+    "d00642"
+   ]
+  },
+  {
+   "kind": "password-spray-across-accounts",
+   "label": "4 accounts from one host over 300s",
+   "params": {
+    "distinctAccounts": 4,
+    "spreadSeconds": 300,
+    "host": "ATTACKER-10"
+   },
+   "expect": {
+    "minDistinctAccountsAtLeast": 4,
+    "windowAtLeastSeconds": 300
+   },
+   "eventIds": [
+    "d00643",
+    "d00644",
+    "d00645",
+    "d00646"
+   ]
+  },
+  {
+   "kind": "password-spray-across-accounts",
+   "label": "5 accounts from one host over 200s",
+   "params": {
+    "distinctAccounts": 5,
+    "spreadSeconds": 200,
+    "host": "ATTACKER-11"
+   },
+   "expect": {
+    "minDistinctAccountsAtLeast": 5,
+    "windowAtLeastSeconds": 200
+   },
+   "eventIds": [
+    "d00647",
+    "d00648",
+    "d00649",
+    "d00650",
+    "d00651"
+   ]
+  },
+  {
+   "kind": "password-spray-across-accounts",
+   "label": "6 accounts from one host over 480s",
+   "params": {
+    "distinctAccounts": 6,
+    "spreadSeconds": 480,
+    "host": "ATTACKER-12"
+   },
+   "expect": {
+    "minDistinctAccountsAtLeast": 6,
+    "windowAtLeastSeconds": 480
+   },
+   "eventIds": [
+    "d00652",
+    "d00653",
+    "d00654",
+    "d00655",
+    "d00656",
+    "d00657"
+   ]
+  },
+  {
+   "kind": "password-spray-across-accounts",
+   "label": "8 accounts from one host over 600s",
+   "params": {
+    "distinctAccounts": 8,
+    "spreadSeconds": 600,
+    "host": "ATTACKER-13"
+   },
+   "expect": {
+    "minDistinctAccountsAtLeast": 8,
+    "windowAtLeastSeconds": 600
+   },
+   "eventIds": [
+    "d00658",
+    "d00659",
+    "d00660",
+    "d00661",
+    "d00662",
+    "d00663",
+    "d00664",
+    "d00665"
+   ]
+  },
+  {
+   "kind": "password-spray-across-accounts",
+   "label": "10 accounts from one host over 900s",
+   "params": {
+    "distinctAccounts": 10,
+    "spreadSeconds": 900,
+    "host": "ATTACKER-14"
+   },
+   "expect": {
+    "minDistinctAccountsAtLeast": 10,
+    "windowAtLeastSeconds": 900
+   },
+   "eventIds": [
+    "d00666",
+    "d00667",
+    "d00668",
+    "d00669",
+    "d00670",
+    "d00671",
+    "d00672",
+    "d00673",
+    "d00674",
+    "d00675"
+   ]
+  },
+  {
+   "kind": "password-spray-across-accounts",
+   "label": "12 accounts from one host over 1100s",
+   "params": {
+    "distinctAccounts": 12,
+    "spreadSeconds": 1100,
+    "host": "ATTACKER-15"
+   },
+   "expect": {
+    "minDistinctAccountsAtLeast": 12,
+    "windowAtLeastSeconds": 1100
+   },
+   "eventIds": [
+    "d00676",
+    "d00677",
+    "d00678",
+    "d00679",
+    "d00680",
+    "d00681",
+    "d00682",
+    "d00683",
+    "d00684",
+    "d00685",
+    "d00686",
+    "d00687"
+   ]
+  },
+  {
+   "kind": "multi-host-authentication",
+   "label": "2 hosts over 90s",
+   "params": {
+    "distinctHosts": 2,
+    "spreadSeconds": 90,
+    "account": "ines8"
+   },
+   "expect": {
+    "minDistinctHostsAtLeast": 2,
+    "windowAtLeastSeconds": 90
+   },
+   "eventIds": [
+    "d00688",
+    "d00689"
+   ]
+  },
+  {
+   "kind": "multi-host-authentication",
+   "label": "2 hosts over 900s",
+   "params": {
+    "distinctHosts": 2,
+    "spreadSeconds": 900,
+    "account": "liam11"
+   },
+   "expect": {
+    "minDistinctHostsAtLeast": 2,
+    "windowAtLeastSeconds": 900
+   },
+   "eventIds": [
+    "d00690",
+    "d00691"
+   ]
+  },
+  {
+   "kind": "multi-host-authentication",
+   "label": "3 hosts over 300s",
+   "params": {
+    "distinctHosts": 3,
+    "spreadSeconds": 300,
+    "account": "omar14"
+   },
+   "expect": {
+    "minDistinctHostsAtLeast": 3,
+    "windowAtLeastSeconds": 300
+   },
+   "eventIds": [
+    "d00692",
+    "d00693",
+    "d00694"
+   ]
+  },
+  {
+   "kind": "multi-host-authentication",
+   "label": "3 hosts over 1500s",
+   "params": {
+    "distinctHosts": 3,
+    "spreadSeconds": 1500,
+    "account": "rosa17"
+   },
+   "expect": {
+    "minDistinctHostsAtLeast": 3,
+    "windowAtLeastSeconds": 1500
+   },
+   "eventIds": [
+    "d00695",
+    "d00696",
+    "d00697"
+   ]
+  },
+  {
+   "kind": "multi-host-authentication",
+   "label": "4 hosts over 1200s",
+   "params": {
+    "distinctHosts": 4,
+    "spreadSeconds": 1200,
+    "account": "uma20"
+   },
+   "expect": {
+    "minDistinctHostsAtLeast": 4,
+    "windowAtLeastSeconds": 1200
+   },
+   "eventIds": [
+    "d00698",
+    "d00699",
+    "d00700",
+    "d00701"
+   ]
+  },
+  {
+   "kind": "multi-host-authentication",
+   "label": "5 hosts over 2400s",
+   "params": {
+    "distinctHosts": 5,
+    "spreadSeconds": 2400,
+    "account": "ximena23"
+   },
+   "expect": {
+    "minDistinctHostsAtLeast": 5,
+    "windowAtLeastSeconds": 2400
+   },
+   "eventIds": [
+    "d00702",
+    "d00703",
+    "d00704",
+    "d00705",
+    "d00706"
+   ]
+  },
+  {
+   "kind": "auth-method-policy-violation",
+   "label": "kavya10 used password, expected token",
+   "params": {
+    "account": "kavya10"
+   },
+   "expect": {
+    "alerts": 1
+   },
+   "eventIds": [
+    "d00707"
+   ]
+  },
+  {
+   "kind": "auth-method-policy-violation",
+   "label": "liam11 used password, expected token",
+   "params": {
+    "account": "liam11"
+   },
+   "expect": {
+    "alerts": 1
+   },
+   "eventIds": [
+    "d00708"
+   ]
+  },
+  {
+   "kind": "auth-method-policy-violation",
+   "label": "mei12 used token, expected password",
+   "params": {
+    "account": "mei12"
+   },
+   "expect": {
+    "alerts": 1
+   },
+   "eventIds": [
+    "d00709"
+   ]
+  },
+  {
+   "kind": "auth-method-policy-violation",
+   "label": "nadia13 used token, expected password",
+   "params": {
+    "account": "nadia13"
+   },
+   "expect": {
+    "alerts": 1
+   },
+   "eventIds": [
+    "d00710"
+   ]
+  },
+  {
+   "kind": "auth-method-policy-violation",
+   "label": "omar14 used token, expected password",
+   "params": {
+    "account": "omar14"
+   },
+   "expect": {
+    "alerts": 1
+   },
+   "eventIds": [
+    "d00711"
+   ]
+  },
+  {
+   "kind": "auth-method-policy-violation",
+   "label": "priya15 used password, expected token",
+   "params": {
+    "account": "priya15"
+   },
+   "expect": {
+    "alerts": 1
+   },
+   "eventIds": [
+    "d00712"
+   ]
+  },
+  {
+   "kind": "mfa-missing-on-required-account",
+   "label": "elif4 logged in without MFA",
+   "params": {
+    "account": "elif4"
+   },
+   "expect": {
+    "alerts": 1
+   },
+   "eventIds": [
+    "d00713"
+   ]
+  },
+  {
+   "kind": "mfa-missing-on-required-account",
+   "label": "farid5 logged in without MFA",
+   "params": {
+    "account": "farid5"
+   },
+   "expect": {
+    "alerts": 1
+   },
+   "eventIds": [
+    "d00714"
+   ]
+  },
+  {
+   "kind": "mfa-missing-on-required-account",
+   "label": "hiro7 logged in without MFA",
+   "params": {
+    "account": "hiro7"
+   },
+   "expect": {
+    "alerts": 1
+   },
+   "eventIds": [
+    "d00715"
+   ]
+  },
+  {
+   "kind": "mfa-missing-on-required-account",
+   "label": "jamal9 logged in without MFA",
+   "params": {
+    "account": "jamal9"
+   },
+   "expect": {
+    "alerts": 1
+   },
+   "eventIds": [
+    "d00716"
+   ]
+  },
+  {
+   "kind": "mfa-missing-on-required-account",
+   "label": "kavya10 logged in without MFA",
+   "params": {
+    "account": "kavya10"
+   },
+   "expect": {
+    "alerts": 1
+   },
+   "eventIds": [
+    "d00717"
+   ]
+  },
+  {
+   "kind": "mfa-missing-on-required-account",
+   "label": "mei12 logged in without MFA",
+   "params": {
+    "account": "mei12"
+   },
+   "expect": {
+    "alerts": 1
+   },
+   "eventIds": [
+    "d00718"
+   ]
+  }
+ ]
+}

@@ -36,7 +36,7 @@ EXPECTED_TYPES = {
     "event_id": "string", "timestamp": "timestamp", "account_id": "string", "event_type": "string",
     "source_host": "string", "source_ip": "string", "auth_method": "string", "mfa_used": "boolean",
     "session_id": "string",
-    "policy.expected_auth_method": "string", "policy.mfa_required": "boolean",
+    "policy.expected_auth_method": "string", "policy.mfa_required": "boolean", "policy.account_id": "string",
 }
 FIELD_ROLE = {  # why the compiled rule needs it, shown to the analyst
     "event_id": "output: identifies the supporting event in every alert",
@@ -48,6 +48,7 @@ FIELD_ROLE = {  # why the compiled rule needs it, shown to the analyst
     "mfa_used": "read: checked when MFA is required",
     "policy.expected_auth_method": "read (policy join): the method the account should use",
     "policy.mfa_required": "read (policy join): whether the account must use MFA",
+    "policy.account_id": "read (policy join key): identifies which policy record applies",
 }
 
 
@@ -256,6 +257,8 @@ def _type_ok(expected: str, actual: str | None) -> bool:
     if actual is None:
         return False
     a = actual.lower()
+    if a in ("null", "void"):
+        return True                                     # present but never observed: rows degrade to insufficient_context
     if expected == "timestamp":
         return a in ("timestamp", "string", "timestamp_ntz", "date-time", "datetime")
     if expected == "string":
@@ -307,7 +310,8 @@ def check_dataset(behaviour_id: str, profile: dict, unavailable: set | None = No
     unavailable = unavailable or set()
     schema = _log_schema()
     deps: list[Dependency] = []
-    for f in beh.log_fields + beh.policy_fields:
+    policy_deps = beh.policy_fields + (("policy.account_id",) if beh.recipe == B.POLICY_COMPARE else ())
+    for f in beh.log_fields + policy_deps:
         is_policy = f.startswith("policy.")
         bare = f.removeprefix("policy.")
         cols = profile.get("policyColumns" if is_policy else "columns", {})
