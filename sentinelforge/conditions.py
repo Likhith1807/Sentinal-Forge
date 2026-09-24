@@ -132,6 +132,7 @@ class ConditionReport:
     ruleSentences: list = field(default_factory=list)      # [(start, end)]
     caveats: list = field(default_factory=list)            # things the passage says the rule cannot faithfully measure
     methodLiterals: list = field(default_factory=list)     # concrete auth methods named inside rule sentences
+    hedges: list = field(default_factory=list)             # the author says a value is not settled ("possibly 15", "tbc")
 
     def to_dict(self) -> dict:
         return {
@@ -143,6 +144,7 @@ class ConditionReport:
                          "missing": s.missing, "complete": s.complete} for s in self.signals],
             "ruleSentences": [list(s) for s in self.ruleSentences],
             "caveats": [asdict(c) for c in self.caveats],
+            "hedges": [asdict(h) for h in self.hedges],
             "methodLiterals": [asdict(c) for c in self.methodLiterals],
         }
 
@@ -506,6 +508,7 @@ _QUALIFIERS: list[tuple[str, re.Pattern]] = [(k, re.compile(p)) for k, p in [
     ("time-of-day / business-hours restriction", r"outside (?:of )?(?:the )?(?:business|working|normal|office|regular) hours|off-?hours|after[- ]hours|weekends?|at night|overnight|during (?:business|working) hours"),
     ("geographic condition", r"geo-?locat|\bcountr(?:y|ies)\b|impossible travel|\bregions?\b|geograph"),
     ("device / client attribute", r"new device|unfamiliar|user-?agent|device id|\bbrowser\b|operating system"),
+    ("scope limited to a subset of accounts or hosts", r"\b(?:limited|restricted|scoped|confined) to (?:accounts?|users?|hosts?|machines?|servers?|systems?|the\b)|\bapplies only\b|\bonly (?:applies|apply)\b|\bin the [\w-]+ (?:group|team|department|ou)\b"),
     ("account-privilege restriction", r"privileged accounts? only|only (?:for|on|when|if|against|from)\b|admin(?:istrator)? accounts? only|domain admins?"),
     ("exclusion clause", r"\bexcept(?: for| when)?\b|\bexcluding\b|\bunless\b|\bexempt\b|\bwhitelist|\ballow-?list"),
     ("rate / ratio condition", r"\bratio\b|\bpercent(?:age)?\b|\d\s*%|\brate of\b|per (?:second|minute|hour|day)\b"),
@@ -518,7 +521,9 @@ _QUALIFIERS: list[tuple[str, re.Pattern]] = [(k, re.compile(p)) for k, p in [
 # states no rule even though it contains a comparator. (Bare "no" is deliberately absent: "no fewer than 5".)
 _NEGATED_INTENT = re.compile(
     r"\b(?:do(?:es)?\s+not|don't|doesn't|did\s+not|should\s+not|shouldn't|must\s+not|shall\s+not|never)\b[^.;\n]{0,30}"
-    r"\b(?:want|need|wish|expect|require|alert|fire|trigger|flag|page|escalate)\b|\bexplicitly\s+not\b|\bno\s+alert\b")
+    r"\b(?:want|need|wish|expect|require|alert|fire|trigger|flag|page|escalate)\b|\bexplicitly\s+not\b|\bno\s+alert\b|"
+    r"\bno\s+need\s+(?:to|for)\b|\b(?:decided|agreed|chose|opted)\s+(?:not\s+to|against)\b|\b(?:not\s+going\s+to|won't|will\s+not)\s+(?:build|implement|alert|add|ship)\b|"
+    r"\b(?:dropped|shelved|descoped|out\s+of\s+scope)\b")
 _RULE_CUE = re.compile(
     r"\b(?:alert|alerts|fire|fires|flag|flags|treat|trigger|triggers|raise|detect|detection|rule|escalate|notify|"
     r"requirement|criteria|logic|condition|when|count)\b|ask:")
@@ -557,8 +562,25 @@ def _rule_sentences(low: str, sents, counts, windows, incidental) -> list[tuple[
     return sorted(hits - negated_intent)
 
 
+_HEDGE = re.compile(r"\b(?:possibly|perhaps|maybe|tentatively|tbc|tbd|to be (?:confirmed|decided|determined)|not (?:yet )?(?:sure|settled|decided|final)|"
+                    r"(?:i|we)(?:'ll| will| need to| still need to| have to) (?:confirm|check|verify|decide)|still (?:to (?:confirm|decide)|open|unclear)|"
+                    r"placeholder|draft value|might (?:be|need))\b")
+# Exclusions are usually written as their own sentence or list item ("Exclude hosts in the scanner allow-list."), which has no
+# rule cue of its own, so they are looked for across the whole passage.
+_SCOPE_EXCLUSION = re.compile(r"\bexclud\w+\s+(?:all\s+|any\s+|the\s+)?(?:hosts?|accounts?|users?|ips?|systems?|machines?|servers?|service accounts?|subnets?)\b|"
+                              r"\b(?:allow|deny|block)-?list|\bwhitelist|\bignore\s+(?:all\s+)?(?:hosts?|accounts?|users?|service accounts?)\b")
+
+
+def _find_hedges(text: str, low: str, sents, rule_sents) -> list[Qualifier]:
+    return [Qualifier("a value the author says is not settled", _evidence(text, sents, ss + m.start(), ss + m.end()))
+            for ss, se in rule_sents for m in _HEDGE.finditer(low[ss:se])]
+
+
 def _find_qualifiers(text: str, low: str, sents, rule_sents) -> list[Qualifier]:
     out = []
+    if rule_sents:
+        for m in _SCOPE_EXCLUSION.finditer(low):
+            out.append(Qualifier("exclusion clause", _evidence(text, sents, m.start(), m.end())))
     for ss, se in rule_sents:
         seg = low[ss:se]
         for kind, rx in _QUALIFIERS:
@@ -711,4 +733,4 @@ def find_conditions(text: str) -> ConditionReport:
         fields=fields,
         qualifiers=_find_qualifiers(text, low, sents, rule_sents),
         signals=_signals(text, low, sents, rule_sents, counts, fields, incidental),
-        ruleSentences=rule_sents, caveats=_caveats(text, low, sents))
+        ruleSentences=rule_sents, caveats=_caveats(text, low, sents), hedges=_find_hedges(text, low, sents, rule_sents))

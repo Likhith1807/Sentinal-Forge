@@ -261,6 +261,10 @@ def reconcile(report_text: str, extraction: dict | None = None) -> Reconciliatio
                                        f"The report requires \"{f.raw}\", which is not a field in the authentication log schema.",
                                        [f.evidence]))
 
+    for h in rep.hedges:
+        reasons.append(Reason("VALUE_NOT_SETTLED", "review",
+                              f"The passage says a value is not settled ({h.kind}: \"{h.evidence.quote}\"); a person must confirm it before a rule is compiled.",
+                              [h.evidence]))
     if claimed is None and proposal.get("provided"):
         # the extractor abstained
         if len(complete) == 1 and not hard_general:

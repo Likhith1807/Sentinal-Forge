@@ -100,3 +100,30 @@ def test_well_under_a_minute_is_still_an_approximation_not_a_window():
     t = ("It touched many hosts in well under a minute. "
          "Alert when 4 or more failed logins hit one account within 5 minutes and then it succeeds.")
     assert rule(t) == (B1, 4, 300)
+
+
+# ---------------------------------------------------------------------- classes found by holdout v2 (fixed AFTER its freeze)
+# v2 is consumed: its numbers are published as recorded. These tests pin the five false accepts it exposed, with new wording.
+@pytest.mark.parametrize("text,why", [
+    ("Alert when 7 or more failed logins hit one account within 3 minutes, perhaps 10, and then it succeeds. Waiting on the vendor.", "hedged window"),
+    ("Fire on 4 or more failed logins for one account inside 60 seconds then a success - tbc with the owner.", "to be confirmed"),
+    ("There is no need to alert when 6 or more failed logins hit one account inside 5 minutes and then it succeeds; the retry job does it.", "no need to alert"),
+    ("The team agreed not to implement an alert for 3 or more distinct hosts for one account within 15 minutes.", "decided not to"),
+    ("Alert when a host fails against 9 or more distinct accounts within 15 minutes.\n- Exclude machines on the pentest allow-list.", "exclusion in a separate list item"),
+    ("Alert when a successful login has no MFA for an account that requires it. Restricted to accounts in the payments department.", "scope limit"),
+])
+def test_v2_classes_never_compile(text, why):
+    a = analyze(text, None)
+    assert a.compiled is None, why
+
+
+def test_a_hedge_is_reviewed_not_rejected():
+    a = analyze("Alert when 5 or more failed logins hit one account within 2 minutes, maybe 10, and then it succeeds.", None)
+    assert a.status == "needs_review"
+    assert any(r.code == "VALUE_NOT_SETTLED" for r in a.reconciliation.reasons)
+
+
+def test_an_allow_list_sentence_without_a_rule_does_not_break_a_plain_report():
+    # an allow-list mentioned where no rule sentence exists must not invent a rule
+    a = analyze("Our allow-list is reviewed quarterly by the platform team.", None)
+    assert a.compiled is None
