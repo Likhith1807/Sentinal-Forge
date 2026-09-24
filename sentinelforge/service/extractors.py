@@ -74,7 +74,10 @@ def list_extractors() -> list[ExtractorInfo]:
 
 
 def default_extractor() -> str:
-    return "finetuned" if _finetuned_status()[0] else "evidence"
+    """The deterministic evidence finder. On both frozen holdouts it compiled at least as many supported reports correctly as the
+    fine-tuned model + evidence check, with the same zero silent errors (v1: 44% vs 32%; v2: 63% vs 50% - see docs/evaluation.md),
+    it needs no model download and no GPU, and it is fully reproducible. The model stays selectable."""
+    return "evidence"
 
 
 def extract(extractor: str, text: str) -> tuple[dict | None, dict]:
