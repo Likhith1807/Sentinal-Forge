@@ -1,3 +1,5 @@
+> **Historical document.** Written during an earlier phase of the project and kept as a record. Numbers here were measured on the original 44-report set and the pre-audit pipeline; the current, audited results and limits are in [`docs/evaluation.md`](evaluation.md) and [`docs/limitations.md`](limitations.md).
+
 # Phase C — A Fine-Tuned Extractor (v1)
 
 Phase 2 (`nlp/README.md`) compared two *untrained* extractors — regex/keyword rules and a

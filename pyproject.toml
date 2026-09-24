@@ -8,9 +8,6 @@ python_functions = ["test_*", "case_*"]
 #   - compiler/test/evaluate_*.py, nlp/test_adversarial_extraction.py, nlp/test_injection_guard.py
 #     (real Groq API calls; evaluation scripts, not unit tests — filenames don't match test_*.py
 #     for the evaluate_* ones, and the other two live outside these paths)
-#   - compiler/test/differential_property_test.py (spawns sbt/JVM per test; run explicitly, not
-#     as part of routine `pytest`; matches *_test.py by name but defines no top-level test_/case_
-#     function, so pytest collects 0 tests from it here, harmlessly)
 testpaths = ["compiler/test", "nlp/test", "tests"]
 pythonpath = [".", "nlp/src", "compiler/src", "scripts/verify"]
 markers = ["integration: needs a JVM + sbt (Spark); run with -m integration"]

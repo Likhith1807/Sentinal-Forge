@@ -1,122 +1,51 @@
-> **See [`docs/spec/independent-review-corrections.md`](../docs/spec/independent-review-corrections.md)**
-> — an independent review found the "simulate a field becoming
-> unavailable" control below did the opposite of what it claimed. Fixed;
-> see that file for the reproduction and the fix.
+# Dashboard
 
-# Phase 6 — Analyst Review Dashboard
-
-A real, running web app — FastAPI backend (`backend/main.py`) + vanilla
-HTML/CSS/JS frontend (`frontend/`), no build step. Wires together
-components already built and verified in earlier phases rather than
-reimplementing anything: `nlp/src` (extraction + injection guard),
-`compiler/src` (Stage 3 validation), and the real, already-computed replay
-results from `experiments/results/`.
-
-## Run it
+A FastAPI backend (`backend/`) and a dependency-free, build-step-free frontend (`frontend/`, ES modules) over the service layer in
+`sentinelforge/service/`. Five screens, one workflow.
 
 ```
-pip install -r requirements.txt
-python -m uvicorn dashboard.backend.main:app --port 8000   # from repo root
+python -m uvicorn dashboard.backend.main:app --port 8000        # from the repo root; http://127.0.0.1:8000
 ```
-Then open `http://127.0.0.1:8000`.
 
-## Design choice, stated plainly
+## The workflow it implements
 
-The dashboard does **not** re-run the Scala/Spark compiler (Stage 4)
-synchronously per request — a cold JVM/Spark startup is 10-20+ seconds,
-a bad fit for an interactive HTTP request. Extraction and Stage 3
-validation (pure Python, no JVM) run live; the "real replay results" panel
-serves the actual, already-verified output from Phase 4/5's real Spark
-runs (`experiments/results/*.json`) rather than faking a live re-run.
-That boundary is documented here, not hidden.
+| screen | what happens there |
+|---|---|
+| **Overview** | Where things stand: rules by state, recent runs, paused rules and why, open reviews. Every dataset is labelled *fresh*, *archived* or *demo*. |
+| **Report workspace** | Paste a threat report. Pick an extractor (default: evidence-only — no model). The analysis runs as a background job with a visible state (`queued → extracting → validating → ready / needs review / rejected / failed`). The extracted conditions are shown with the exact quote, and its position, for each value. |
+| **Validation review** | What the report says vs. what the data can support, with an actionable message for each problem. Refine a value (threshold, window) — the server rebuilds and re-validates the rule; the browser never posts a rule. Compile → a rule **version** with a hash. Run it as a fresh background job on a dataset version, and approve or reject: the decision references the server's rule version and the run it was made on. Also the **schema-change impact** panel. |
+| **Investigation** | Pick an alert and follow its reasoning back to the report: the six questions of the evidence record (why, means, supported, fired, executed, uncertain), the matching events, quarantined rows. |
+| **Evaluation** | Archived measurements, each labelled with what it is (regression / frozen holdout / synthetic) and how to reproduce it. Nothing on this screen is computed live. |
 
-## The demo flow it implements
+The same workflow, scripted with real output: `python scripts/demo.py`.
 
-Matches the scripted flow from the project proposal: pick a report →
-see the extracted spec + evidence → see Stage 3's verdict → uncheck a
-field to watch the verdict degrade live → see the real replay results for
-that behaviour → record an analyst decision (approve / refine) → see it
-land in the audit log.
+## Things the interface is deliberately careful about
 
-## Prompt-injection defense (`nlp/src/injection_guard.py`)
+* **No "confidence".** A model's probability is not evidence and is not shown as such. The interface shows *quotes* and *reason codes*.
+* **State is words as well as colour.** Every status carries a text label and an icon; colour is restrained and never the only signal.
+* **Loading, empty, rejected and failed states exist** for every screen, and they say what happened and what to do next.
+* **Results are tied to** a report, a rule version, a dataset version and a run. A result for an older rule version says so.
+* **Fresh / archived / demo** labels stay next to any number that is not from the current session.
+* **Schema changes** (Validation review → Schema-change impact) show which approved rules the change pauses and which it leaves alone, and a paused rule
+  cannot resume until it has been revalidated against the current schema.
 
-The dashboard is the first place in this project where report text
-actually reaches the transformer extractor through a UI a person clicks
-through, so it's also where the injection-guard defense (built this phase)
-gets exercised for real. Selecting the transformer extractor on a flagged
-report blocks the LLM call before it happens and requires an explicit
-"Override and run LLM extractor anyway" click — classical extraction is
-unaffected regardless, since it never calls a model at all. Tested against
-3 real adversarial fixtures in `compiler/test/fixtures/adversarial/`
-(`nlp/test_injection_guard.py`).
+## API (all under `/api`)
 
-An unscripted result from live testing: even with the guard deliberately
-overridden, the real LLM call still produced a clean, legitimate
-extraction rather than being hijacked by the embedded injection text — the
-constrained-vocabulary prompt (see `nlp/src/transformer_extractor.py`) is
-a second layer of defense independent of the guard, and it held.
+`GET /health · /config · /samples · /overview · /evaluation` — `POST /reports · GET /reports/{id}` — `POST /reports/{id}/analyses`
+(202, returns a job) — `GET /analyses/{id} · /analyses/{id}/data-support` — `POST /analyses/{id}/rule` — `POST /rule-versions/{id}/refine ·
+/runs · /decision · /resume` — `GET /rule-versions/{id}/sigma` (only when the rule survives export unchanged) — `GET /jobs/{id} · /runs/{id} ·
+/runs/{id}/alerts · /runs/{id}/alerts/{alertId}/evidence · /runs/{id}/quarantine` — `GET/POST /datasets · POST /datasets/{id}/schema-change ·
+/restore`. Interactive documentation is at `/docs` in local mode.
 
-## Confidence (added to close a real Phase 6 gap; corrected 2026-09-23)
+## Security modes
 
-The evidence/limitations/approve-refine flow existed from the first pass,
-but nothing showed a confidence signal — because nothing in the project
-computed one. Rather than inventing a new score for the UI, this reuses a
-real, free, already-available signal: cross-extractor agreement between
-classical and the live prompted extractor's field sets. When analyzing
-with the transformer extractor, classical also runs automatically as a
-free second opinion (pure regex, no network call), and full disagreement
-surfaces as "extractors disagree — recommend review."
+*Local demo* (default): binds to loopback only, no login, single analyst identity. *Token mode* (`SF_API_TOKENS="name:token[:role],…"`,
+required for any non-loopback bind): constant-time bearer comparison, roles (`analyst` / `viewer`), rate limit, size limits, CSP, generic
+500s. Details and limits: `docs/deployment.md`, `docs/limitations.md`.
 
-**Correction, found while verifying this dashboard's Docker deployability
-(not by a code review):** this section originally claimed Phase 5's n=5
-calibration test (Pearson r=0.919) validated this signal as a real
-confidence proxy. A rewrite of that analysis at n=44 — the corpus's real
-test split — found the claim does **not** hold for classical vs. the
-fine-tuned model: agreement collapses to near-zero regardless of
-correctness, because classical is simply too weak an extractor overall
-(Phase C: field F1 0.051) to be a meaningful second opinion, independent
-of which system it's paired against. This dashboard specifically pairs
-classical with the *prompted* extractor, not the fine-tuned one, and that
-exact pairing hasn't been re-tested at n=44 — doing so would cost 44 more
-live Groq calls against a quota already documented as fragile
-(`docs/phase-c-extraction.md`), a real cost/time tradeoff left for the
-project owner to decide on, not spent here without asking. The panel is
-now labelled and documented as a live diagnostic, not a calibrated
-confidence score — see `experiments/results/README.md`'s calibration
-section and `dashboard/backend/main.py`'s `_jaccard` docstring for the
-full account.
+## Configuration
 
-## Audit log version diffs (added to close a real Phase 6 gap)
+`SF_STATE_DIR` (default `var/`), `SF_ENGINE` (`auto | spark | reference`), `SF_JOB_WORKERS`, `SF_MAX_REPORT_BYTES`, `SF_MAX_UPLOAD_BYTES`,
+`SF_RUN_TIMEOUT`, `SF_SPARK_HEAP`, `SF_API_TOKENS`, `SF_REQUIRE_AUTH`, `SF_CORS_ORIGINS`, `SF_RATE_LIMIT`.
 
-Each decision now carries the spec it was made on, and the backend
-computes a real diff against the previous decision for the same report —
-fields added/removed, threshold changed, time window changed, behaviourId
-changed. Visible directly in the audit log entry, not a separate view.
-The first decision on a report naturally has no diff (nothing to compare
-against); every subsequent one does.
-
-## Bugs found and fixed while testing this in a real browser
-
-Per this project's standing practice, these are documented rather than
-quietly fixed and forgotten — they're genuine defects the actual browser
-testing (not just reading the code) caught:
-
-1. **Double HTML-escaping.** The report text was escaped, then inserted as
-   a DOM text node — which escapes again — so `&` rendered literally as
-   `&amp;`. Text nodes never need manual escaping; fixed by not
-   pre-escaping.
-2. **Extractor-selection desync.** Chrome's form-state restoration can
-   visually re-select a `<select>` option after a page reload without
-   firing a `change` event, leaving a separately-tracked JS variable stale
-   while the UI showed something else — silently submitting the wrong
-   extractor. Fixed by reading the `<select>`'s live DOM value at submit
-   time instead of trusting the tracked variable.
-3. **Misleading override message.** When classical extraction "wasn't
-   blocked," the UI always credited it to an analyst override — even when
-   classical was never blockable in the first place (no LLM call to
-   override). Fixed to distinguish "structurally immune" from "explicitly
-   overridden."
-4. **Override state not persisted.** After overriding an injection block,
-   toggling a field-removal checkbox silently reset the override and
-   re-blocked the report. Fixed by tracking override state per report
-   rather than per button click.
+Tests: `tests/service/` (workflow, concurrency, API, security).

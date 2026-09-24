@@ -1,3 +1,5 @@
+> **Historical document.** Written during an earlier phase of the project and kept as a record. Numbers here were measured on the original 44-report set and the pre-audit pipeline; the current, audited results and limits are in [`docs/evaluation.md`](evaluation.md) and [`docs/limitations.md`](limitations.md).
+
 # Phase E — Scale and Performance (v1)
 
 Real runs against the Phase B/D dataset (`data/generated/scale_1gb`: 36,684,108 events, 1.055 GB

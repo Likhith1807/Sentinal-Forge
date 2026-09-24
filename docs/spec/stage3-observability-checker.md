@@ -1,3 +1,5 @@
+> **Historical document.** Written during an earlier phase of the project and kept as a record. Numbers here were measured on the original 44-report set and the pre-audit pipeline; the current, audited results and limits are in [`docs/evaluation.md`](../evaluation.md) and [`docs/limitations.md`](../limitations.md).
+
 # Stage 3 — Validate the Specification
 
 > **Corrected 2026-09-16** — an independent review found this checker

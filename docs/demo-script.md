@@ -1,64 +1,52 @@
-# Demo video script (2-3 minutes)
+# Demo script (about 3 minutes)
 
-A recording script for the dashboard's real demo flow, matching
-`dashboard/README.md`'s "demo flow it implements" section exactly — every step below is a real
-feature, not staged. Written for whoever records it (see
-[`docs/deployment.md`](deployment.md) for getting a URL to record against, or record against
-`localhost:8000` from `docker compose up --build`).
+Three moments, in this order, because together they show the whole idea: **one detection that is traceable, one refusal that is
+justified, one failure the system predicts before it happens.** Nothing is staged — the demo dataset and the ten reports are
+committed (`data/demo/`), and `python scripts/demo.py` prints the same three moments with real output if you want a terminal version.
 
-**Before recording**: if using a hosted free-tier URL, hit it once ~2 minutes early so the
-container is warm (see the Render/Fly cold-start note in `docs/deployment.md`) — a 30-60s
-loading spinner at the start of a demo undercuts it for no real reason.
+Start the app: `python -m uvicorn dashboard.backend.main:app --port 8000`, open <http://127.0.0.1:8000>.
 
-## Shot list
+## 0:00 — Say what it is (10 s)
 
-**0:00-0:15 — Open on the report picker.**
-Say what this is in one sentence: *"SENTINEL Forge turns a threat report into a Spark detection
-rule, but only when the report actually contains enough evidence to justify one — this is that
-pipeline, live."* Pick `login-brute-force-001` (or any sample under `data/samples/reports/`).
+> "SENTINEL Forge turns a threat-report paragraph into a Spark detection — but only when the *text itself* justifies every number.
+> A language model is allowed to suggest; only a quote from the report is allowed to decide."
 
-**0:15-0:45 — Extraction + evidence.**
-Run classical extraction. Point out the extracted behaviour, threshold, and time window each
-have a highlighted source-text span backing them — say explicitly: *"nothing here is asserted
-without a quote from the report."* Switch to the transformer extractor on the same report to
-show the second system agreeing (or, if it's a report known to disagree — see
-`docs/phase-c-extraction.md` — use that moment to show the confidence panel's
-"low confidence — recommend review" state instead; either is a real, honest beat).
+## 0:10 — Moment 1: a detection (60 s) — *Report workspace*
 
-**0:45-1:15 — Stage 3 validation, then break it live.**
-Show the "supported" verdict against the real log schema. Then uncheck a required field (e.g.
-`account_id`) in the field-availability simulator and show the verdict flip to
-`rejected`/`insufficient_context` with the missing field named. Say: *"this is the system
-refusing to compile a rule it can't actually back with real telemetry — not a crash, a
-structured refusal."*
+1. Choose the sample **"Brute force against the VPN"** (or paste `data/demo/reports/01-brute-force-vpn.md`). Run the analysis.
+   Point at the job states moving: *queued → extracting → validating → ready*.
+2. Point at the two extracted values, **5 or more** failed logins and a **2-minute** window, each highlighted in the report with its quote.
+   Say: *"'14' also appears in the text. It is a narrative number, not a rule, and it was not used."*
+3. *Validation review*: the dataset supports every field. **Compile** → rule version 1, with a hash.
+4. **Run** on the demo dataset (fresh job), then open an alert in *Investigation* and its **evidence record**: why (the quote), what it
+   means, what data it needs, which events fired, how it was executed, and what is *not* known. Say: *"This is an evidence record,
+   not a proof. The quote is checked to exist; whether it means what the rule says is a person's call."*
+5. Back in *Validation review*, **Approve.** Point at the confirmation: it names the rule version and the run.
 
-**1:15-1:45 — Real replay results.**
-Re-check the field, show the panel of real, already-computed replay results for this behaviour
-(17/17 scenarios, from `experiments/results/phase4_replay_check.json`) and, if time allows,
-mention the scale number out loud (10,900/10,900 on the real 36.7M-event dataset —
-`docs/phase-e-scale.md`) to make clear this isn't a toy-scale demo pretending to be more.
+## 1:10 — Moment 2: a justified refusal (50 s)
 
-**1:45-2:15 — Analyst decision + audit trail.**
-Click approve (or refine, changing the threshold first to show the diff feature). Open the audit
-log and point at the version diff on a second decision for the same report — *"every decision is
-tied to the exact spec it was made on, and changes are diffed, not just overwritten."*
+1. Paste the sample **"Impossible travel"**. The analysis ends *rejected*. Point at the reason and the sentence that caused it:
+   the schema has **no location field**, so "impossible travel" cannot be detected from this log — and the system does not pretend.
+2. Paste **"Contradictory windows"**: refused (reason `WINDOW_CONFLICT`), with both windows quoted. Say: *"It will not choose for you."*
+3. Paste **"Ninety seconds"**: compiles to **90 seconds**, quote shown. Say: *"An earlier version of this pipeline turned that into
+   90 minutes. That was one of the audit's silent failures; it now has a regression test."*
 
-**2:15-2:30 — Close.**
-One sentence on what's NOT live here and why (Scala/Spark and the fine-tuned model are
-real-but-precomputed, not re-run per visitor — the design tradeoff `dashboard/README.md`
-documents), then point at the README's Results table for the full reproducible numbers.
+## 2:00 — Moment 3: the data changes under an approved rule (60 s) — *Validation review → Schema-change impact*
 
-## What to explicitly avoid staging
+1. With the brute-force rule (needs `account_id`) and a password-spray rule (needs `source_host`) both approved, apply the schema
+   change **remove `source_host`**.
+2. The impact panel: the spray rule is **paused** with the blocked condition named; the brute-force rule is **unaffected**.
+3. Try to resume the spray rule: refused until it is revalidated. Restore the previous version, revalidate, and only then can a person resume it.
+   Say: *"You find out before production, not after."*
 
-- Don't pre-arrange a "perfect" run if the transformer extractor happens to disagree with
-  classical on the report you picked — that disagreement IS the confidence signal working
-  correctly (see `docs/phase-c-extraction.md`'s Pearson r=0.919 finding); showing it live is more
-  credible than avoiding it.
-- Don't claim the Scala/Spark numbers were just computed — say plainly they're real,
-  already-computed results being served, exactly as `dashboard/README.md` documents.
+## 3:00 — Close (10 s)
 
-## After recording
+Open **Evaluation**. Say: *"Every number here is labelled — regression, frozen holdout, or synthetic — with the command that
+reproduces it, including where it failed."* Stop on the holdout table, which shows the raw model's silent errors next to the
+evidence-checked path's zero.
 
-Upload wherever the résumé/portfolio link expects it (YouTube unlisted, Loom, etc.) and add the
-link to the README's Results section — that edit isn't done automatically here since it depends
-on where you host the video.
+## What to leave in, not smooth over
+
+* If a report goes to *needs review*, keep it in the recording. That is the design working.
+* Do not describe the benchmarks as distributed or the data as real. Both are stated on the Evaluation screen and in `docs/limitations.md`.
+* Do not say a human reviewed the holdout. One annotator and one blind LLM reviewer did; a human second reviewer is still open.

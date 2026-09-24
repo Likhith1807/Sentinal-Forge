@@ -1,3 +1,5 @@
+> **Historical document.** Written during an earlier phase of the project and kept as a record. Numbers here were measured on the original 44-report set and the pre-audit pipeline; the current, audited results and limits are in [`docs/evaluation.md`](../evaluation.md) and [`docs/limitations.md`](../limitations.md).
+
 # Compiled Spec Format (v1) — Stage 4's actual input
 
 See [`detection-semantics.md`](detection-semantics.md) for the precise,

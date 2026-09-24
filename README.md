@@ -2,132 +2,112 @@
 
 ![CI](https://github.com/Likhith1807/Sentinal-Forge/actions/workflows/ci.yml/badge.svg)
 
-Evidence-grounded threat-report-to-detection compiler. Takes a permitted threat report, extracts
-the attacker behaviour it describes, checks whether the documented log schema can actually observe
-it, and — only if it can — emits a typed Scala/Spark detection rule. Every claim below is measured
-and reproducible, not asserted; the commands to reproduce each one are next to it.
+**A threat-report-to-detection compiler that is built to say "I don't know".**
+Paste a paragraph of threat-report prose; get a Spark detection rule in which every number, unit and field is tied to an exact quote from the
+report — or a refusal that names the sentence that caused it. A language model may *propose*; only evidence in the text may *authorise*.
 
-## Results
+```
+ "…alert when an account has 5 or more failed logins inside a 2-minute window, then a successful login…"
+                                        │
+        ┌───────────────────────────────┼─────────────────────────────────────┐
+        ▼                               ▼                                     ▼
+  count ≥ 5  (quote @ 457–466)   window 2 min = 120 s (quote @ 490–498)   "14" elsewhere: narrative, not used
+        └───────────────────────────────┼─────────────────────────────────────┘
+                                        ▼
+        compiled rule v1 · hash 9f67530e… · run on a dataset version · alerts with evidence · approved by an analyst
+```
 
-| Claim | Result | How to reproduce |
+## See it in 3 minutes
+
+```
+python scripts/demo.py                                   # one detection · one justified refusal · one schema-change failure (no JVM needed)
+python -m uvicorn dashboard.backend.main:app --port 8000 # the five-screen workflow: http://127.0.0.1:8000
+```
+
+[`docs/demo-script.md`](docs/demo-script.md) is the recording script; [`docs/case-study.md`](docs/case-study.md) is the story of how the design was
+forced by an audit of the first version.
+
+## Why it is built this way
+
+An audit of my own first pipeline found that it compiled only **27 of 40** supported reports correctly — and, worse, produced **7 silent failures**:
+"90 seconds" compiled to a 90-*minute* window, an ambiguous count was read as a different behaviour, and a port-scan report was accepted as a
+supported one. Each would have shipped a wrong detection with a green tick. So the language model was demoted from decision-maker to
+proposer, and everything else was built to make failure visible:
+
+| principle | mechanism |
+|---|---|
+| Nothing is asserted without a quote | a deterministic condition finder records every candidate value with its offsets; `reconcile()` returns *accepted / rejected / needs review* with reason codes |
+| A model can never make an unsupported value acceptable | "90 seconds" cannot become 90 minutes: the text has to say "minutes" |
+| Refuse rather than guess | contradictions, hedges ("possibly 15"), corrections, ranges, ambiguous count semantics and qualifiers no recipe can evaluate all go to review or rejection |
+| "Correct" is defined and checked twice | `docs/spec/detection-semantics.md` implemented in Spark **and** an independent Python reference engine, compared on generated scenarios; a mutation check confirms the comparison catches 7 of 7 planted bugs |
+| The data can change | dataset versions + schema-change impact analysis: remove `source_host` and the spray rule is paused, the brute-force rule keeps running |
+| Evaluate on data nobody tuned against | SHA-256-frozen, git-tagged holdouts, one run, failures published |
+
+## Results (what was measured; every line has a command and a file)
+
+| claim | result | where |
 |---|---|---|
-| The compiler is correct at real scale | **10,900 / 10,900** labelled incidents matched exactly, on a real **36.7M-event** dataset (1.055 GB Parquet) | `sbt "runMain sentinelforge.compiler.GeneratedDataCheck --dataset data/generated/scale_1gb"` |
-| The compiler agrees with an independent, non-Spark reference implementation | **1,500 / 1,500** random Hypothesis-generated scenarios agree, across all 5 behaviours | `python compiler/test/differential_property_test.py` |
-| A fine-tuned extractor beats a prompted LLM and a classical baseline | Behaviour accuracy: **fine-tuned 0.955**, hybrid 0.975, prompted (`gpt-oss-120b`) 0.909, classical 0.205 — real 4-system comparison, n=44, bootstrap 95% CIs | `python nlp/src/evaluate_corpus.py` — see [`docs/phase-c-extraction.md`](docs/phase-c-extraction.md) |
-| Streaming detection survives a real restart | **PASS** — kill a live Structured Streaming query, restart it against the same checkpoint, get the exact same result as an uninterrupted batch run, no duplicates | `sbt "runMain sentinelforge.compiler.StreamingRecoveryCheck"` |
-| Exact vs. approximate counting matters at real scale | The hand-written baseline's `approx_count_distinct` misclassifies **6 of 2,000** incidents (0.3%) — invisible at 48-event scale, real at 36.7M | [`docs/phase-e-scale.md`](docs/phase-e-scale.md) |
-| The whole test suite is real and fast | **75 pytest cases + 7 ScalaTest cases**, roughly 20-65s total on one machine (real observed variance, not a single-run number), no API key or GPU required | `pytest -v && sbt test` |
+| The audit's silent failures are closed | **7 → 0** silent failures on the 44-report regression split; 27/40 → 38/40 correct; every defect has a regression test | [`docs/evaluation.md` §1](docs/evaluation.md) · `tests/core/test_audit_regressions.py` |
+| Frozen holdout v1 (112 reports, 16 real CISA/FBI passages) | raw fine-tuned model: **32% silently wrong**, accepts 56% of must-refuse reports; with the evidence check: **0% silent errors** (at the cost of refusing many) | [`docs/evaluation.md` §2](docs/evaluation.md) |
+| Frozen holdout v2 (71 fresh reports, written after the fixes) | evidence-only default: **63%** of supported reports compiled correctly (v1: 44%), **0 silent errors**, 5 of 41 must-refuse reports wrongly accepted — published, then fixed with tests, and marked no-longer-held-out | [`docs/evaluation.md` §3](docs/evaluation.md) · `experiments/results/holdout_v2/POST_HOC.md` |
+| Correct at 36.7M events | **10,900 / 10,900** labelled incidents matched exactly (0 unexpected, 0 missing) on a generated 1 GB Parquet dataset | `experiments/results/phaseB_generated_dataset_check.json` |
+| The test of the tests | differential harness detects **7 / 7** planted engine defects | `experiments/results/differential_mutation_check.json` |
+| Batch = streaming under a lateness policy | 8 regimes, 192 scenarios, 0 disagreements; hard-kill and restart at 3 points loses and duplicates nothing | `streaming_agreement.json`, `streaming_recovery.json` |
+| Performance | measured on one laptop with hardware, heap, dataset shape, sample sizes and failure rate stated; **no distributed claim** | [`docs/benchmarks.md`](docs/benchmarks.md) |
+| Test suite | 427 pytest cases (+ 7 Spark integration tests, ScalaTest), no API key or GPU required | `pytest` · `pytest -m integration` · `sbt test` |
 
-**What these numbers don't claim**: the background data is synthetic (real LANL enterprise data is
-requested but not yet received — [`docs/data-sources.md`](docs/data-sources.md)); the report corpus
-is synthetic too ([`docs/corpus.md`](docs/corpus.md)); throughput is measured on one machine, not a
-cluster ([`docs/phase-e-scale.md`](docs/phase-e-scale.md)). Every one of these limits is stated in
-the doc it belongs to, not just here.
+**What these do not show** — in full in [`docs/limitations.md`](docs/limitations.md): the data is synthetic (a real-data request to LANL is drafted, not answered);
+recall on unfamiliar wording is modest (63% / 44%); the holdouts are small and labelled by one person plus, for v1, a blind LLM reviewer (a human
+second reviewer is still open); the prompted-LLM comparison is *partial* (provider quota) and labelled so; no practitioner has reviewed the tool;
+everything was measured on one machine.
 
-## How it works
+## The workflow (five screens)
 
-```
- threat report (.md)
-        |
-        v
- [1. Understand]   NLP extraction — classical regex, a prompted LLM, and a fine-tuned
-                    transformer (nlp/src/) — produce a typed behaviour spec with
-                    character-offset evidence for every field, never asserted without a quote.
-        |
-        v
- [2. Validate]      Stage 3 (compiler/src/observability_checker.py) checks the spec against
-                    the real, documented log schema. A behaviour needing a field the schema
-                    can't provide is REJECTED here, not silently compiled.
-        |
-        v
- [3. Compile]       spec_bridge.py fills one of 3 closed recipe shapes (SequenceThenTrigger,
-                    DistinctCountWithinWindow, PolicyCompare) with the extracted numbers.
-                    RuleCompiler.scala emits real Spark SQL — structurally immune to
-                    hardcoding or hallucinated enum literals by construction.
-        |
-        v
- [4. Execute]       Runs on partitioned Parquet (batch) or Structured Streaming (the one
-                    recipe Spark supports incrementally — docs/spec/stage4-streaming-and-sigma.md).
-        |
-        v
- [5. Validate]      Replayed against independently-labelled events. Every alert traces back
-                    to a real event id and the report evidence that justified it.
-        |
-        v
- [6. Review]        Analyst dashboard: approve / refine, with the evidence and Stage 3
-                    verdict shown live (dashboard/README.md).
-```
+**Overview → Report workspace → Validation review → Investigation → Evaluation.** Paste a report; the analysis runs as a background job with a visible
+state; inspect each extracted condition beside its highlighted quote; check it against the *dataset's* schema; compile a versioned rule; run it on a fresh
+job; inspect matching events and each alert's six-question evidence record (*why, means, supported, fired, executed, uncertain*); approve **that rule
+version**. Results are always tied to report + rule version + dataset version + run and labelled *fresh / archived / demo*. Details: [`dashboard/README.md`](dashboard/README.md).
 
-## Quickstart
+## Architecture in one glance
 
 ```
-python scripts/demo.py                          # or: make demo
-# Fast, offline, no API key, no JVM — extracts a real report, validates it, and
-# prints the real, already-computed results from the checks above.
-
-pytest -v && sbt test                           # or: make test
-# 75 + 7 real tests, roughly 20-65s combined (varies with machine load), no external dependencies.
-
-docker compose up --build                       # or: make docker-up
-# Live analyst dashboard at http://localhost:8000 (GROQ_API_KEY optional — only
-# needed for the live prompted-extraction panel; see .env.example).
+report ─▶ conditions.py (finder, quotes+offsets) ─▶ reconcile.py (accepted | needs_review | rejected)
+      ─▶ validation.py + schema_impact ─▶ compile.py (typed spec, rule hash)
+      ─▶ RuleCompiler.scala / RunRule (batch)   ·   StreamingEngine.scala (lateness, dedupe, expiry, policy versions)   ·   refengine.py (reference)
+      ─▶ service (SQLite WAL, job states, rule versions, dataset versions, evidence) ─▶ FastAPI + UI
 ```
 
-To put the dashboard behind a public URL (Render or Fly.io, both config files included) and
-record a demo walkthrough, see [`docs/deployment.md`](docs/deployment.md) and
-[`docs/demo-script.md`](docs/demo-script.md).
+Full description: [`docs/architecture.md`](docs/architecture.md). Detection semantics: [`docs/spec/detection-semantics.md`](docs/spec/detection-semantics.md).
 
-## Repository layout
+## Run it
 
-- `nlp/` — extraction: classical/prompted/fine-tuned extractors, the training pipeline, and their
-  real comparison ([`docs/phase-c-extraction.md`](docs/phase-c-extraction.md))
-- `compiler/` — the typed IR, Stage 3 validation, `spec_bridge.py`, and the Scala/Spark compiler
-  (`compiler/src/main/scala`) with its ScalaTest suite (`compiler/src/test/scala`)
-- `scripts/datagen/` — the labelled, scaled synthetic dataset generator and LANL mapper
-  ([`docs/data-sources.md`](docs/data-sources.md))
-- `scripts/corpus/` — the 201-report synthetic corpus generator, with a guarded LLM-rewrite tier
-  and a leakage gate ([`docs/corpus.md`](docs/corpus.md))
-- `dashboard/` — the analyst review web app (FastAPI + vanilla JS, no build step)
-- `experiments/` — baselines (manual rules, direct-LLM, schema-constrained) and every measured
-  result, as JSON, under `experiments/results/`
-- `docs/` — design specs, the annotation schema, and every phase's real results and limitations
-- `tests/`, `compiler/test/`, `nlp/test/` — the test suite (`pytest`/`sbt test` collect all of it —
-  see [Testing](#testing) below)
+```
+pip install -r requirements.txt                     # pinned; no GPU, no API key
+python scripts/demo.py                              # the three moments, in a terminal
+python -m uvicorn dashboard.backend.main:app        # the UI (loopback only, no login, in local-demo mode)
+pytest                                              # 427 tests, ~35 s
+pytest -m integration                               # Spark agreement (needs JDK 8–17 and sbt)
+docker compose up --build                           # two-target image (slim: reference engine; full: Spark)
+```
 
-## Testing
+Reproduce the evaluation: `python scripts/holdout/verify_frozen.py` and `python experiments/holdout/run_eval.py --skip-llm`
+(add `--holdout holdout_v2` for v2). Reproduce the benchmarks: [`docs/benchmarks.md`](docs/benchmarks.md). Deployment and security modes: [`docs/deployment.md`](docs/deployment.md).
 
-`pytest -v` (75 cases, 21-64s observed) and `sbt test` (7 cases, ~28s observed) each run in well under 2 minutes, need no API key,
-no GPU, and no generated dataset. `pyproject.toml` scopes `pytest` to the real unit tests and
-excludes real-API evaluation scripts (`evaluate_*.py`, the differential property test, adversarial
-extraction fixtures) from routine runs — those are separately-run evaluations with their own real
-results already committed under `experiments/results/`, not something a CI run re-executes on
-every push. CI (`.github/workflows/ci.yml`) runs both suites on every push — see the badge above.
+## Repository map
 
-The larger, real-scale checks (`GeneratedDataCheck` on 36.7M events, `ScaleBenchmarkCheck`,
-`differential_property_test.py` at full scenario count) are run manually, documented with their
-real results in `docs/`, and are too heavy for routine CI — see
-[`docs/spec/stage4-scala-toolchain.md`](docs/spec/stage4-scala-toolchain.md) for how to run them
-yourself.
-
-## Honest limitations, by document
-
-- **Data is synthetic.** [`docs/data-sources.md`](docs/data-sources.md): the background traffic is
-  generated, not real enterprise data (a request for real LANL data is drafted, not sent/approved).
-- **The report corpus is synthetic.** [`docs/corpus.md`](docs/corpus.md): no independent human
-  annotation pass has confirmed the gold yet; the sample sheet and scorer are built.
-- **Compiler semantics have documented, real edge cases**, fixed where found:
-  [`docs/spec/detection-semantics.md`](docs/spec/detection-semantics.md).
-- **An independent review found real bugs across two rounds**, all reproduced and fixed with
-  evidence: [`docs/spec/independent-review-corrections.md`](docs/spec/independent-review-corrections.md).
-- **Scale is measured on one machine**, not a cluster; a 2-point curve, not a smooth one:
-  [`docs/phase-e-scale.md`](docs/phase-e-scale.md).
-- **The prompted-LLM extractor doesn't abstain reliably** (0.0 recall on out-of-scope reports, at
-  two model sizes tested) — a real finding, not smoothed over:
-  [`docs/phase-c-extraction.md`](docs/phase-c-extraction.md).
+| path | contents |
+|---|---|
+| `sentinelforge/` | behaviour registry, condition finder, reconcile, validation, compile, reference engine, Sigma export, engine launchers |
+| `sentinelforge/service/` | store, workflow, jobs, datasets, schema impact, evidence records, extractors |
+| `compiler/` | Scala: rule compiler, batch and streaming engines, checks, benchmark harness (`sbt test`) |
+| `dashboard/` | FastAPI backend and a build-step-free five-screen frontend |
+| `nlp/` | extractors (classical, fine-tuned RoBERTa, prompted LLM) and the training pipeline |
+| `data/` | demo dataset and reports, the synthetic corpus, the frozen holdouts (`holdout/`, `holdout_v2/`) with hashes and reviews |
+| `experiments/` | audit, holdout evaluation, and every archived result as JSON |
+| `scripts/` | verification (differential, mutation, streaming), benchmarks, data generation, packaging |
+| `docs/` | architecture, evaluation, limitations, benchmarks, case study, specs (some phase-era documents are marked *Historical*) |
 
 ## Scope
 
-Five observable authentication behaviours, one documented log schema, three closed detection
-recipes. Only permitted threat reports and authorised lab telemetry are used. Generated detections
-require human approval before any operational use — the dashboard's approve/refine flow exists
-specifically for that gate, not as a demo flourish.
+Five observable authentication behaviours, one documented log schema, three closed recipes. Only permitted reports and authorised lab telemetry
+are used. A generated detection is a *draft* until a person approves it — the approval flow is the point of the product, not a flourish.
