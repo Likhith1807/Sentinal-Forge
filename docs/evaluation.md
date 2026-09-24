@@ -115,7 +115,7 @@ alerts, most of them for rules nobody asked for.
 
 | check | result | file / command |
 |---|---|---|
-| Spark = independent reference engine (Hypothesis, all 5 behaviours) | agreement on generated scenarios; 0 disagreements | `tests/integration/test_spark_agreement.py`, `scripts/verify/differential.py` |
+| Spark = independent reference engine (generated scenarios, all 5 behaviours) | **750 scenarios (150 per behaviour, seed 21), 0 mismatches**; CI re-runs 40 per behaviour on every push | `experiments/results/differential_large.json`, `scripts/verify/differential.py`, `tests/integration/test_spark_agreement.py` |
 | The differential harness can see defects | **7 of 7** planted engine defects detected (boundary, off-by-one, dedupe, timestamp, policy, …) | `experiments/results/differential_mutation_check.json`, `scripts/verify/mutation_check.py` |
 | Batch = streaming under the lateness policy | 8 regimes (all five behaviours; the three windowed ones under both a generous and a tight 120 s lateness), 192 scenario runs, 0 disagreements; events the tight policy reports `late` are excluded exactly from the comparison | `streaming_agreement.json`, `scripts/verify/streaming_agreement.py` |
 | Hard kill and restart | 3 of 3 kill points recover with no lost and no duplicated alert; a collector retry adds only `duplicate` records | `streaming_recovery.json`, `scripts/verify/streaming_recovery.py` |

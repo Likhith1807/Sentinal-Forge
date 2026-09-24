@@ -51,10 +51,11 @@ proposer, and everything else was built to make failure visible:
 | Frozen holdout v1 (112 reports, 16 real CISA/FBI passages) | raw fine-tuned model: **32% silently wrong**, accepts 56% of must-refuse reports; with the evidence check: **0% silent errors** (at the cost of refusing many) | [`docs/evaluation.md` §2](docs/evaluation.md) |
 | Frozen holdout v2 (71 fresh reports, written after the fixes) | evidence-only default: **63%** of supported reports compiled correctly (v1: 44%), **0 silent errors**, 5 of 41 must-refuse reports wrongly accepted — published, then fixed with tests, and marked no-longer-held-out | [`docs/evaluation.md` §3](docs/evaluation.md) · `experiments/results/holdout_v2/POST_HOC.md` |
 | Correct at 36.7M events | **10,900 / 10,900** labelled incidents matched exactly (0 unexpected, 0 missing) on a generated 1 GB Parquet dataset | `experiments/results/phaseB_generated_dataset_check.json` |
+| Spark = independent reference engine | **750 generated scenarios, 0 mismatches** (all five behaviours) | `experiments/results/differential_large.json` |
 | The test of the tests | differential harness detects **7 / 7** planted engine defects | `experiments/results/differential_mutation_check.json` |
 | Batch = streaming under a lateness policy | 8 regimes, 192 scenarios, 0 disagreements; hard-kill and restart at 3 points loses and duplicates nothing | `streaming_agreement.json`, `streaming_recovery.json` |
 | Performance | measured on one laptop with hardware, heap, dataset shape, sample sizes and failure rate stated; **no distributed claim** | [`docs/benchmarks.md`](docs/benchmarks.md) |
-| Test suite | 427 pytest cases (+ 7 Spark integration tests, ScalaTest), no API key or GPU required | `pytest` · `pytest -m integration` · `sbt test` |
+| Test suite | 432 pytest cases (+ 7 Spark integration tests and 14 ScalaTest cases), no API key or GPU required | `pytest` · `pytest -m integration` · `sbt test` |
 
 **What these do not show** — in full in [`docs/limitations.md`](docs/limitations.md): the data is synthetic (a real-data request to LANL is drafted, not answered);
 recall on unfamiliar wording is modest (63% / 44%); the holdouts are small and labelled by one person plus, for v1, a blind LLM reviewer (a human
@@ -85,7 +86,7 @@ Full description: [`docs/architecture.md`](docs/architecture.md). Detection sema
 pip install -r requirements.txt                     # pinned; no GPU, no API key
 python scripts/demo.py                              # the three moments, in a terminal
 python -m uvicorn dashboard.backend.main:app        # the UI (loopback only, no login, in local-demo mode)
-pytest                                              # 427 tests, ~35 s
+pytest                                              # 432 tests, ~1 min
 pytest -m integration                               # Spark agreement (needs JDK 8–17 and sbt)
 docker compose up --build                           # two-target image (slim: reference engine; full: Spark)
 ```

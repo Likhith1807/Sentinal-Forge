@@ -1,0 +1,149 @@
+{
+  "seed": 21,
+  "casesPerBehaviour": 150,
+  "totalScenarios": 750,
+  "mismatched": 0,
+  "engineFailures": 0,
+  "seconds": 377.8,
+  "results": [
+    {
+      "behaviourId": "repeated-failed-login-then-success",
+      "configs": [
+        {
+          "window": 30,
+          "threshold": 3,
+          "scenarios": 50,
+          "events": 511,
+          "alerts": 43,
+          "mismatches": 0,
+          "seconds": 40.6
+        },
+        {
+          "window": 10,
+          "threshold": 2,
+          "scenarios": 50,
+          "events": 431,
+          "alerts": 57,
+          "mismatches": 0,
+          "seconds": 39.8
+        },
+        {
+          "window": 300,
+          "threshold": 2,
+          "scenarios": 50,
+          "events": 477,
+          "alerts": 66,
+          "mismatches": 0,
+          "seconds": 39.3
+        }
+      ],
+      "scenarios": 150,
+      "mismatchedScenarios": 0,
+      "problems": []
+    },
+    {
+      "behaviourId": "password-spray-across-accounts",
+      "configs": [
+        {
+          "window": 1,
+          "threshold": 2,
+          "scenarios": 50,
+          "events": 537,
+          "alerts": 46,
+          "mismatches": 0,
+          "seconds": 39.7
+        },
+        {
+          "window": 60,
+          "threshold": 3,
+          "scenarios": 50,
+          "events": 504,
+          "alerts": 35,
+          "mismatches": 0,
+          "seconds": 41.8
+        },
+        {
+          "window": 5,
+          "threshold": 2,
+          "scenarios": 50,
+          "events": 507,
+          "alerts": 46,
+          "mismatches": 0,
+          "seconds": 39.0
+        }
+      ],
+      "scenarios": 150,
+      "mismatchedScenarios": 0,
+      "problems": []
+    },
+    {
+      "behaviourId": "multi-host-authentication",
+      "configs": [
+        {
+          "window": 60,
+          "threshold": 2,
+          "scenarios": 50,
+          "events": 495,
+          "alerts": 43,
+          "mismatches": 0,
+          "seconds": 38.3
+        },
+        {
+          "window": 10,
+          "threshold": 3,
+          "scenarios": 50,
+          "events": 496,
+          "alerts": 20,
+          "mismatches": 0,
+          "seconds": 38.7
+        },
+        {
+          "window": 2,
+          "threshold": 3,
+          "scenarios": 50,
+          "events": 450,
+          "alerts": 30,
+          "mismatches": 0,
+          "seconds": 23.4
+        }
+      ],
+      "scenarios": 150,
+      "mismatchedScenarios": 0,
+      "problems": []
+    },
+    {
+      "behaviourId": "auth-method-policy-violation",
+      "configs": [
+        {
+          "window": 0,
+          "threshold": 0,
+          "scenarios": 150,
+          "events": 696,
+          "alerts": 316,
+          "mismatches": 0,
+          "seconds": 18.5
+        }
+      ],
+      "scenarios": 150,
+      "mismatchedScenarios": 0,
+      "problems": []
+    },
+    {
+      "behaviourId": "mfa-missing-on-required-account",
+      "configs": [
+        {
+          "window": 0,
+          "threshold": 0,
+          "scenarios": 150,
+          "events": 730,
+          "alerts": 282,
+          "mismatches": 0,
+          "seconds": 18.4
+        }
+      ],
+      "scenarios": 150,
+      "mismatchedScenarios": 0,
+      "problems": []
+    }
+  ]
+}
