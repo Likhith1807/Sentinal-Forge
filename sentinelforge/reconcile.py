@@ -18,6 +18,7 @@ must not authorise compilation".
 """
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -29,7 +30,7 @@ CONTRACT_VERSION = "2"
 ACCEPTED, REJECTED, NEEDS_REVIEW = "accepted", "rejected", "needs_review"
 
 _STRONG_WINDOW_CUES = {"within", "inside", "window", "preceding", "previous", "prior", "last", "past", "rolling",
-                       "sliding", "hyphenated", "in", "over", "during"}
+                       "sliding", "hyphenated", "in", "over", "during", "under", "label", "abbreviated"}
 _COUNT_KIND = {  # recipe -> the event type the counted thing must be
     "repeated-failed-login-then-success": "login_failure",
     "password-spray-across-accounts": "login_failure",
@@ -99,15 +100,31 @@ def normalize_proposal(extraction: dict | None) -> dict:
 
 # ------------------------------------------------------------------------------------- selection
 
-def _select_count(rep: ConditionReport, beh: B.Behaviour, reasons: list[Reason]) -> CountCandidate | None:
+_REVISION = re.compile(r"\b(?:actual(?:ly)?|agreed|on further review|instead|revised|updated|corrected?|correction|supersed\w+|"
+                       r"should (?:be|have been)|rather than|draft value|was a draft|no longer|not \d+)\b", re.IGNORECASE)
+
+
+def _revisions(text: str, candidates, chosen_value) -> list:
+    """Numbers stated in a sentence that revises / corrects something ("the actual threshold is 10, not 5"), whether or not
+    that sentence looks like a rule. A correction that disagrees with the value we would compile is an unresolved conflict."""
+    out = []
+    for c in candidates:
+        if c.value != chosen_value and _REVISION.search(text[c.evidence.sentenceStart:c.evidence.sentenceEnd]):
+            out.append(c)
+    return out
+
+
+def _select_count(rep: ConditionReport, beh: B.Behaviour, reasons: list[Reason], text: str = "") -> CountCandidate | None:
     want_kind = _COUNT_KIND.get(beh.id)
     rule = [c for c in rep.counts if c.ruleSentence]
-    ok, wrong_sem, unknown, upper, unresolved = [], [], [], [], []
+    ok, wrong_sem, unknown, upper, unresolved, invalid, unspecified = [], [], [], [], [], [], []
     for c in rule:
-        if c.comparator == "lt":
+        if c.comparator == "invalid":
+            invalid.append(c)
+        elif c.comparator == "lt":
             upper.append(c)
         elif c.comparator == "unspecified":
-            continue
+            unspecified.append(c)
         elif c.unknownObject:
             unknown.append(c)
         elif c.semantics is None:
@@ -119,6 +136,9 @@ def _select_count(rep: ConditionReport, beh: B.Behaviour, reasons: list[Reason])
         else:
             ok.append(c)
 
+    if invalid:
+        reasons.append(Reason("COUNT_INVALID_NUMBER", "reject",
+                              "The passage gives a negative number where a minimum count belongs.", [c.evidence for c in invalid]))
     if upper:
         reasons.append(Reason("COUNT_UPPER_BOUND", "reject",
                               "The passage states an upper bound (fewer than / at most N); the rules only fire when a count reaches a minimum.",
@@ -140,11 +160,20 @@ def _select_count(rep: ConditionReport, beh: B.Behaviour, reasons: list[Reason])
                               f"a rule cannot honour both.", [c.evidence for c in ok]))
         return None
     if not ok:
-        if not (upper or unknown or wrong_sem):
+        if unspecified and not (upper or unknown or wrong_sem or invalid):
+            reasons.append(Reason("COUNT_COMPARATOR_UNSPECIFIED", "review",
+                                  "A number is given for what to count but not how it is compared (at least? exactly?); nothing was assumed.",
+                                  [c.evidence for c in unspecified]))
+        elif not (upper or unknown or wrong_sem or invalid):
             reasons.append(Reason("COUNT_MISSING", "review",
                                   "No minimum count with a recognisable counted object was found in a sentence that states the rule.",
                                   [c.evidence for c in unresolved]))
         return None
+    corrections = _revisions(text, [c for c in rep.counts if c.comparator in ("unspecified", "gte") and not c.unknownObject and c.semantics in (None, beh.count_semantics)], ok[0].value)
+    if corrections:
+        reasons.append(Reason("COUNT_REVISED_IN_TEXT", "review",
+                              "The passage revises or corrects a number (\"" + corrections[0].evidence.quote + "\" in a sentence that "
+                              "corrects something); it cannot be assumed which value is current.", [ok[0].evidence, corrections[0].evidence]))
     # an unresolved candidate with a different value is a second, unexplained number: a person should look
     stray = [c for c in unresolved if c.value not in values]
     if stray:
@@ -154,7 +183,7 @@ def _select_count(rep: ConditionReport, beh: B.Behaviour, reasons: list[Reason])
     return ok[0]
 
 
-def _select_window(rep: ConditionReport, reasons: list[Reason], claimed: dict | None) -> tuple[WindowCandidate | None, bool]:
+def _select_window(rep: ConditionReport, reasons: list[Reason], claimed: dict | None, text: str = "") -> tuple[WindowCandidate | None, bool]:
     """-> (window, found_outside_rule_sentence)"""
     rule = [w for w in rep.windows if w.ruleSentence and not w.approximate and w.cue]
     secs = {w.seconds for w in rule}
@@ -165,6 +194,20 @@ def _select_window(rep: ConditionReport, reasons: list[Reason], claimed: dict | 
                               [w.evidence for w in rule]))
         return None, False
     if rule:
+        # a second, UNCUED duration in a sentence that states the rule ("within 90 minutes or maybe 90 seconds",
+        # "within 2 minutes (that is, 20 minutes)") is an unresolved alternative, never something to ignore
+        chosen = rule[0].seconds
+        revised = [w for w in rep.windows if not w.approximate and w.seconds != chosen and _REVISION.search(text[w.evidence.sentenceStart:w.evidence.sentenceEnd])]
+        if revised:
+            reasons.append(Reason("WINDOW_REVISED_IN_TEXT", "review",
+                                  "The passage revises or corrects a duration (\"" + revised[0].evidence.quote + "\"); it cannot be assumed which is current.",
+                                  [rule[0].evidence, revised[0].evidence]))
+        alt = [w for w in rep.windows if w.ruleSentence and not w.approximate and not w.cue and w.seconds != chosen]
+        if alt:
+            reasons.append(Reason("WINDOW_UNRESOLVED_ALTERNATIVE", "review",
+                                  "Another duration appears in the rule's own sentence without saying what it is "
+                                  f"(\"{alt[0].evidence.quote}\" besides \"{rule[0].evidence.quote}\"); nothing was assumed.",
+                                  [rule[0].evidence, alt[0].evidence]))
         return rule[0], False
     loose = [w for w in rep.windows if not w.approximate and w.cue in _STRONG_WINDOW_CUES]
     if len({w.seconds for w in loose}) == 1:
@@ -269,7 +312,7 @@ def reconcile(report_text: str, extraction: dict | None = None) -> Reconciliatio
     count = window = None
     outside_rule_sentence = False
     if beh.windowed:
-        count = _select_count(rep, beh, reasons)
+        count = _select_count(rep, beh, reasons, report_text)
         claim_thr = proposal.get("threshold")
         if count is not None and claim_thr:
             if claim_thr.get("conflict"):
@@ -283,7 +326,7 @@ def reconcile(report_text: str, extraction: dict | None = None) -> Reconciliatio
                 reasons.append(Reason("COUNT_MODEL_DISAGREES", "review",
                                       f"The extractor read the threshold as {claim_thr['value']}; the passage says {count.value} "
                                       f"(\"{count.evidence.quote}\").", [count.evidence]))
-        window, outside_rule_sentence = _select_window(rep, reasons, proposal.get("timeWindow"))
+        window, outside_rule_sentence = _select_window(rep, reasons, proposal.get("timeWindow"), report_text)
         claim_w = proposal.get("timeWindow")
         if window is not None and claim_w:
             amt, unit = _unit_word(claim_w)

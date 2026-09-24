@@ -32,7 +32,7 @@ _UNIT_RE = r"(?:seconds?|secs?|minutes?|mins?|hours?|hrs?|days?)"
 
 def canonical_unit(word: str) -> str:
     w = word.lower()
-    if w.startswith("sec"):
+    if w == "s" or w.startswith("sec"):
         return "seconds"
     if w.startswith("min"):
         return "minutes"
@@ -153,9 +153,14 @@ _N = NUMBER
 _LEAD = r"(?<![\w.])"
 _COUNT_FORMS = [
     ("plus", re.compile(rf"{_LEAD}(?P<n>{_N})\s*\+(?!\w)")),
+    ("at-least", re.compile(rf"(?:>=|≥|=>)\s*(?P<n>{_N})\b")),
+    ("at-least", re.compile(rf"\b(?:(?:reach|meet)(?:s|es|ed|ing)?\s+or\s+exceed(?:s|ed|ing)?|(?:equal\s+to|equals)\s+or\s+(?:greater|more)\s+than|"
+                            rf"(?:greater|more)\s+than\s+or\s+equal\s+to)\s+(?P<n>{_N})\b")),
+    ("at-least", re.compile(rf"\b(?:fire|alert|trigger|escalate|page|raise)(?:s|d)?\s+(?:at|on|once\s+(?:it\s+)?reaches|when\s+(?:it\s+)?reaches|when\s+the\s+count\s+(?:reaches|hits))\s+(?P<n>{_N})\b")),
+    ("times-x", re.compile(rf"{_LEAD}(?P<n>{_N})\s?[x×](?![a-z\d])")),
     ("or-more", re.compile(rf"{_LEAD}(?P<n>{_N})\s+(?:or|and)\s+(?:more|greater|above|higher|over)\b")),
     ("at-least", re.compile(rf"\bat\s+least\s+(?P<n>{_N})\b")),
-    ("at-least", re.compile(rf"\b(?:a\s+)?minimum\s+of\s+(?P<n>{_N})\b")),
+    ("at-least", re.compile(rf"\b(?:a\s+)?minimum\s+(?:of\s+)?(?P<n>{_N})\b")),
     ("no-fewer", re.compile(rf"\bno\s+(?:fewer|less)\s+than\s+(?P<n>{_N})\b")),
     ("more-than", re.compile(rf"\b(?:more|greater)\s+than\s+(?P<n>{_N})\b")),
     ("more-than", re.compile(rf"\b(?:over|exceed(?:s|ed|ing)?)\s+(?P<n>{_N})\b")),
@@ -163,10 +168,14 @@ _COUNT_FORMS = [
     ("upper-bound", re.compile(rf"\b(?:at\s+most|no\s+more\s+than|up\s+to)\s+(?P<n>{_N})\b")),
     ("bare", re.compile(rf"{_LEAD}(?P<n>{_N})(?=\s+(?:distinct|different|separate|unique|failed|failures?|failing))")),
 ]
+_LABELLED = re.compile(
+    rf"(?m)^[\s|*\-]*(?P<label>[a-z][a-z _\-]{{0,40}}?(?:threshold|count|accounts|users|usernames|hosts|machines|workstations|failures|attempts))"
+    rf"\s*[|:=]\s*[|\s]*(?P<n>{_N})\s*(?:\||$)")
+_NEGATIVE_BEFORE = re.compile(r"(?:^|[\s(\[:,;|])-$")
 _FOLLOWED_BY_TIME = re.compile(rf"^\s*-?\s*{_UNIT_RE}\b")
 _PHRASE_STOP = re.compile(
     r"\b(?:within|inside|in|over|during|per|across|before|after|then|followed|and|while|from|against|"
-    r"for|on|at|by|that|which|where|without|of|to|is|are|was|were|has|have|had)\b|[,;:.()]")
+    r"for|on|at|by|that|which|where|without|of|to|is|are|was|were|has|have|had)\b|[,;:.()|\n]")
 
 _FAIL = re.compile(r"\bfail|\bfailure|\bunsuccessful|\bdenied\b|\brejected\b")
 _SUCC = re.compile(r"\bsucce|\bsuccessful")
@@ -176,7 +185,7 @@ _HOST_NOUN = re.compile(
     r"\b(?:source_hosts?|(?:source |originating |client )?hosts?|machines?|systems?|workstations?|endpoints?|devices?|"
     r"computers?|servers?|gateways?|nodes?|ips?|ip addresses)\b")
 _EVENT_NOUN = re.compile(
-    r"\b(?:times|attempts?|tries|events?|occasions|logins?|log-?ins?|sign-?ins?|authentications?|"
+    r"\b(?:times?|attempts?|tries|events?|occasions|logins?|log-?ins?|sign-?ins?|authentications?|"
     r"authentication attempts|failures?|failed|misses)\b")
 _KNOWN_NOUN_WORDS = {"account", "accounts", "user", "users", "host", "hosts", "machine", "machines", "system",
                      "systems", "login", "logins", "attempt", "attempts", "time", "times", "event", "events"}
@@ -212,23 +221,39 @@ def _head_noun(phrase: str) -> str | None:
     return first[0] if first else None
 
 
-def _classify_subject(phrase: str, before: str, after: str) -> tuple[str | None, str | None, str | None]:
+_GROUPING_CLAUSE = re.compile(
+    r"\(?\s*\b(?:per|by|for\s+each|for\s+every|grouped\s+by|group\s+by)\s+[\w_]+\s*\)?|"
+    r"\b(?:for|against|on|from)\s+(?:the\s+same|one|a\s+single|a|an|each|every|any|that|this)\s+(?:source\s+|originating\s+)?[\w_]+")
+
+
+def _object_from_context(back: str, forward: str) -> str | None:
+    """The counted object when the number is not followed by it ("count distinct accounts ...; reaches four or more",
+    "event: failed login (per account) / count: 5 or more"). Nouns in "per X" / "grouped by X" clauses describe the
+    grouping, not what is counted, and are ignored. A noun introduced by distinct/different wins; otherwise the
+    nearest noun before the number, otherwise the first after it."""
+    back = _GROUPING_CLAUSE.sub(" ", back)
+    forward = _GROUPING_CLAUSE.sub(" ", forward)
+    last, last_distinct = None, None
+    for name, rx in (("account", _ACCOUNT_NOUN), ("host", _HOST_NOUN), ("event", _EVENT_NOUN)):
+        for m in rx.finditer(back):
+            if last is None or m.start() > last[1]:
+                last = (name, m.start())
+            if _DISTINCT.search(back[max(0, m.start() - 14):m.start()]) and (last_distinct is None or m.start() > last_distinct[1]):
+                last_distinct = (name, m.start())
+    chosen = last_distinct or last
+    if chosen:
+        return chosen[0]
+    return _head_noun(forward)
+
+
+def _classify_subject(phrase: str, before: str, after: str, back_wide: str = "", forward_wide: str = "") -> tuple[str | None, str | None, str | None]:
     """-> (semantics, event kind, unknown object). The FIRST counted noun in the phrase is the head of
     what is being counted ("4 different accounts" counts accounts, not the word "different")."""
     kind = _nearest_kind(before, phrase, after)
     head = _head_noun(phrase)
     if head is None and not phrase.strip():
         # "...count distinct accounts that failed...; if the count reaches four or more" - object named earlier
-        back, last, last_distinct = before[-160:], None, None
-        for name, rx in (("account", _ACCOUNT_NOUN), ("host", _HOST_NOUN)):
-            for m in rx.finditer(back):
-                if last is None or m.start() > last[1]:
-                    last = (name, m.start())
-                if _DISTINCT.search(back[max(0, m.start() - 14):m.start()]) and \
-                        (last_distinct is None or m.start() > last_distinct[1]):
-                    last_distinct = (name, m.start())
-        chosen = last_distinct or last
-        head = chosen[0] if chosen else None
+        head = _object_from_context(back_wide or before[-160:], forward_wide or after[:120])
     if head is None:
         words = _DISTINCT.sub(" ", phrase).split()
         w0 = words[0] if words else ""
@@ -256,6 +281,7 @@ def _find_counts(text: str, low: str, sents) -> list[CountCandidate]:
             if n is None or (isinstance(n, float) and not n.is_integer()):
                 continue
             n = int(n)
+            negative = bool(_NEGATIVE_BEFORE.search(low[max(0, m.start("n") - 2):m.start("n")]))
             if form == "more-than" and m.group("n").lower() == "one":
                 continue                                   # "more than one host" is vague narration, not a threshold
             ss, se = sentence_of(sents, s)
@@ -263,34 +289,53 @@ def _find_counts(text: str, low: str, sents) -> list[CountCandidate]:
             stop = _PHRASE_STOP.search(tail)
             phrase_end = e + (stop.start() if stop else len(tail))
             phrase = low[e:phrase_end].strip(" -\"'")
-            semantics, kind, unknown = _classify_subject(phrase, low[ss:s], low[e:se])
+            semantics, kind, unknown = _classify_subject(phrase, low[ss:s], low[e:se], low[max(0, s - 200):s], low[e:e + 200])
             if form == "more-than":
                 n += 1
-            comparator = "lt" if form == "upper-bound" else "unspecified" if form == "bare" else "gte"
+            comparator = "invalid" if negative else "lt" if form == "upper-bound" else "unspecified" if form == "bare" else "gte"
             out.append(CountCandidate(
                 value=n, form=form, comparator=comparator, subject=text[e:phrase_end].strip(" -\"'*`"),
                 semantics=semantics, eventKind=kind, unknownObject=unknown,
                 evidence=_evidence(text, sents, s, e)))
             taken.append((s, e))
+    for m in _LABELLED.finditer(low):
+        s, e = m.start("n"), m.end("n")
+        if any(s < te and ts < e for ts, te in taken):
+            continue
+        n = parse_number(m.group("n"))
+        if n is None or not float(n).is_integer():
+            continue
+        label = m.group("label").strip(" |*-")
+        ss, se = sentence_of(sents, s)
+        semantics, kind, unknown = _classify_subject(label, low[ss:s], low[e:se], low[max(0, s - 200):s], low[e:e + 200])
+        if semantics is None and re.search(r"threshold|count", label) and not unknown:
+            semantics, kind = None, kind
+        out.append(CountCandidate(value=int(n), form="labelled", comparator="invalid" if _NEGATIVE_BEFORE.search(low[max(0, s - 2):s]) else "gte",
+                                  subject=label, semantics=semantics, eventKind=kind, unknownObject=unknown,
+                                  evidence=_evidence(text, sents, s, e)))
+        taken.append((s, e))
     out.sort(key=lambda c: c.evidence.start)
     return out
 
 
 # -------------------------------------------------------------------------------------- windows
 
-_APPROX = re.compile(r"(?:\babout|\broughly|\bapproximately|\baround|\bnearly|\balmost|\bsome|~|\bunder|\bjust over|\bwell under|\bwell over)\s*$")
+_APPROX = re.compile(r"(?:\babout|\broughly|\bapproximately|\baround|\bnearly|\balmost|\bsome|~|\bjust\s+under|\bwell\s+under|\bjust\s+over|\bwell\s+over|\ba\s+little\s+under)\s*$")
 _WINDOW_CUE = re.compile(
-    r"(?:\b(within|inside|in|over|during|across|per|every|each|for|last|past|rolling|sliding|preceding|previous|prior|trailing)\s+"
+    r"(?:\b(within|inside|in|over|during|across|per|every|each|for|last|past|rolling|sliding|preceding|previous|prior|trailing|under|throughout|next)\s+"
     r"(?:(?:a|the|any|one|an)\s+)?(?:rolling\s+|sliding\s+|single\s+)?|"
+    r"\b(less\s+than|no\s+more\s+than|not\s+more\s+than|inside\s+of)\s+(?:a\s+)?|"
+    r"\b(?:time\s+)?(?:window|interval|period|timeframe|duration|span)\s*[|:=]\s*[|\s]*|"
     r"\b(window|period|interval|span|timeframe)\s+of\s+(?:a\s+|about\s+)?)$")
 _AFTER_WINDOW = re.compile(r"^\s*-?\s*(?:rolling\s+|sliding\s+)?(window|period|interval|span|timeframe|time frame)\b")
 _TIME = re.compile(rf"(?<![\w.:])(?P<n>{_N})(?:\s*-\s*|\s+)(?P<u>{_UNIT_RE})\b")
+_TIME_GLUED = re.compile(r"(?<![\w.:])(?P<n>\d+(?:\.\d+)?)(?P<u>s|sec|secs|min|mins|h|hr|hrs)\b")
 _A_UNIT = re.compile(r"\b(?P<art>an?|half an?)\s+(?P<u>hour|minute|second|day)\b")
 _NARRATIVE_AFTER = re.compile(r"^\s*(?:later|apart|ago|earlier)\b")
 # "5 minutes before/after X" is narration unless a window word ("within 30 minutes before a success") frames it
 _NARRATIVE_WEAK = re.compile(r"^\s*(?:before|after|old|into|prior)\b")
 _STRONG_CUES = {"within", "inside", "rolling", "sliding", "window", "period", "interval", "span", "timeframe",
-                "preceding", "previous", "last", "past"}
+                "preceding", "previous", "last", "past", "under", "label"}
 
 
 def _find_windows(text: str, low: str, sents) -> list[WindowCandidate]:
@@ -306,13 +351,24 @@ def _find_windows(text: str, low: str, sents) -> list[WindowCandidate]:
         cue_m = _WINDOW_CUE.search(before)
         aft_m = _AFTER_WINDOW.match(after)
         hyphenated = "-" in low[m.end("n"):m.start("u")]
-        cue = (cue_m.group(1) or cue_m.group(2)) if cue_m else ("window" if aft_m else ("hyphenated" if hyphenated else None))
+        cue = (cue_m.group(1) or cue_m.group(2) or cue_m.group(3) or "label") if cue_m else ("window" if aft_m else ("hyphenated" if hyphenated else None))
         if _NARRATIVE_WEAK.match(after) and cue not in _STRONG_CUES:
             continue                                       # "5 minutes before the login": narration, not a window
         unit = canonical_unit(m.group("u"))
         out.append(WindowCandidate(amount=float(n), unit=unit, seconds=float(n) * UNIT_SECONDS[unit],
                                    cue=cue, approximate=bool(_APPROX.search(before)),
                                    evidence=_evidence(text, sents, s, e)))
+    for m in _TIME_GLUED.finditer(low):
+        s, e = m.span()
+        if any(w.evidence.start <= s < w.evidence.end for w in out):
+            continue
+        before = low[max(0, s - 32):s]
+        cue_m = _WINDOW_CUE.search(before)
+        unit = canonical_unit(m.group("u"))
+        n = float(m.group("n"))
+        out.append(WindowCandidate(amount=n, unit=unit, seconds=n * UNIT_SECONDS[unit],
+                                   cue=(cue_m.group(1) or cue_m.group(2) or cue_m.group(3) or "label") if cue_m else "abbreviated",
+                                   approximate=bool(_APPROX.search(before)), evidence=_evidence(text, sents, s, e)))
     for m in _A_UNIT.finditer(low):
         s, e = m.span()
         before = low[max(0, s - 32):s]
@@ -324,7 +380,7 @@ def _find_windows(text: str, low: str, sents) -> list[WindowCandidate]:
         amount = 0.5 if m.group("art").startswith("half") else 1.0
         unit = canonical_unit(m.group("u"))
         out.append(WindowCandidate(amount=amount, unit=unit, seconds=amount * UNIT_SECONDS[unit],
-                                   cue=(cue_m.group(1) or cue_m.group(2)) if cue_m else "window",
+                                   cue=(cue_m.group(1) or cue_m.group(2) or cue_m.group(3) or "label") if cue_m else "window",
                                    approximate=bool(_APPROX.search(before)), evidence=_evidence(text, sents, s, e)))
     out.sort(key=lambda w: w.evidence.start)
     return out
@@ -359,6 +415,7 @@ _STRONG_FIELD_CUE = re.compile(
     r"(?:evaluating|evaluate|to evaluate|to support)[^.:]{0,40}?(?:requires?|needs?|(?:has|have) to provide|must (?:capture|provide|ingest))|"
     r"(?:rule|detection)(?: logic)? (?:reads?|pulls?|ingests?|relies on|uses|consumes)(?: (?:the )?(?:fields?|following))?|"
     r"requires? the (?:log )?fields?|(?:rule|detection) (?:must|should) (?:ingest|capture|read|pull))")
+_BARE_FIELD = re.compile(r"(?<![\w.`\"'])(policy\.[A-Za-z_]+|event_id|account_id|event_type|source_host|source_ip|auth_method|mfa_used|session_id|expected_auth_method|mfa_required)(?![\w])")
 _CODE_TOKEN = re.compile(r"[`\"\u201c\u2018']([A-Za-z][A-Za-z0-9_.]*[A-Za-z0-9])[`\"\u201d\u2019']")
 _FILLER_ITEM = re.compile(r"\b(?:any|additional|context|clarification|this|that|these|pattern|following|present|"
                           r"followed|successful|login|sign-?in|then|ticket|sample|log lines?|consistent)\b")
@@ -400,6 +457,19 @@ def _find_fields(text: str, low: str, sents, incidental_sents: set) -> list[Fiel
         s, e = m.start(1), m.end(1)
         out.append(FieldMention(raw, canon, _evidence(text, sents, s, e), "code",
                                 incidental=sentence_of(sents, s) in incidental_sents))
+        seen.append((s, e))
+    # 1b. bare identifiers ("auth_method vs policy.expected_auth_method", "| mfa_used | false |")
+    for m in _BARE_FIELD.finditer(text):
+        s, e = m.start(1), m.end(1)
+        if any(s < pe and ps < e for ps, pe in seen):
+            continue
+        raw = m.group(1)
+        low_raw = raw.lower()
+        bare = low_raw.removeprefix("policy.")
+        canon = low_raw if low_raw in LOG_FIELD_NAMES else f"policy.{bare}" if bare in POLICY_FIELD_NAMES else None
+        if canon is None:
+            continue
+        out.append(FieldMention(raw, canon, _evidence(text, sents, s, e), "code", incidental=sentence_of(sents, s) in incidental_sents))
         seen.append((s, e))
     # 2. natural-language field lists announced by a strong cue: "the log has to provide X, Y and Z"
     for ss, se in sents:
@@ -444,6 +514,11 @@ _QUALIFIERS: list[tuple[str, re.Pattern]] = [(k, re.compile(p)) for k, p in [
     ("lockout / directory event", r"lockouts?|event 47\d\d|event id \d+|\b4740\b"),
     ("multi-condition window (a second time bound)", r"and (?:then )?(?:a )?success(?:ful)?[^.]{0,40}within \d"),
 ]]
+# "We explicitly do NOT want an alert when 5 or more accounts fail ...": a sentence that negates the intent to alert
+# states no rule even though it contains a comparator. (Bare "no" is deliberately absent: "no fewer than 5".)
+_NEGATED_INTENT = re.compile(
+    r"\b(?:do(?:es)?\s+not|don't|doesn't|did\s+not|should\s+not|shouldn't|must\s+not|shall\s+not|never)\b[^.;\n]{0,30}"
+    r"\b(?:want|need|wish|expect|require|alert|fire|trigger|flag|page|escalate)\b|\bexplicitly\s+not\b|\bno\s+alert\b")
 _RULE_CUE = re.compile(
     r"\b(?:alert|alerts|fire|fires|flag|flags|treat|trigger|triggers|raise|detect|detection|rule|escalate|notify|"
     r"requirement|criteria|logic|condition|when|count)\b|ask:")
@@ -470,13 +545,16 @@ def _rule_sentences(low: str, sents, counts, windows, incidental) -> list[tuple[
     put a comparator count and a cued time window together. A sentence that says an attribute is
     incidental is never a source of conditions."""
     comparator_sents = {sentence_of(sents, c.evidence.start) for c in counts if c.comparator != "unspecified"}
+    negated_intent = {(s, e) for s, e in sents if _NEGATED_INTENT.search(low[s:e])}
     hits = {(s, e) for s, e in sents if _RULE_CUE.search(low[s:e]) and (s, e) not in incidental
             and not (_NEGATED.search(low[s:e]) and (s, e) not in comparator_sents)}
     for c in counts:
         sent = sentence_of(sents, c.evidence.start)
-        if c.comparator != "unspecified" and sent not in incidental:
+        if c.comparator not in ("unspecified", "invalid") and sent not in incidental:
             hits.add(sent)                                 # a comparator ("5 or more") is how rules are stated
-    return sorted(hits)
+        if c.comparator == "invalid":
+            hits.add(sent)                                 # kept as a rule sentence so the invalid number is REPORTED
+    return sorted(hits - negated_intent)
 
 
 def _find_qualifiers(text: str, low: str, sents, rule_sents) -> list[Qualifier]:
@@ -493,6 +571,8 @@ def _find_qualifiers(text: str, low: str, sents, rule_sents) -> list[Qualifier]:
 
 _SUBJ = r"(?:(?:it|they|he|she|the (?:same )?(?:account|user|identity|attacker|actor)|one|that account)\s+)?"
 _THEN_SUCCESS = re.compile(
+    r"(?:then|after(?:wards| that| this)?|later|next|followed)\b[^.;]{0,40}\bsucce(?:ss|ed|eds|ssful|ssfully)\b|"
+    r"(?:ended|ending|concluded|culminat\w+|finish\w+)\s+(?:by|in|with)\s+(?:a\s+)?succe|then:\s*(?:a\s+)?succe|"
     rf"(?:then|and then|and subsequently|subsequently|afterwards?|followed by(?: a)?|and)\s+(?:then\s+)?{_SUBJ}"
     r"(?:succeeds?|succeeded|succeed\w*|logs? in|logged in|log-?ins?|signs? in|signed in|authenticates?|authenticated|gets? in|"
     r"is (?:granted|authenticated|let in)|achieves (?:a )?success|(?:a )?success(?:ful)?)|"
@@ -501,16 +581,20 @@ _THEN_SUCCESS = re.compile(
     r"immediately followed by[^.]{0,20}succe|(?:followed|preceded) by[^.]{0,30}(?:successful|success)|"
     r"(?:then|eventually|finally|ultimately)\s+(?:a\s+)?successful")
 _ONE_ACCOUNT = re.compile(
+    r"\bgroup(?:ed)?\s+by\s*[:|]?\s*(?:the\s+)?(?:user\s+)?(?:account|identity|user)|"
     r"\b(?:same|one|single|an?|any|every|each|per|individual)\s+[\"']?(?:user )?(?:account_id|account|identity|user|username)\b|"
     r"\bper[- ]account\b|\bagainst (?:an|one|a single|the same) account|\b(?:the|that|this)\s+(?:target |given |specific |same )?(?:user )?account\b|\bfor the (?:target )?account\b")
 _ONE_HOST = re.compile(
+    r"\bgroup(?:ed)?\s+by\s*[:|]?\s*(?:the\s+)?(?:source[_ ]|originating\s+)?(?:host|machine)|"
     r"\b(?:same|one|single|an?|any|every|each|per|individual)\s+(?:source[_ ]|originating\s+|client\s+)?(?:host|machine|system|workstation|endpoint|source)\b|"
     r"\bper[- ]host\b|\bsource[_ ]host\b|\bone host\b")
 _MISMATCH = re.compile(
     r"differs?\b|different from|does not (?:match|equal|use|conform)|do not (?:match|use|equal|conform)|doesn't (?:match|use)|"
-    r"mismatch|deviat|diverg|other than|rather than|instead of|not the (?:expected|approved|provisioned)|unexpected|not (?:equal|the same)")
+    r"mismatch|deviat|diverg|other than|rather than|instead of|not the (?:expected|approved|provisioned)|unexpected|not (?:equal|the same)|"
+    r"(?:is|are|was)(?: not|n't) the one|not (?:the )?same(?: as| like)?|inconsistent with|contradict\w*|conflicts? with|does not correspond|not what")
 _METHOD_WORD = re.compile(r"\b(?:method|credential|auth_method|authentication type|auth type)\b")
-_EXPECTED_WORD = re.compile(r"\b(?:expected|approved|provisioned|assigned|registered|permitted|policy|identity export|defined)\b")
+_EXPECTED_WORD = re.compile(r"\b(?:expected|approved|provisioned|assigned|registered|permitted|polic\w+|identity (?:export|system|store|provider|records?)|defined|"
+                            r"lists?|listed|on record|recorded for|configured|supposed to|meant to|should use)\b")
 _METHOD_LITERAL = re.compile(r"\b(?:password|passwords|token|certificate|certificates|kerberos|ntlm|smart ?card|passkey)\b")
 _AUTH_FIELDS_PAIR = ("auth_method", "policy.expected_auth_method")
 # A sentence that compares against the expected/approved method (or gives an example) is stating the general
@@ -538,7 +622,7 @@ def _auth_mismatch_cues(text: str, low: str, sents, rule_sents, fields) -> list:
 
 
 _NO_MFA = re.compile(
-    r"without (?:a |any |an )?(?:second factor|mfa|multi-?factor|2fa)|lack(?:s|ed|ing)? (?:a |any |an )?(?:second factor|mfa|multi-?factor)|no (?:mfa|multi-?factor(?: authentication)?|second factor)|(?:mfa|second factor|multi-?factor)\s+(?:was |is |were )?"
+    r"without (?:using |a |any |an |the )*(?:second factor|mfa|multi-?factor|2fa)|not use[sd]? (?:a |the )?(?:second factor|multi-?factor|mfa)|lack(?:s|ed|ing)? (?:a |any |an )?(?:second factor|mfa|multi-?factor)|no (?:mfa|multi-?factor(?: authentication)?|second factor)|(?:mfa|second factor|multi-?factor)\s+(?:was |is |were )?"
     r"(?:not (?:used|presented|satisfied|performed)|absent|missing|skipped|bypassed)|"
     r"(?:no|without|lacking|lacks|missing)\s+(?:a\s+)?(?:mfa|second factor|multi-?factor)|mfa_used[^.]{0,40}(?:false|not)|"
     r"mfa[- ]bypass|no second factor|not use[sd]? (?:mfa|a second factor|multi-?factor)")

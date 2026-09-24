@@ -30,8 +30,11 @@ for _c in _HYPHENS:
     _PLAIN_TABLE[ord(_c)] = "-"
 for _c in _SPACES:
     _PLAIN_TABLE[ord(_c)] = " "
-for _c in _QUOTES + "*`\"~|":
+for _c in _QUOTES + "*`\"~":                      # "|" is kept: table rows ("| Window | 45 seconds |") are structure
     _PLAIN_TABLE[ord(_c)] = " "
+
+
+_PAREN_DIGITS = re.compile(r"(?<=[a-z])\s?\(\d+\)")
 
 
 def plain(text: str) -> str:
@@ -39,6 +42,8 @@ def plain(text: str) -> str:
     out = text.translate(_PLAIN_TABLE).lower()
     if len(out) != len(text):  # a handful of Unicode chars change length under lower(); fall back per character
         out = "".join(c.translate(_PLAIN_TABLE).lower() if len(c.lower()) == 1 else c for c in text)
+    # "ten (10)" / "thirty (30)": the parenthesised digits repeat the word; blank them (same length) so the word is parsed
+    out = _PAREN_DIGITS.sub(lambda m: " " * len(m.group(0)), out)
     assert len(out) == len(text)
     return out
 
@@ -79,7 +84,30 @@ def sentences(text: str) -> list[tuple[int, int]]:
         cursor = m.end()
     if text[cursor:].strip():
         spans.append((cursor, len(text)))
-    return [_trim(text, s, e) for s, e in spans]
+    spans = [_trim(text, s, e) for s, e in spans]
+    return _merge_structured(text, spans)
+
+
+_TABLE_ROW = re.compile(r"^\s*\|")
+_KV_LINE = re.compile(r"^\s*[-*]?\s*[A-Za-z][A-Za-z _\-]{0,28}:\s*\S")
+
+
+def _merge_structured(text: str, spans: list[tuple[int, int]]) -> list[tuple[int, int]]:
+    """A markdown table or a block of `key: value` lines states ONE thing across several lines ("count: 5 or more /
+    window: 90 seconds / then: successful login"); treating each row as its own sentence separates the pieces of one rule."""
+    out: list[tuple[int, int]] = []
+    for s, e in spans:
+        seg = text[s:e]
+        if out:
+            ps, pe = out[-1]
+            gap = text[pe:s]
+            if gap.strip() == "" and gap.count("\n") == 1:
+                prev = text[ps:pe].split("\n")[-1]
+                if (_TABLE_ROW.match(seg) and _TABLE_ROW.match(prev)) or (_KV_LINE.match(seg) and _KV_LINE.match(prev)):
+                    out[-1] = (ps, e)
+                    continue
+        out.append((s, e))
+    return out
 
 
 def _trim(text: str, s: int, e: int) -> tuple[int, int]:
