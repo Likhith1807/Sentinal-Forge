@@ -71,18 +71,23 @@
     {
       "id": "benchmarks",
       "type": "benchmarks",
-      "title": "Benchmarks: single-machine local Spark",
+      "title": "Benchmarks: one machine, local Spark",
       "dataKind": "synthetic",
       "dataLabel": "generated authentication data",
-      "summary": "Batch completion time per behaviour with cold start reported separately, raw observations kept, and only the statistics the number of repetitions supports.",
+      "summary": "Batch time per behaviour with cold start reported separately, a heap sweep including the settings that failed, streaming alert latency, and a many-keys / hot-key stress test. Raw observations are kept and only the statistics the sample size supports are shown.",
       "files": {
         "small": "benchmarks/bench_small.summary.json",
-        "gb1": "benchmarks/scale_1gb.summary.json"
+        "gb1": "benchmarks/scale_1gb.summary.json",
+        "heap": "benchmarks/heap_sweep.json",
+        "latency": "benchmarks/streaming_latency.json",
+        "stress": "benchmarks/streaming_stress.json"
       },
       "caveats": [
-        "Everything ran on ONE machine: this is local-mode Spark. It is not evidence of horizontal scalability, and no such claim is made."
+        "Everything ran on ONE machine: local-mode Spark. It is not evidence of horizontal scalability, and no such claim is made.",
+        "Synthetic data with almost no skew (largest account: 373 events); the hot-key test is separate.",
+        "An earlier streaming-latency run was affected by a host standby and a start-up artefact; it is kept, marked superseded, in experiments/results/benchmarks/."
       ],
-      "reproduce": "python scripts/bench/run_batch.py --dataset data/generated/bench_small --generate --reps 30"
+      "reproduce": "See docs/benchmarks.md"
     }
   ]
 }

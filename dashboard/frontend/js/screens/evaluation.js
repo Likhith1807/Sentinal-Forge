@@ -74,19 +74,44 @@ function verification(s) {
 }
 
 // ---- benchmarks ---------------------------------------------------------------------------------------------
+function batchCard(b) {
+  const hw = b.hardware, jv = b.jvm;
+  return h("div", { class: "card", style: "box-shadow:none" },
+    h("h3", {}, `Batch: ${b.name} — ${fmt.n(b.datasetShape.events)} events`),
+    h("p", { class: "small muted" }, `${hw.cpuModel} · ${hw.logicalCpus} logical CPUs · ${hw.ramGB} GB RAM · JVM heap ${jv.maxHeapMB} MB · ${jv.master} · Spark ${jv.sparkVersion} · ${hw.machinesUsed} machine · ${b.mode}. JVM→session ${b.coldStart.jvmToSessionReadySeconds.toFixed(1)} s (cold start), first full scan ${b.coldStart.firstFullScanSeconds.toFixed(1)} s.`),
+    table([{ label: "Behaviour", render: (r) => r[0] }, { label: "n (warm)", num: true, render: (r) => r[1].warmSeconds.n }, { label: "Median (s)", num: true, render: (r) => r[1].warmSeconds.median?.toFixed(2) },
+      { label: "Range (s)", num: true, render: (r) => `${r[1].warmSeconds.min?.toFixed(2)}–${r[1].warmSeconds.max?.toFixed(2)}` }, { label: "p95 (s)", num: true, render: (r) => (r[1].warmSeconds.p95 ? r[1].warmSeconds.p95.toFixed(2) : "n too small") },
+      { label: "Events/s at median", num: true, render: (r) => fmt.n(Math.round(r[1].eventsPerSecondAtMedian)) }, { label: "Peak heap (MB)", num: true, render: (r) => fmt.n(Math.round(r[1].peakHeapMB.max)) },
+      { label: "Failed", num: true, render: (r) => `${r[1].failed}/${r[1].attempted}` }], Object.entries(b.perBehaviour)));
+}
+
+function heapCard(b) {
+  return h("div", { class: "card", style: "box-shadow:none" }, h("h3", {}, `Heap sweep — ${b.behaviour}, ${b.dataset}`),
+    table([{ label: "Heap", render: (r) => r.heapSetting }, { label: "Outcome", render: (r) => chip(r.outcome === "completed" ? "ok" : "failed", r.outcome === "completed" ? "Completed" : "Failed") },
+      { label: "Median (range)", num: true, render: (r) => (r.medianSeconds ? `${r.medianSeconds} s (${r.rangeSeconds[0]}–${r.rangeSeconds[1]})` : r.outcome) }, { label: "GC time", num: true, render: (r) => (r.gcSecondsMedian ? `${r.gcSecondsMedian} s` : "–") }], b.runs),
+    h("p", { class: "small muted" }, b.reading));
+}
+
+function latencyCard(b) {
+  return h("div", { class: "card", style: "box-shadow:none" }, h("h3", {}, "Streaming: alert latency once decidable (100 incidents per row)"),
+    table([{ label: "Behaviour", render: (r) => r.behaviourId }, { label: "Lateness", num: true, render: (r) => `${r.latenessSeconds} s` }, { label: "Median", num: true, render: (r) => `${r.latencySeconds.median.toFixed(2)} s` },
+      { label: "p95", num: true, render: (r) => `${r.latencySeconds.p95.toFixed(2)} s` }, { label: "Max", num: true, render: (r) => `${r.latencySeconds.max.toFixed(2)} s` }, { label: "Alerts matched", num: true, render: (r) => `${r.alertsMatched}/${r.incidentsSent}` }], b.results),
+    h("p", { class: "small muted" }, "Excludes the configured lateness delay itself, source transport and any cluster. One machine, trigger interval 1 s."));
+}
+
+function stressCard(b) {
+  return h("div", { class: "card", style: "box-shadow:none" }, h("h3", {}, "Streaming: many keys and one hot key"),
+    table([{ label: "Shape", render: (r) => r.name }, { label: "Events", num: true, render: (r) => fmt.n(r.events) }, { label: "Wall time", num: true, render: (r) => `${r.elapsedSecondsIncludingJvmStart} s` },
+      { label: "Events/s", num: true, render: (r) => fmt.n(r.eventsPerSecondEndToEnd) }, { label: "Alerts (expected)", num: true, render: (r) => `${r.alerts} (${r.expectedAlerts})` }, { label: "Duplicate alerts", num: true, render: (r) => r.duplicateAlertIds }], b.results),
+    h("p", { class: "small muted" }, "A hot key holds state proportional to its window and runs on one task: correct, but an order of magnitude slower per event."));
+}
+
 function benchmarks(s) {
-  const out = [];
-  for (const [key, b] of Object.entries(s.data)) {
-    if (!b) continue;
-    const hw = b.hardware, jv = b.jvm;
-    out.push(h("div", { class: "card", style: "box-shadow:none" },
-      h("h3", {}, `${b.name} — ${fmt.n(b.datasetShape.events)} events`),
-      h("p", { class: "small muted" }, `${hw.cpuModel} · ${hw.logicalCpus} logical CPUs · ${hw.ramGB} GB RAM · JVM heap ${jv.maxHeapMB} MB · ${jv.master} · Spark ${jv.sparkVersion} · ${hw.machinesUsed} machine · ${b.mode}. JVM→session ${b.coldStart.jvmToSessionReadySeconds.toFixed(1)} s (cold start), first full scan ${b.coldStart.firstFullScanSeconds.toFixed(1)} s.`),
-      table([{ label: "Behaviour", render: (r) => r[0] }, { label: "n (warm)", num: true, render: (r) => r[1].warmSeconds.n }, { label: "Median (s)", num: true, render: (r) => r[1].warmSeconds.median?.toFixed(2) },
-        { label: "Range (s)", num: true, render: (r) => `${r[1].warmSeconds.min?.toFixed(2)}–${r[1].warmSeconds.max?.toFixed(2)}` }, { label: "p95 (s)", num: true, render: (r) => (r[1].warmSeconds.p95 ? r[1].warmSeconds.p95.toFixed(2) : "n too small") },
-        { label: "Events/s at median", num: true, render: (r) => fmt.n(Math.round(r[1].eventsPerSecondAtMedian)) }, { label: "Peak heap (MB)", num: true, render: (r) => fmt.n(Math.round(r[1].peakHeapMB.max)) },
-        { label: "Failed", num: true, render: (r) => `${r[1].failed}/${r[1].attempted}` }], Object.entries(b.perBehaviour))));
-  }
+  const d = s.data, out = [];
+  for (const key of ["small", "gb1"]) if (d[key]) out.push(batchCard(d[key]));
+  if (d.heap) out.push(heapCard(d.heap));
+  if (d.latency) out.push(latencyCard(d.latency));
+  if (d.stress) out.push(stressCard(d.stress));
   return out.length ? h("div", { class: "stack" }, out) : empty("No benchmark results committed yet");
 }
 

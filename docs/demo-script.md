@@ -36,7 +36,8 @@ Start the app: `python -m uvicorn dashboard.backend.main:app --port 8000`, open 
 1. With the brute-force rule (needs `account_id`) and a password-spray rule (needs `source_host`) both approved, apply the schema
    change **remove `source_host`**.
 2. The impact panel: the spray rule is **paused** with the blocked condition named; the brute-force rule is **unaffected**.
-3. Try to resume the spray rule: refused until it is revalidated. Restore the previous version, revalidate, and only then can a person resume it.
+3. Try to resume the spray rule: refused — the dataset cannot evaluate it. Restore the previous schema version, then resume: a revalidation run executes on the
+   current data, and only when it succeeds does the rule return to *approved*, with a recorded decision.
    Say: *"You find out before production, not after."*
 
 ## 3:00 — Close (10 s)

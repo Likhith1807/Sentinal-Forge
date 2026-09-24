@@ -115,7 +115,8 @@ def main(argv=None) -> int:
         print("schema change: the collector stops sending `source_host` ...")
         impact = ws.apply_schema_change("demo-auth", ["source_host"], None, "demo")
         for it in impact["affected"]:
-            print(f"  PAUSED     {it['ruleName']}: {'; '.join(str(b) for b in it['blockedConditions'])[:110]}")
+            blocked = "; ".join(f"{b['condition']} (needs {', '.join(b['fields'])})" for b in it["blockedConditions"])
+            print(f"  PAUSED     {it['ruleName'].split(' - ')[0]}: blocked - {blocked}")
         for it in impact["unaffected"]:
             print(f"  unaffected {it['ruleName']} (still {it['stateAfter']})")
         try:
@@ -127,7 +128,7 @@ def main(argv=None) -> int:
         ws.restore_dataset("demo-auth", 1, "demo")
         rerun = ws.resume_rule_version(rv2["id"], "demo")
         done = wait(lambda: ws.get_run(rerun["runId"]), lambda r: r["state"] in ("completed", "failed"))
-        print(f"  revalidation run {done['state']}; the rule is only resumed by a person after this run is reviewed.")
+        print(f"  revalidation run {done['state']}; rule state is now '{ws.get_rule_version(rv2['id'])['state']}' (a 'resume' decision, \"revalidated on current data\", is on record).")
         print("\nDone. The same steps, with the evidence panels and the dataset picker, are in the dashboard:  python -m uvicorn dashboard.backend.main:app")
         return 0
     finally:
