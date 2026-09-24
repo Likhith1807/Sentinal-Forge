@@ -42,7 +42,7 @@ function holdout(s) {
   const cell = (m, bad) => (m ? h("div", {}, h("span", { style: bad && m.value > 0 ? "color:var(--bad);font-weight:600" : "font-weight:600" }, pct(m.value)), h("div", { class: "small faint" }, `${ci(m)} · n=${m.n}`)) : "–");
   const rows = Object.entries(sys).map(([name, r]) => ({ name, ...r }));
   const t = table([
-    { label: "System", render: (r) => h("strong", {}, r.name) },
+    { label: "System", render: (r) => h("div", {}, h("strong", {}, r.name), r.coverage < 1 ? h("div", { class: "small", style: "color:var(--warn)" }, `partial: ${r.reportsRequested - r.unavailable} of ${r.reportsRequested} reports scored (provider quota)`) : null) },
     { label: "Complete rule correct", render: (r) => cell(r.completeSpecCorrect) },
     { label: "Wrong rule, silently", render: (r) => cell(r.wrongRuleSilently, true) },
     { label: "Supported, not compiled", render: (r) => cell(r.supportedNotCompiled) },
@@ -52,11 +52,11 @@ function holdout(s) {
     { label: "Window (s)", render: (r) => cell(r.windowSeconds) },
     { label: "Downstream P / R", render: (r) => h("span", { class: "tnum" }, `${r.downstream.precision ?? "–"} / ${r.downstream.recall ?? "–"}`) },
   ], rows);
-  const prod = sys["finetuned+evidence"];
+  const prod = sys["evidence-only"] || sys["finetuned+evidence"];
   const byClass = prod ? table([{ label: "Must-not-compile class", render: (r) => r[0] }, { label: "Reports", num: true, render: (r) => r[1].n }, { label: "Wrongly compiled", num: true, render: (r) => h("span", { style: r[1].accepted ? "color:var(--bad);font-weight:600" : "" }, r[1].accepted) }],
     Object.entries(prod.falseAcceptByReasonClass)) : null;
   return h("div", { class: "stack" },
-    h("p", { class: "small muted" }, `${sum.holdout.reports} reports, frozen ${sum.holdout.frozen} (git tag ${sum.holdout.tag}); LLM rows use ${sum.llmModel}. ${sys["finetuned+evidence"] ? `${prod.supportedReports} must-compile · ${prod.mustNotCompileReports} must-not-compile.` : ""} Intervals are 95% bootstrap over reports — with n this small they are wide.`),
+    h("p", { class: "small muted" }, `${sum.holdout.reports} reports, frozen ${sum.holdout.frozen} (git tag ${sum.holdout.tag}); ${sum.llmModel ? `LLM rows use ${sum.llmModel}.` : "No LLM rows were run on this holdout."} ${prod ? `${prod.supportedReports} must-compile · ${prod.mustNotCompileReports} must-not-compile. Product path = ${sys["evidence-only"] ? "evidence-only (the default extractor)" : "fine-tuned + evidence"}.` : ""} Intervals are 95% bootstrap over reports — with n this small they are wide.`),
     t,
     prod ? h("div", { class: "grid two" }, h("div", {}, h("h3", {}, "Product path, by kind of report it must refuse"), byClass),
       h("div", {}, h("h3", {}, "Status of the product path"), h("dl", { class: "kv" }, Object.entries(prod.statusCounts).map(([k, v]) => [h("dt", {}, k), h("dd", {}, v)])))) : null,

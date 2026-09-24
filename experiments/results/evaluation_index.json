@@ -1,31 +1,88 @@
 {
   "sections": [
-    {"id": "audit", "type": "audit", "title": "Audit: silent failures before and after the fixes",
-     "dataKind": "regression", "dataLabel": "44-report test split, used for regression / development",
-     "summary": "The same 44 reports (40 supported, 4 unsupported) through each pipeline. This split was used to find and fix the defects, so it measures that they are closed, not how the system generalises.",
-     "files": {"before": "audit_pipeline_baseline.json", "after": "audit_pipeline_fixed.json"},
-     "caveats": ["The evidence layer was developed against the train and dev splits; this split is retired to regression use. Generalisation is measured on the frozen holdout below."],
-     "reproduce": "python experiments/audit/pipeline_audit.py"},
-    {"id": "holdout", "type": "holdout", "title": "Frozen holdout: correct detections, and refusals that matter",
-     "dataKind": "frozen-holdout", "dataLabel": "112 reports, frozen before the single run",
-     "summary": "Authored reports in voices the training corpus never used, unsupported and ambiguous cases, prompt-injection attempts, and 16 verbatim CISA/FBI advisory passages. Scored per component, as a complete rule, and downstream on the demonstration dataset.",
-     "files": {"summary": "holdout/summary.json"},
-     "caveats": ["Labels are from one annotator plus a blind LLM reviewer (kappa 0.886, six adjudicated disagreements). No independent human review has been done - see data/holdout/review/README.md.",
-                 "The prompted-LLM rows use gpt-oss-20b: the 120B model's daily token quota was exhausted during development. Two aborted runs are archived under experiments/results/holdout/.",
-                 "41 supported reports: intervals are wide. The parser was developed on the training corpus's distribution and not tuned after seeing these numbers; failures are published, not fixed."],
-     "reproduce": "python scripts/holdout/verify_frozen.py\npython experiments/holdout/run_eval.py --llm-model openai/gpt-oss-20b"},
-    {"id": "verification", "type": "verification", "title": "Reliability: does the test suite see the bugs it claims to?",
-     "dataKind": "synthetic", "dataLabel": "generated adversarial scenarios",
-     "summary": "A differential test of the Spark executor against an independent reference engine, a mutation check that plants defects to prove the harness can see them, streaming/batch agreement under the documented lateness policy, and hard-kill recovery.",
-     "files": {"mutation": "differential_mutation_check.json", "streamAgree": "streaming_agreement.json", "recovery": "streaming_recovery.json"},
-     "caveats": ["Two implementations agreeing does not catch a misunderstanding they share; hand-computed golden scenarios and metamorphic properties cover that (tests/core).",
-                 "Streaming recovery is 'effectively-once output under stated conditions', not an unconditional exactly-once guarantee - docs/spec/detection-semantics.md section 5."],
-     "reproduce": "python scripts/verify/differential.py --cases 100\npython scripts/verify/mutation_check.py\npython scripts/verify/streaming_agreement.py\npython scripts/verify/streaming_recovery.py"},
-    {"id": "benchmarks", "type": "benchmarks", "title": "Benchmarks: single-machine local Spark",
-     "dataKind": "synthetic", "dataLabel": "generated authentication data",
-     "summary": "Batch completion time per behaviour with cold start reported separately, raw observations kept, and only the statistics the number of repetitions supports.",
-     "files": {"small": "benchmarks/bench_small.summary.json", "gb1": "benchmarks/scale_1gb.summary.json"},
-     "caveats": ["Everything ran on ONE machine: this is local-mode Spark. It is not evidence of horizontal scalability, and no such claim is made."],
-     "reproduce": "python scripts/bench/run_batch.py --dataset data/generated/bench_small --generate --reps 30"}
+    {
+      "id": "audit",
+      "type": "audit",
+      "title": "Audit: silent failures before and after the fixes",
+      "dataKind": "regression",
+      "dataLabel": "44-report test split, used for regression / development",
+      "summary": "The same 44 reports (40 supported, 4 unsupported) through each pipeline. This split was used to find and fix the defects, so it measures that they are closed, not how the system generalises.",
+      "files": {
+        "before": "audit_pipeline_baseline.json",
+        "after": "audit_pipeline_fixed.json"
+      },
+      "caveats": [
+        "The evidence layer was developed against the train and dev splits; this split is retired to regression use. Generalisation is measured on the frozen holdout below."
+      ],
+      "reproduce": "python experiments/audit/pipeline_audit.py"
+    },
+    {
+      "id": "holdout",
+      "type": "holdout",
+      "title": "Frozen holdout v1: measured before the parser fixes",
+      "dataKind": "frozen-holdout",
+      "dataLabel": "112 reports, frozen before the single run",
+      "summary": "Authored reports in voices the training corpus never used, unsupported and ambiguous cases, prompt-injection attempts, and 16 verbatim CISA/FBI advisory passages. Scored per component, as a complete rule, and downstream on the demonstration dataset.",
+      "files": {
+        "summary": "holdout/summary.json"
+      },
+      "caveats": [
+        "Labels are from one annotator plus a blind LLM reviewer (kappa 0.886, six adjudicated disagreements). No independent human review has been done - see data/holdout/review/README.md.",
+        "The prompted-LLM rows use gpt-oss-20b: the 120B model's daily token quota was exhausted during development. Two aborted runs are archived under experiments/results/holdout/.",
+        "41 supported reports: intervals are wide. These are the numbers BEFORE the parser was generalised from these failures (commit 9d236cd); the run is recorded as it happened and this holdout is now consumed - v2 measures the fix."
+      ],
+      "reproduce": "python scripts/holdout/verify_frozen.py\npython experiments/holdout/run_eval.py --llm-model openai/gpt-oss-20b"
+    },
+    {
+      "id": "holdout_v2",
+      "type": "holdout",
+      "title": "Frozen holdout v2: fresh reports written after the fixes",
+      "dataKind": "frozen-holdout",
+      "dataLabel": "71 reports, frozen (tag holdout-v2-frozen) before the single run",
+      "summary": "Fresh wording and layouts (email, ticket acceptance criteria, runbook steps, Sigma-like YAML, checklists, chat), new must-not-compile classes (corrections, ranges, hedges, abandoned intent, scope limits) and 11 real CISA/FBI advisory passages. Non-LLM systems only.",
+      "files": {
+        "summary": "holdout_v2/summary.json"
+      },
+      "caveats": [
+        "Labels are the author's only: the blind LLM review that v1 had was NOT run for v2 (token quota) and no human second reviewer has looked at it.",
+        "The prompted-LLM rows were not run on v2 (daily token quota). They are absent, not zero.",
+        "30 supported reports: intervals are wide. After this run, five false accepts were fixed and regression-tested (experiments/results/holdout_v2/POST_HOC.md); the recorded numbers here are the pre-fix single run."
+      ],
+      "reproduce": "python scripts/holdout/verify_frozen.py --dir data/holdout_v2\npython experiments/holdout/run_eval.py --holdout holdout_v2 --skip-llm"
+    },
+    {
+      "id": "verification",
+      "type": "verification",
+      "title": "Reliability: does the test suite see the bugs it claims to?",
+      "dataKind": "synthetic",
+      "dataLabel": "generated adversarial scenarios",
+      "summary": "A differential test of the Spark executor against an independent reference engine, a mutation check that plants defects to prove the harness can see them, streaming/batch agreement under the documented lateness policy, and hard-kill recovery.",
+      "files": {
+        "mutation": "differential_mutation_check.json",
+        "streamAgree": "streaming_agreement.json",
+        "recovery": "streaming_recovery.json"
+      },
+      "caveats": [
+        "Two implementations agreeing does not catch a misunderstanding they share; hand-computed golden scenarios and metamorphic properties cover that (tests/core).",
+        "Streaming recovery is 'effectively-once output under stated conditions', not an unconditional exactly-once guarantee - docs/spec/detection-semantics.md section 5."
+      ],
+      "reproduce": "python scripts/verify/differential.py --cases 100\npython scripts/verify/mutation_check.py\npython scripts/verify/streaming_agreement.py\npython scripts/verify/streaming_recovery.py"
+    },
+    {
+      "id": "benchmarks",
+      "type": "benchmarks",
+      "title": "Benchmarks: single-machine local Spark",
+      "dataKind": "synthetic",
+      "dataLabel": "generated authentication data",
+      "summary": "Batch completion time per behaviour with cold start reported separately, raw observations kept, and only the statistics the number of repetitions supports.",
+      "files": {
+        "small": "benchmarks/bench_small.summary.json",
+        "gb1": "benchmarks/scale_1gb.summary.json"
+      },
+      "caveats": [
+        "Everything ran on ONE machine: this is local-mode Spark. It is not evidence of horizontal scalability, and no such claim is made."
+      ],
+      "reproduce": "python scripts/bench/run_batch.py --dataset data/generated/bench_small --generate --reps 30"
+    }
   ]
 }
