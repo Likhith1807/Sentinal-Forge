@@ -55,3 +55,4 @@ var/
 
 # holdout source pages (rebuild only; fetch with scripts/holdout/fetch_sources.py)
 data/holdout/_src/
+dist/

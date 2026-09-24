@@ -65,9 +65,10 @@ def git_head() -> str:
 
 # ----------------------------------------------------------------------------------------- extractors
 class LLM:
-    def __init__(self, log_path: Path):
+    def __init__(self, log_path: Path, model: str):
         import transformer_extractor as te
         self.te = te
+        self.model = model
         self.log = open(log_path, "a", encoding="utf-8")
 
     def _parse(self, raw: str) -> dict:
@@ -86,9 +87,9 @@ class LLM:
         prompt = te.build_prompt(text) + (ABSTAIN_NOTE if variant == "prompted-abstain" else "")
         first_ok, result = None, None
         for attempt in range(1, max_attempts + 1):
-            rec = {"reportId": rid, "variant": variant, "model": te.DEFAULT_MODEL, "attempt": attempt, "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
+            rec = {"reportId": rid, "variant": variant, "model": self.model, "attempt": attempt, "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
             try:
-                raw = te.call_model(prompt, te.DEFAULT_MODEL)
+                raw = te.call_model(prompt, self.model)
                 rec["raw"] = raw
                 result = self._parse(raw)
                 rec["ok"] = True
@@ -110,7 +111,7 @@ class LLM:
         return {"proposal": prop, "firstAttemptOk": bool(first_ok)}
 
 
-def make_extractors(skip_llm: bool):
+def make_extractors(skip_llm: bool, llm_model: str):
     import classical_extractor
     ex = {}
 
@@ -130,7 +131,7 @@ def make_extractors(skip_llm: bool):
     except Exception as exc:  # noqa: BLE001
         print("fine-tuned extractor unavailable:", exc)
     if not skip_llm:
-        llm = LLM(OUT / "attempts.jsonl")
+        llm = LLM(OUT / "attempts.jsonl", llm_model)
         ex["prompted"] = lambda rid, text: llm.extract(rid, text, "prompted")
         ex["prompted-abstain"] = lambda rid, text: llm.extract(rid, text, "prompted-abstain")
         ex["_llm"] = llm
@@ -313,6 +314,7 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--skip-llm", action="store_true")
     ap.add_argument("--limit", type=int, default=0)
+    ap.add_argument("--llm-model", default="openai/gpt-oss-20b", help="model for the prompted rows (the 120B model's daily quota was exhausted during development)")
     args = ap.parse_args(argv)
     OUT.mkdir(parents=True, exist_ok=True)
     frozen = subprocess.run([sys.executable, str(REPO / "scripts" / "holdout" / "verify_frozen.py")], capture_output=True, text=True)
@@ -321,7 +323,7 @@ def main(argv=None) -> int:
         return 2
     golds = {p.name.split(".")[0]: json.loads(p.read_text(encoding="utf-8")) for p in sorted((HOLD / "gold").glob("*.gold.json"))}
     ids = sorted(golds)[: args.limit or None]
-    ex = make_extractors(args.skip_llm)
+    ex = make_extractors(args.skip_llm, args.llm_model)
     raw_out: dict = {}
     per_report = open(OUT / "per_report.jsonl", "w", encoding="utf-8")
     all_rows: dict = defaultdict(list)
@@ -345,7 +347,7 @@ def main(argv=None) -> int:
             print(f"{n}/{len(ids)} reports, {time.time() - t0:.0f}s", flush=True)
     summary = {name: summarise(rows) for name, rows in all_rows.items()}
     out = {"holdout": {"reports": len(ids), "frozen": json.loads((HOLD / "FROZEN.json").read_text())["frozenOn"], "tag": "holdout-v1-frozen"},
-           "gitHead": git_head(), "ranAt": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "llmModel": "openai/gpt-oss-120b" if not args.skip_llm else None,
+           "gitHead": git_head(), "ranAt": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "llmModel": args.llm_model if not args.skip_llm else None,
            "note": "Single run on the frozen holdout. No extractor or parser change was made after seeing these numbers.", "systems": summary}
     (OUT / "summary.json").write_text(json.dumps(out, indent=2), encoding="utf-8")
     hdr = f"{'system':28s} {'complete':>9s} {'silent-wrong':>12s} {'not-compiled':>12s} {'false-accept':>12s} {'beh':>6s} {'count':>6s} {'window':>7s}  downstream P/R/F1"

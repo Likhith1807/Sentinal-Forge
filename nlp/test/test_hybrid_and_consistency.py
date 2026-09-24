@@ -17,6 +17,10 @@ from types import SimpleNamespace
 REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO_ROOT / "nlp" / "src"))
 
+import pytest  # noqa: E402
+
+pytest.importorskip("torch", reason="the fine-tuned extractor module imports torch (requirements-train.txt)")
+
 import hybrid_extractor  # noqa: E402
 import consistency_extractor  # noqa: E402
 import finetuned_extractor  # noqa: E402

@@ -1,57 +1,92 @@
 name: CI
 
-# Runs on every push/PR. Two independent jobs, matching the project's two runtimes: the Python
-# side (corpus, datagen, NLP wiring) and the Scala/Spark compiler side. Neither job touches the
-# Groq API, a GPU, or generated multi-GB datasets — those are real, separately-run evaluations
-# (see docs/phase-c-extraction.md, docs/data-sources.md), not routine CI checks. This workflow
-# only became runnable once this repo had a GitHub remote; see README.md's CI section for how to
-# read the badge if you're looking at this before that history exists.
+# Five independent gates. A red job means what its name says; none of them is allowed to be skipped or marked
+# continue-on-error. Nothing here needs an API key, a GPU or the 500 MB fine-tuned checkpoint (torch-dependent tests
+# skip themselves when torch is absent).
 on:
   push:
     branches: [main, master]
   pull_request:
-    branches: [main, master]
   workflow_dispatch: {}
 
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  python-tests:
-    name: Python tests (pytest)
+  python:
+    name: Python tests (${{ matrix.python }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.10", "3.11"]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: ${{ matrix.python }}
           cache: pip
-      - name: Install dependencies
-        run: |
-          pip install -r requirements-train.txt
-          pip install pytest hypothesis
-        # requirements-train.txt (which includes requirements.txt) rather than the dashboard's
-        # slim requirements.txt alone — nlp/test/test_hybrid_and_consistency.py imports
-        # finetuned_extractor, which needs torch/transformers.
-      - name: Run the offline test suite
-        run: pytest -v
-        # testpaths in pyproject.toml already excludes real-API evaluation scripts
-        # (evaluate_*.py, the differential property test, nlp's adversarial/injection-guard
-        # scripts) — everything pytest collects here is offline and deterministic.
+          cache-dependency-path: requirements*.txt
+      - run: pip install -r requirements-dev.txt
+      - name: Unit, service, API and audit-regression tests
+        run: pytest -q
+      - name: The frozen holdout is untouched
+        run: python scripts/holdout/verify_frozen.py
 
-  scala-tests:
-    name: Scala/Spark tests (sbt test)
+  scala:
+    name: Scala tests (sbt test)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: "17"
+        with: { distribution: temurin, java-version: "17", cache: sbt }
       - uses: sbt/setup-sbt@v1
-      - name: Compile
-        run: sbt compile
-      - name: Run the ScalaTest suite
-        run: sbt test
-        # RuleCompilerSpec.scala: 7 fast, in-memory, deterministic cases (no generated dataset,
-        # no cluster). The large-scale checks (GeneratedDataCheck, ScaleBenchmarkCheck, the
-        # differential property test) are real, separately-run evaluations — see
-        # docs/spec/detection-semantics.md and docs/phase-e-scale.md for their actual results,
-        # not something this workflow re-runs on every push.
+      - run: sbt -batch test
+
+  integration:
+    name: Spark integration (batch, streaming, differential)
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: "17", cache: sbt }
+      - uses: sbt/setup-sbt@v1
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11", cache: pip, cache-dependency-path: requirements*.txt }
+      - run: pip install -r requirements-dev.txt
+      - name: Spark executor vs reference engine (pytest -m integration)
+        run: pytest -q -m integration tests/integration
+      - name: Differential test, all five behaviours
+        run: python scripts/verify/differential.py --cases 40 --seed 3
+      - name: The differential harness detects planted defects
+        run: python scripts/verify/mutation_check.py --cases 40
+      - name: Streaming agreement under the lateness policy
+        run: python scripts/verify/streaming_agreement.py --cases 12 --seed 5
+      - name: Streaming crash recovery (hard kill + restart)
+        run: python scripts/verify/streaming_recovery.py --kill-after 2,5 --cases 24
+
+  docker:
+    name: Container build and smoke test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build (slim)
+        run: docker build --target slim -t sentinel-forge:ci .
+      - name: Start with a token, check auth and health
+        run: |
+          docker run -d --name forge -p 8000:8000 -e SF_API_TOKENS="ci:ci-token-please-change:analyst" sentinel-forge:ci
+          for i in $(seq 1 30); do curl -fs localhost:8000/api/health && break || sleep 2; done
+          test "$(curl -s -o /dev/null -w '%{http_code}' localhost:8000/api/config)" = "401"
+          test "$(curl -s -o /dev/null -w '%{http_code}' -H 'Authorization: Bearer ci-token-please-change' localhost:8000/api/config)" = "200"
+      - name: Container log on failure
+        if: failure()
+        run: docker logs forge
+
+  package:
+    name: Source-only package is clean
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python scripts/package_source.py --check

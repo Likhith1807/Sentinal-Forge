@@ -1,0 +1,1 @@
+Aborted second evaluation run: the prompted-LLM calls hit the model tokens-per-day quota (HTTP 429) after the aborted first run and the blind review had consumed it. Kept for the record; not used for any reported number. The reported run uses openai/gpt-oss-20b for the prompted rows.

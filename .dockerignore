@@ -1,9 +1,9 @@
-# Generated/heavy data — never baked into an image; mount data/samples read-only instead if needed
+.git/
+.github/
 data/generated/
 data/processed/
 data/raw/
-
-# Build artifacts and toolchains
+data/corpus/llm_cache.jsonl
 target/
 project/target/
 project/project/
@@ -13,25 +13,14 @@ project/project/
 .scala-build/
 .bsp/
 .tools/
-
-# Python / Node
+var/
 __pycache__/
 *.pyc
 .venv/
 node_modules/
-
-# Model checkpoints (large; see docs/phase-c-extraction.md — trained separately, not shipped)
-nlp/models/*/
-
-# Secrets and local env
+nlp/models/
 .env
-
-# Version control and editor files
-.git/
-.gitignore
-.github/
-
-# Course deck artifacts — not part of the running application
 *.pptx
-ppt/
+course/
 format.pptx
+experiments/results/holdout/aborted-run-1/

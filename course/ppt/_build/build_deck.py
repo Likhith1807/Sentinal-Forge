@@ -1,3 +1,4 @@
+from pathlib import Path
 import copy, io, sys
 sys.path.insert(0, __import__("os").path.dirname(__import__("os").path.abspath(__file__)))
 from lib import *
@@ -5,8 +6,8 @@ from pptx import Presentation
 from pptx.chart.data import CategoryChartData
 from pptx.enum.chart import XL_CHART_TYPE, XL_LEGEND_POSITION, XL_LABEL_POSITION
 
-SRC = "D:/SENTINEL_Forge/format.pptx"
-OUT = sys.argv[1] if len(sys.argv) > 1 else "D:/SENTINEL_Forge/SENTINEL_Forge_Final_Presentation.pptx"
+SRC = str(Path(__file__).resolve().parents[2] / "format.pptx")   # course/format.pptx
+OUT = sys.argv[1] if len(sys.argv) > 1 else str(Path(__file__).resolve().parents[2] / "SENTINEL_Forge_Final_Presentation.pptx")
 
 prs = Presentation(SRC)
 S = list(prs.slides)              # original 13 slides, indexed 0..12

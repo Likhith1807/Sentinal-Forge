@@ -1,14 +1,18 @@
-pandas
-pyarrow
-python-dotenv
-groq
-pyyaml
-fastapi
-uvicorn
-numpy
-
-# Phase C fine-tuning/eval (torch, transformers, ...) lives in requirements-train.txt, not here.
-# Nothing on the dashboard's runtime import path (dashboard/backend/main.py -> classical_extractor,
-# transformer_extractor, injection_guard, observability_checker) touches those packages — see
-# requirements-train.txt's header for the modules that do. Keeping them out of this file is what
-# keeps `docker compose build` a ~200MB FastAPI image instead of pulling a multi-GB CUDA toolchain.
+# Runtime dependencies for the analyst service (dashboard + sentinelforge core), pinned to the exact versions the
+# test suite last passed on (Python 3.10 and 3.11). Heavy / optional stacks live in their own files:
+#   requirements-dev.txt    tests and tooling            requirements-train.txt   fine-tuned extractor + evaluation
+fastapi==0.141.1
+starlette==1.6.0
+uvicorn==0.53.0
+pydantic==2.13.5
+pydantic_core==2.46.5
+annotated-types==0.8.0
+annotated-doc==0.0.5
+anyio==4.13.0
+h11==0.16.0
+click==8.5.0
+idna==3.19
+sniffio==1.3.1
+typing_extensions==4.16.0
+PyYAML==6.0.3
+python-dotenv==1.2.3

@@ -1,0 +1,11 @@
+# Test and tooling dependencies (on top of requirements.txt).
+-r requirements.txt
+pytest==9.1.1
+hypothesis==6.168.0
+httpx==0.28.1
+httpcore==1.0.9
+certifi==2026.4.22
+jsonschema==4.26.0
+numpy==2.2.6
+pandas==2.3.3
+pyarrow==25.0.1

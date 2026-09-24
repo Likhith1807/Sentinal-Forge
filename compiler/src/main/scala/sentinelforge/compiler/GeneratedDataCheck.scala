@@ -69,7 +69,7 @@ object GeneratedDataCheck {
 
     val labels: Vector[Label] = spark.read.json(s"$datasetDir/labels.jsonl").collect().toVector.map { r =>
       def seq(name: String) = r.getSeq[String](r.fieldIndex(name)).toVector
-      Label(r.getAs[String]("incidentId"), r.getAs[String]("behaviourId"), r.getAs[String]("kind"),
+      Label(r.getAs[String]("incidentId"), LegacyIds.canonical(r.getAs[String]("behaviourId")), r.getAs[String]("kind"),
         r.getAs[String]("expectedStatus"), seq("groupKeys"),
         Option(r.getAs[String]("expectedTriggerEventId")), seq("eventIds"))
     }

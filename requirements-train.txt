@@ -1,13 +1,14 @@
-# Phase C: fine-tuned extractor training/eval and the CI unit tests that exercise it
-# (nlp/src/train_transformer.py, corpus_dataset.py, multitask_model.py, finetuned_extractor.py,
-# eval_common.py; imported by nlp/test/test_hybrid_and_consistency.py) — see
-# docs/phase-c-extraction.md. Not installed in the dashboard's Docker image: nothing on
-# dashboard/backend/main.py's import path needs these (see requirements.txt).
-#
-# torch is installed separately per-platform (see https://pytorch.org/get-started/locally/); a
-# CUDA build is used here but is not a hard requirement (CPU fine-tuning works, just far slower).
--r requirements.txt
-transformers
-accelerate
-scikit-learn
-sentencepiece
+# Fine-tuned extractor, its training pipeline and the frozen-holdout evaluation (on top of requirements.txt).
+# torch: on Linux the default PyPI wheel bundles CUDA; for CPU-only use
+#   pip install torch==2.12.0 --index-url https://download.pytorch.org/whl/cpu
+-r requirements-dev.txt
+torch==2.12.0
+transformers==5.17.0
+tokenizers==0.23.2
+safetensors==0.8.0
+huggingface_hub==1.32.0
+accelerate==1.15.0
+scikit-learn==1.7.2
+sentencepiece==0.2.2
+groq==1.7.0
+matplotlib==3.10.9

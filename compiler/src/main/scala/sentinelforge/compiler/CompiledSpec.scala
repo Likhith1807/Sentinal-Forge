@@ -64,3 +64,13 @@ object CompiledSpec {
     )
   }
 }
+
+/** Datasets generated before the behaviour rename carry the legacy ids in their labels; map them to today's names
+  * (sentinelforge.behaviours.LEGACY_IDS is the Python twin of this table). */
+object LegacyIds {
+  private val map = Map(
+    "concurrent-sessions-different-hosts" -> "multi-host-authentication",
+    "service-account-interactive-auth"    -> "auth-method-policy-violation",
+    "mfa-bypass-on-required-account"      -> "mfa-missing-on-required-account")
+  def canonical(id: String): String = map.getOrElse(id, id)
+}
