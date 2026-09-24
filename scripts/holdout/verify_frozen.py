@@ -6,10 +6,16 @@ import json
 import sys
 from pathlib import Path
 
+import argparse
+
 HOLD = Path(__file__).resolve().parents[2] / "data" / "holdout"
 
 
 def main() -> int:
+    global HOLD
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--dir", type=Path, default=HOLD)
+    HOLD = ap.parse_args().dir
     frozen = json.loads((HOLD / "FROZEN.json").read_text(encoding="utf-8"))
     bad = []
     for rel, digest in frozen["sha256"].items():

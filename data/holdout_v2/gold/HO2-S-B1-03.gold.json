@@ -1,0 +1,28 @@
+{
+  "reportId": "HO2-S-B1-03",
+  "reportSha256": "e6b2463202b4eeda989fa87e1fb170c4ad65c2de83675f7d3510f1cb19d2b591",
+  "expect": "compiled",
+  "behaviourId": "repeated-failed-login-then-success",
+  "fields": [
+    "timestamp",
+    "event_type",
+    "account_id"
+  ],
+  "count": {
+    "value": 4,
+    "semantics": "event_count",
+    "evidence": {
+      "start": 68,
+      "end": 80,
+      "quote": "four or more"
+    }
+  },
+  "window": {
+    "seconds": 180,
+    "evidence": {
+      "start": 129,
+      "end": 144,
+      "quote": "3-minute window"
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "reportId": "HO2-R-01",
+  "reportSha256": "b3693b292da0e21088d48fed0d60617223e93d3a6cfa7d5b93e6c79f1ca1fe0b",
+  "expect": "no_compile",
+  "reasonClass": "unsupported-behaviour",
+  "fields": [],
+  "why": "Describes MFA push fatigue; the MFA provider's prompt events are not in the authentication log."
+}

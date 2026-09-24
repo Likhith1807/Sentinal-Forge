@@ -1,0 +1,8 @@
+{
+  "reportId": "HO2-R-11",
+  "reportSha256": "4a99e02205f133ce7bc8e1dcdb48915438254978e2651ed9659d9f76fa0a7346",
+  "expect": "no_compile",
+  "reasonClass": "unsupported-behaviour",
+  "fields": [],
+  "why": "MFA push fatigue again, described as a technique."
+}

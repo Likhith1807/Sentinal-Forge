@@ -1,0 +1,8 @@
+{
+  "reportId": "HO2-R-10",
+  "reportSha256": "011961813a5a6d519d60df959a0572918b475e636bebf666698d3dd89e964a10",
+  "expect": "no_compile",
+  "reasonClass": "not-a-rule",
+  "fields": [],
+  "why": "Technique description."
+}

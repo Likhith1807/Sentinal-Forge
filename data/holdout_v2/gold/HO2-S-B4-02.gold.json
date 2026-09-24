@@ -1,0 +1,13 @@
+{
+  "reportId": "HO2-S-B4-02",
+  "reportSha256": "646ceb1897e0ce301bffdc803a390fd9e64c445268992c0dcd3a4449fde5a730",
+  "expect": "compiled",
+  "behaviourId": "auth-method-policy-violation",
+  "fields": [
+    "timestamp",
+    "event_type",
+    "account_id",
+    "auth_method",
+    "policy.expected_auth_method"
+  ]
+}

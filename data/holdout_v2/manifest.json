@@ -1,0 +1,652 @@
+{
+ "name": "SENTINEL Forge frozen holdout v2",
+ "version": "1.0.0",
+ "frozenOn": "2026-09-24",
+ "reports": 71,
+ "counts": {
+  "authored": 60,
+  "real-public": 11
+ },
+ "byExpectation": {
+  "compiled": 30,
+  "no_compile": 41
+ },
+ "labelling": "single annotator (the author); a second independent review is tracked in review/ and is NOT complete unless review/RESULT.json says so",
+ "separation": "No report shares a template, family, or rewriting model with data/corpus (train/dev/test). Authored AFTER the v1 failure analysis and the parser fixes it drove, before the parser was ever run on these reports; never tuned against.",
+ "entries": [
+  {
+   "reportId": "HO2-N-01",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "email",
+   "family": "HF-HO2-N-01",
+   "reasonClass": "ambiguous"
+  },
+  {
+   "reportId": "HO2-N-02",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "chat-shorthand",
+   "family": "HF-HO2-N-02",
+   "reasonClass": "not-a-rule"
+  },
+  {
+   "reportId": "HO2-N-03",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "ticket",
+   "family": "HF-HO2-N-03",
+   "reasonClass": "ambiguous"
+  },
+  {
+   "reportId": "HO2-N-04",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "correction",
+   "family": "HF-HO2-N-04",
+   "reasonClass": "contradictory"
+  },
+  {
+   "reportId": "HO2-N-05",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "formal-spec",
+   "family": "HF-HO2-N-05",
+   "reasonClass": "ambiguous"
+  },
+  {
+   "reportId": "HO2-N-06",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "ticket",
+   "family": "HF-HO2-N-06",
+   "reasonClass": "ambiguous"
+  },
+  {
+   "reportId": "HO2-N-07",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "chat-shorthand",
+   "family": "HF-HO2-N-07",
+   "reasonClass": "ambiguous"
+  },
+  {
+   "reportId": "HO2-N-08",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "ticket",
+   "family": "HF-HO2-N-08",
+   "reasonClass": "ambiguous"
+  },
+  {
+   "reportId": "HO2-N-09",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "ticket",
+   "family": "HF-HO2-N-09",
+   "reasonClass": "ambiguous"
+  },
+  {
+   "reportId": "HO2-N-10",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "email",
+   "family": "HF-HO2-N-10",
+   "reasonClass": "contradictory"
+  },
+  {
+   "reportId": "HO2-N-11",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "formal-spec",
+   "family": "HF-HO2-N-11",
+   "reasonClass": "ambiguous"
+  },
+  {
+   "reportId": "HO2-N-12",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "narrative",
+   "family": "HF-HO2-N-12",
+   "reasonClass": "ambiguous"
+  },
+  {
+   "reportId": "HO2-N-13",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "hypothetical",
+   "family": "HF-HO2-N-13",
+   "reasonClass": "not-a-rule"
+  },
+  {
+   "reportId": "HO2-N-14",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "contradictory-stakeholders",
+   "family": "HF-HO2-N-14",
+   "reasonClass": "contradictory"
+  },
+  {
+   "reportId": "HO2-Q-01",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "email",
+   "family": "HF-HO2-Q-01",
+   "reasonClass": "qualifier"
+  },
+  {
+   "reportId": "HO2-Q-02",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "jira-acceptance",
+   "family": "HF-HO2-Q-02",
+   "reasonClass": "qualifier"
+  },
+  {
+   "reportId": "HO2-Q-03",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "chat-shorthand",
+   "family": "HF-HO2-Q-03",
+   "reasonClass": "qualifier"
+  },
+  {
+   "reportId": "HO2-Q-04",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "runbook-step",
+   "family": "HF-HO2-Q-04",
+   "reasonClass": "qualifier"
+  },
+  {
+   "reportId": "HO2-Q-05",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "formal-spec",
+   "family": "HF-HO2-Q-05",
+   "reasonClass": "qualifier"
+  },
+  {
+   "reportId": "HO2-Q-06",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "narrative",
+   "family": "HF-HO2-Q-06",
+   "reasonClass": "qualifier"
+  },
+  {
+   "reportId": "HO2-R-01",
+   "expect": "no_compile",
+   "source": "real-public",
+   "style": "advisory-excerpt",
+   "family": "HF-HO2-R-01",
+   "reasonClass": "unsupported-behaviour",
+   "citation": {
+    "title": "Scattered Spider (AA23-320A)",
+    "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-320a",
+    "retrieved": "2026-09-24",
+    "license": "US Government work (public domain), CISA/FBI joint advisory"
+   }
+  },
+  {
+   "reportId": "HO2-R-02",
+   "expect": "no_compile",
+   "source": "real-public",
+   "style": "advisory-excerpt",
+   "family": "HF-HO2-R-02",
+   "reasonClass": "not-a-rule",
+   "citation": {
+    "title": "Scattered Spider (AA23-320A)",
+    "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-320a",
+    "retrieved": "2026-09-24",
+    "license": "US Government work (public domain), CISA/FBI joint advisory"
+   }
+  },
+  {
+   "reportId": "HO2-R-03",
+   "expect": "no_compile",
+   "source": "real-public",
+   "style": "advisory-excerpt",
+   "family": "HF-HO2-R-03",
+   "reasonClass": "not-a-rule",
+   "citation": {
+    "title": "Scattered Spider (AA23-320A)",
+    "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-320a",
+    "retrieved": "2026-09-24",
+    "license": "US Government work (public domain), CISA/FBI joint advisory"
+   }
+  },
+  {
+   "reportId": "HO2-R-04",
+   "expect": "no_compile",
+   "source": "real-public",
+   "style": "advisory-excerpt",
+   "family": "HF-HO2-R-04",
+   "reasonClass": "not-a-rule",
+   "citation": {
+    "title": "Scattered Spider (AA23-320A)",
+    "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-320a",
+    "retrieved": "2026-09-24",
+    "license": "US Government work (public domain), CISA/FBI joint advisory"
+   }
+  },
+  {
+   "reportId": "HO2-R-05",
+   "expect": "no_compile",
+   "source": "real-public",
+   "style": "advisory-excerpt",
+   "family": "HF-HO2-R-05",
+   "reasonClass": "ambiguous",
+   "citation": {
+    "title": "#StopRansomware: Hive Ransomware (AA22-321A)",
+    "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-321a",
+    "retrieved": "2026-09-24",
+    "license": "US Government work (public domain), CISA/FBI joint advisory"
+   }
+  },
+  {
+   "reportId": "HO2-R-06",
+   "expect": "no_compile",
+   "source": "real-public",
+   "style": "advisory-excerpt",
+   "family": "HF-HO2-R-06",
+   "reasonClass": "not-a-rule",
+   "citation": {
+    "title": "#StopRansomware: Hive Ransomware (AA22-321A)",
+    "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-321a",
+    "retrieved": "2026-09-24",
+    "license": "US Government work (public domain), CISA/FBI joint advisory"
+   }
+  },
+  {
+   "reportId": "HO2-R-07",
+   "expect": "no_compile",
+   "source": "real-public",
+   "style": "advisory-excerpt",
+   "family": "HF-HO2-R-07",
+   "reasonClass": "not-a-rule",
+   "citation": {
+    "title": "#StopRansomware: Hive Ransomware (AA22-321A)",
+    "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-321a",
+    "retrieved": "2026-09-24",
+    "license": "US Government work (public domain), CISA/FBI joint advisory"
+   }
+  },
+  {
+   "reportId": "HO2-R-08",
+   "expect": "no_compile",
+   "source": "real-public",
+   "style": "advisory-excerpt",
+   "family": "HF-HO2-R-08",
+   "reasonClass": "not-a-rule",
+   "citation": {
+    "title": "#StopRansomware: Hive Ransomware (AA22-321A)",
+    "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-321a",
+    "retrieved": "2026-09-24",
+    "license": "US Government work (public domain), CISA/FBI joint advisory"
+   }
+  },
+  {
+   "reportId": "HO2-R-09",
+   "expect": "no_compile",
+   "source": "real-public",
+   "style": "advisory-excerpt",
+   "family": "HF-HO2-R-09",
+   "reasonClass": "not-a-rule",
+   "citation": {
+    "title": "Scattered Spider (AA23-320A)",
+    "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-320a",
+    "retrieved": "2026-09-24",
+    "license": "US Government work (public domain), CISA/FBI joint advisory"
+   }
+  },
+  {
+   "reportId": "HO2-R-10",
+   "expect": "no_compile",
+   "source": "real-public",
+   "style": "advisory-excerpt",
+   "family": "HF-HO2-R-10",
+   "reasonClass": "not-a-rule",
+   "citation": {
+    "title": "Scattered Spider (AA23-320A)",
+    "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-320a",
+    "retrieved": "2026-09-24",
+    "license": "US Government work (public domain), CISA/FBI joint advisory"
+   }
+  },
+  {
+   "reportId": "HO2-R-11",
+   "expect": "no_compile",
+   "source": "real-public",
+   "style": "advisory-excerpt",
+   "family": "HF-HO2-R-11",
+   "reasonClass": "unsupported-behaviour",
+   "citation": {
+    "title": "Scattered Spider (AA23-320A)",
+    "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-320a",
+    "retrieved": "2026-09-24",
+    "license": "US Government work (public domain), CISA/FBI joint advisory"
+   }
+  },
+  {
+   "reportId": "HO2-S-B1-01",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "email",
+   "family": "HF-HO2-S-B1-01",
+   "behaviourId": "repeated-failed-login-then-success"
+  },
+  {
+   "reportId": "HO2-S-B1-02",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "jira-acceptance",
+   "family": "HF-HO2-S-B1-02",
+   "behaviourId": "repeated-failed-login-then-success"
+  },
+  {
+   "reportId": "HO2-S-B1-03",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "runbook-step",
+   "family": "HF-HO2-S-B1-03",
+   "behaviourId": "repeated-failed-login-then-success"
+  },
+  {
+   "reportId": "HO2-S-B1-04",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "sigma-like-yaml",
+   "family": "HF-HO2-S-B1-04",
+   "behaviourId": "repeated-failed-login-then-success"
+  },
+  {
+   "reportId": "HO2-S-B1-05",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "narrative-with-distractors",
+   "family": "HF-HO2-S-B1-05",
+   "behaviourId": "repeated-failed-login-then-success"
+  },
+  {
+   "reportId": "HO2-S-B1-06",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "checklist",
+   "family": "HF-HO2-S-B1-06",
+   "behaviourId": "repeated-failed-login-then-success"
+  },
+  {
+   "reportId": "HO2-S-B2-01",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "email",
+   "family": "HF-HO2-S-B2-01",
+   "behaviourId": "password-spray-across-accounts"
+  },
+  {
+   "reportId": "HO2-S-B2-02",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "jira-acceptance",
+   "family": "HF-HO2-S-B2-02",
+   "behaviourId": "password-spray-across-accounts"
+  },
+  {
+   "reportId": "HO2-S-B2-03",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "runbook-step",
+   "family": "HF-HO2-S-B2-03",
+   "behaviourId": "password-spray-across-accounts"
+  },
+  {
+   "reportId": "HO2-S-B2-04",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "sigma-like-yaml",
+   "family": "HF-HO2-S-B2-04",
+   "behaviourId": "password-spray-across-accounts"
+  },
+  {
+   "reportId": "HO2-S-B2-05",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "narrative-with-distractors",
+   "family": "HF-HO2-S-B2-05",
+   "behaviourId": "password-spray-across-accounts"
+  },
+  {
+   "reportId": "HO2-S-B2-06",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "chat-symbols",
+   "family": "HF-HO2-S-B2-06",
+   "behaviourId": "password-spray-across-accounts"
+  },
+  {
+   "reportId": "HO2-S-B3-01",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "email",
+   "family": "HF-HO2-S-B3-01",
+   "behaviourId": "multi-host-authentication"
+  },
+  {
+   "reportId": "HO2-S-B3-02",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "jira-acceptance",
+   "family": "HF-HO2-S-B3-02",
+   "behaviourId": "multi-host-authentication"
+  },
+  {
+   "reportId": "HO2-S-B3-03",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "runbook-step",
+   "family": "HF-HO2-S-B3-03",
+   "behaviourId": "multi-host-authentication"
+  },
+  {
+   "reportId": "HO2-S-B3-04",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "narrative-with-distractors",
+   "family": "HF-HO2-S-B3-04",
+   "behaviourId": "multi-host-authentication"
+  },
+  {
+   "reportId": "HO2-S-B3-05",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "sigma-like-yaml",
+   "family": "HF-HO2-S-B3-05",
+   "behaviourId": "multi-host-authentication"
+  },
+  {
+   "reportId": "HO2-S-B3-06",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "formal-spec",
+   "family": "HF-HO2-S-B3-06",
+   "behaviourId": "multi-host-authentication"
+  },
+  {
+   "reportId": "HO2-S-B4-01",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "email",
+   "family": "HF-HO2-S-B4-01",
+   "behaviourId": "auth-method-policy-violation"
+  },
+  {
+   "reportId": "HO2-S-B4-02",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "jira-acceptance",
+   "family": "HF-HO2-S-B4-02",
+   "behaviourId": "auth-method-policy-violation"
+  },
+  {
+   "reportId": "HO2-S-B4-03",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "runbook-step",
+   "family": "HF-HO2-S-B4-03",
+   "behaviourId": "auth-method-policy-violation"
+  },
+  {
+   "reportId": "HO2-S-B4-04",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "narrative-with-distractors",
+   "family": "HF-HO2-S-B4-04",
+   "behaviourId": "auth-method-policy-violation"
+  },
+  {
+   "reportId": "HO2-S-B4-05",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "sigma-like-yaml",
+   "family": "HF-HO2-S-B4-05",
+   "behaviourId": "auth-method-policy-violation"
+  },
+  {
+   "reportId": "HO2-S-B4-06",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "chat-shorthand",
+   "family": "HF-HO2-S-B4-06",
+   "behaviourId": "auth-method-policy-violation"
+  },
+  {
+   "reportId": "HO2-S-B5-01",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "email",
+   "family": "HF-HO2-S-B5-01",
+   "behaviourId": "mfa-missing-on-required-account"
+  },
+  {
+   "reportId": "HO2-S-B5-02",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "jira-acceptance",
+   "family": "HF-HO2-S-B5-02",
+   "behaviourId": "mfa-missing-on-required-account"
+  },
+  {
+   "reportId": "HO2-S-B5-03",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "runbook-step",
+   "family": "HF-HO2-S-B5-03",
+   "behaviourId": "mfa-missing-on-required-account"
+  },
+  {
+   "reportId": "HO2-S-B5-04",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "narrative-with-distractors",
+   "family": "HF-HO2-S-B5-04",
+   "behaviourId": "mfa-missing-on-required-account"
+  },
+  {
+   "reportId": "HO2-S-B5-05",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "sigma-like-yaml",
+   "family": "HF-HO2-S-B5-05",
+   "behaviourId": "mfa-missing-on-required-account"
+  },
+  {
+   "reportId": "HO2-S-B5-06",
+   "expect": "compiled",
+   "source": "authored",
+   "style": "chat-shorthand",
+   "family": "HF-HO2-S-B5-06",
+   "behaviourId": "mfa-missing-on-required-account"
+  },
+  {
+   "reportId": "HO2-U-01",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "ticket",
+   "family": "HF-HO2-U-01",
+   "reasonClass": "unsupported-behaviour"
+  },
+  {
+   "reportId": "HO2-U-02",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "email",
+   "family": "HF-HO2-U-02",
+   "reasonClass": "unsupported-behaviour"
+  },
+  {
+   "reportId": "HO2-U-03",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "runbook-step",
+   "family": "HF-HO2-U-03",
+   "reasonClass": "unsupported-behaviour"
+  },
+  {
+   "reportId": "HO2-U-04",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "chat-shorthand",
+   "family": "HF-HO2-U-04",
+   "reasonClass": "unsupported-behaviour"
+  },
+  {
+   "reportId": "HO2-U-05",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "jira-acceptance",
+   "family": "HF-HO2-U-05",
+   "reasonClass": "unsupported-behaviour"
+  },
+  {
+   "reportId": "HO2-U-06",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "formal-spec",
+   "family": "HF-HO2-U-06",
+   "reasonClass": "unsupported-field"
+  },
+  {
+   "reportId": "HO2-U-07",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "sigma-like-yaml",
+   "family": "HF-HO2-U-07",
+   "reasonClass": "unsupported-behaviour"
+  },
+  {
+   "reportId": "HO2-U-08",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "email",
+   "family": "HF-HO2-U-08",
+   "reasonClass": "unsupported-behaviour"
+  },
+  {
+   "reportId": "HO2-U-09",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "narrative",
+   "family": "HF-HO2-U-09",
+   "reasonClass": "unsupported-behaviour"
+  },
+  {
+   "reportId": "HO2-U-10",
+   "expect": "no_compile",
+   "source": "authored",
+   "style": "checklist",
+   "family": "HF-HO2-U-10",
+   "reasonClass": "unsupported-field"
+  }
+ ]
+}

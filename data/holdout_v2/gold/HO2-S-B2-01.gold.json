@@ -1,0 +1,29 @@
+{
+  "reportId": "HO2-S-B2-01",
+  "reportSha256": "6b534e8eccc7f48b44d22342ce6e5a9540eaf54b7c1c918142080f95c8d67a6a",
+  "expect": "compiled",
+  "behaviourId": "password-spray-across-accounts",
+  "fields": [
+    "timestamp",
+    "event_type",
+    "source_host",
+    "account_id"
+  ],
+  "count": {
+    "value": 5,
+    "semantics": "distinct_accounts",
+    "evidence": {
+      "start": 75,
+      "end": 105,
+      "quote": "5 or more different user names"
+    }
+  },
+  "window": {
+    "seconds": 900,
+    "evidence": {
+      "start": 115,
+      "end": 133,
+      "quote": "quarter of an hour"
+    }
+  }
+}

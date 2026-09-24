@@ -1,0 +1,29 @@
+{
+  "reportId": "HO2-S-B3-05",
+  "reportSha256": "9d5fa4a07ce5e2ddfbba2f14eebc58640f2cae040d838ce06ec3f0a84d83882f",
+  "expect": "compiled",
+  "behaviourId": "multi-host-authentication",
+  "fields": [
+    "timestamp",
+    "event_type",
+    "account_id",
+    "source_host"
+  ],
+  "count": {
+    "value": 2,
+    "semantics": "distinct_hosts",
+    "evidence": {
+      "start": 56,
+      "end": 77,
+      "quote": "distinct_hosts_min: 2"
+    }
+  },
+  "window": {
+    "seconds": 600,
+    "evidence": {
+      "start": 78,
+      "end": 89,
+      "quote": "window: 10m"
+    }
+  }
+}

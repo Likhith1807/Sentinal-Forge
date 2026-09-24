@@ -1,0 +1,13 @@
+{
+  "reportId": "HO2-S-B5-02",
+  "reportSha256": "e69681c085ec0234db44e7f07cc3845ee3fabb95db26266e7f57f3711fd59233",
+  "expect": "compiled",
+  "behaviourId": "mfa-missing-on-required-account",
+  "fields": [
+    "timestamp",
+    "event_type",
+    "account_id",
+    "mfa_used",
+    "policy.mfa_required"
+  ]
+}

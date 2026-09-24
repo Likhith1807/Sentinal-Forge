@@ -1,0 +1,8 @@
+{
+  "reportId": "HO2-R-02",
+  "reportSha256": "7ea647da4e951b0a96ebac89d128eacd94d2594417b1d7ba1fd8aeba662bf4b1",
+  "expect": "no_compile",
+  "reasonClass": "not-a-rule",
+  "fields": [],
+  "why": "A preventive control, not a detection."
+}

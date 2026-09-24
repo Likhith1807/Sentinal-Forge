@@ -1,0 +1,8 @@
+{
+  "reportId": "HO2-R-08",
+  "reportSha256": "0139bf87260212591663c1944594063aea2624354c7e6ff618470ae81eb850bf",
+  "expect": "no_compile",
+  "reasonClass": "not-a-rule",
+  "fields": [],
+  "why": "A recommendation."
+}

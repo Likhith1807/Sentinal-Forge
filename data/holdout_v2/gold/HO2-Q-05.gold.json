@@ -1,0 +1,7 @@
+{
+  "reportId": "HO2-Q-05",
+  "reportSha256": "d5ea26b2405fa388aa10998c4c2c81fee2b18c132e3252119fd370e4d73994af",
+  "expect": "no_compile",
+  "reasonClass": "qualifier",
+  "fields": []
+}

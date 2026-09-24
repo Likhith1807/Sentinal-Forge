@@ -1,0 +1,8 @@
+{
+  "reportId": "HO2-R-05",
+  "reportSha256": "4c21f0ac9ceded46d2c5f6aaa4d9a269926e61c890885e0fb5656280d6f5e0ad",
+  "expect": "no_compile",
+  "reasonClass": "ambiguous",
+  "fields": [],
+  "why": "Asks for monitoring and lockouts but states no count or window."
+}
