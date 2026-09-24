@@ -24,6 +24,7 @@ def main() -> int:
     ap.add_argument("--dir", type=Path, default=REPO / "experiments" / "results" / "holdout")
     ap.add_argument("--holdout", type=Path, default=REPO / "data" / "holdout")
     a = ap.parse_args()
+    a.dir, a.holdout = a.dir.resolve(), a.holdout.resolve()
     rows = [json.loads(l) for l in (a.dir / "per_report.jsonl").read_text(encoding="utf-8").splitlines() if l.strip()]
     manifest = {e["reportId"]: e for e in json.loads((a.holdout / "manifest.json").read_text(encoding="utf-8"))["entries"]}
     text = lambda rid: (a.holdout / "reports" / f"{rid}.md").read_text(encoding="utf-8").strip()  # noqa: E731

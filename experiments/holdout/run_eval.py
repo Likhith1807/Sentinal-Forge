@@ -345,10 +345,15 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--skip-llm", action="store_true")
     ap.add_argument("--limit", type=int, default=0)
+    ap.add_argument("--holdout", default="holdout", help="directory under data/ (holdout | holdout_v2)")
     ap.add_argument("--llm-model", default="openai/gpt-oss-20b", help="model for the prompted rows (the 120B model's daily quota was exhausted during development)")
     args = ap.parse_args(argv)
+    global HOLD, OUT
+    HOLD = REPO / "data" / args.holdout
+    if args.holdout != "holdout":
+        OUT = REPO / "experiments" / "results" / args.holdout
     OUT.mkdir(parents=True, exist_ok=True)
-    frozen = subprocess.run([sys.executable, str(REPO / "scripts" / "holdout" / "verify_frozen.py")], capture_output=True, text=True)
+    frozen = subprocess.run([sys.executable, str(REPO / "scripts" / "holdout" / "verify_frozen.py"), "--dir", str(HOLD)], capture_output=True, text=True)
     if frozen.returncode != 0:
         print(frozen.stdout)
         return 2
@@ -377,7 +382,7 @@ def main(argv=None) -> int:
         if n % 20 == 0:
             print(f"{n}/{len(ids)} reports, {time.time() - t0:.0f}s", flush=True)
     summary = {name: summarise(rows) for name, rows in all_rows.items()}
-    out = {"holdout": {"reports": len(ids), "frozen": json.loads((HOLD / "FROZEN.json").read_text())["frozenOn"], "tag": "holdout-v1-frozen"},
+    out = {"holdout": {"reports": len(ids), "frozen": json.loads((HOLD / "FROZEN.json").read_text())["frozenOn"], "tag": "holdout-v1-frozen" if args.holdout == "holdout" else f"{args.holdout.replace('holdout_', 'holdout-')}-frozen"},
            "gitHead": git_head(), "ranAt": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "llmModel": args.llm_model if not args.skip_llm else None,
            "note": "Single run on the frozen holdout. No extractor or parser change was made after seeing these numbers.", "systems": summary}
     (OUT / "summary.json").write_text(json.dumps(out, indent=2), encoding="utf-8")
