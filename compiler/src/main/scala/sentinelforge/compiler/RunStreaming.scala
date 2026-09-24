@@ -55,11 +55,15 @@ object RunStreaming {
     val idleExit = o.getOrElse("idle-exit-seconds", "0").toInt
     if (availableNow || idleExit == 0) q.awaitTermination()
     else {
-      var idleSince = System.currentTimeMillis()
-      while (q.isActive && System.currentTimeMillis() - idleSince < idleExit * 1000L) {
+      // The idle clock starts only once the query has PROGRESSED (a slow JVM / state restore must not look "idle"),
+      // restarts whenever a batch reads input, and a query that never progresses is abandoned after 20x the idle time.
+      val begun = System.currentTimeMillis()
+      var idleSince = -1L
+      while (q.isActive && !(idleSince > 0 && System.currentTimeMillis() - idleSince >= idleExit * 1000L)
+             && System.currentTimeMillis() - begun < idleExit * 20000L) {
         Thread.sleep(300)
         val lp = q.lastProgress
-        if (lp != null && lp.numInputRows > 0) idleSince = System.currentTimeMillis()
+        if (lp != null && (idleSince < 0 || lp.numInputRows > 0)) idleSince = System.currentTimeMillis()
       }
       q.stop()
     }

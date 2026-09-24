@@ -1,0 +1,47 @@
+{
+  "behaviour": "password-spray-across-accounts",
+  "seed": 3,
+  "lateness": 600,
+  "expiry": 259800,
+  "runs": [
+    {
+      "killAfterBatches": 2,
+      "batchesBeforeKill": 1,
+      "filesFedBeforeKill": 7,
+      "totalFiles": 7,
+      "alerts": 3,
+      "expectedAlerts": 3,
+      "duplicateOrLateRecords": 14,
+      "duplicateRecordsForMidStreamRetry": 14,
+      "rowsDroppedByWatermarkAfterHeartbeat": 91,
+      "batchFiles": 10,
+      "problems": []
+    },
+    {
+      "killAfterBatches": 4,
+      "batchesBeforeKill": 1,
+      "filesFedBeforeKill": 7,
+      "totalFiles": 7,
+      "alerts": 3,
+      "expectedAlerts": 3,
+      "duplicateOrLateRecords": 14,
+      "duplicateRecordsForMidStreamRetry": 14,
+      "rowsDroppedByWatermarkAfterHeartbeat": 91,
+      "batchFiles": 9,
+      "problems": []
+    },
+    {
+      "killAfterBatches": 6,
+      "batchesBeforeKill": 1,
+      "filesFedBeforeKill": 7,
+      "totalFiles": 7,
+      "alerts": 3,
+      "expectedAlerts": 3,
+      "duplicateOrLateRecords": 14,
+      "duplicateRecordsForMidStreamRetry": 14,
+      "rowsDroppedByWatermarkAfterHeartbeat": 91,
+      "batchFiles": 9,
+      "problems": []
+    }
+  ]
+}

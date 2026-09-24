@@ -1,162 +1,119 @@
-# Detection Semantics (v1)
+# Detection semantics (v2)
 
-`docs/spec/compiled-spec-format.md` defines *what* each of the 3 recipes
-computes. This document defines the precise *edge-case behavior* the
-project's correctness completion standard requires: window boundary
-inclusivity, event ordering, repeated-incident alert cardinality,
-missing-value handling, and policy-lookup-failure handling.
+This is the contract the compiled rules obey. It is written from the intended behaviour, and three
+implementations are held to it:
 
-**Every claim below is backed by a real, executed case, not inferred from
-reading the code** —
-`compiler/src/main/scala/sentinelforge/compiler/DetectionSemanticsCheck.scala`
-(`sbt "runMain sentinelforge.compiler.DetectionSemanticsCheck"`) constructs
-each scenario as a small in-memory Spark DataFrame, runs it through the
-real `RuleCompiler`, and records the actual output. Results:
-`experiments/results/detection_semantics_check.json`. Where a case exposed
-a real gap (not just a documentation gap), that's stated plainly below —
-this document does not smooth over what the compiler doesn't do.
+* the Spark batch executor (`RuleCompiler.scala`, run by `RunRule`),
+* the Spark Structured Streaming executor (`StreamingEngine.scala`, run by `RunStreaming`),
+* an independent, deliberately naive Python reference engine (`sentinelforge/refengine.py`).
 
-## Window boundaries: closed on both ends
+Every rule below is pinned by a test that states the rule in its name. Agreement between the engines is
+tested (differential, streaming), but agreement alone cannot catch a misunderstanding all of them share, so
+the golden cases in `tests/core/test_refengine.py` and `RuleCompilerSpec.scala` hold expectations worked out
+by hand from this document.
 
-`SequenceThenTrigger` and `DistinctCountWithinWindow` both use
-`Window.partitionBy(groupingKey).orderBy(parseTs(timestamp)).rangeBetween(-timeWindowSeconds, 0L)`.
-Spark's `rangeBetween` is a **closed interval**: a row exactly
-`timeWindowSeconds` before the current row's timestamp **is** included.
+## 1. Events
 
-Verified (case A/B): with `timeWindowSeconds=300` and `countThreshold=3`,
-3 failures at `t=0,1,2` followed by a success at exactly `t=300` **does**
-alert (the `t=0` failure is still in range). The same shape with the
-success moved to `t=301` does **not** alert — `t=0` has fallen out of
-range, leaving only 2 qualifying failures, below threshold.
+**Timestamps** are RFC 3339 with an explicit zone (`Z` or `+hh:mm`) and 0-6 fractional digits, parsed to exact
+integer microseconds since the epoch. Zone offsets are normalised to UTC. Anything else - no zone
+(`2026-03-01T00:00:03`), a date-only string, seven fractional digits, `2026-13-40...`, an empty string - is
+**malformed**. A missing timestamp is `null_timestamp`. *(v1 truncated to whole seconds, which made
+`00:00:00.999` and `00:00:01.000` indistinguishable to window arithmetic.)*
 
-## Event ordering: whole-second precision, not millisecond
+**Quarantine.** A row is quarantined - counted, listed with a reason, and excluded from evaluation - if its
+`event_id` is null (`null_event_id`), its timestamp is missing or malformed, or a column the rule groups or
+counts by is null (`null_<column>`). Quarantined rows are never silently dropped and never sorted as if they had
+a timestamp.
 
-The schema documents millisecond-precision timestamps
-(`authentication-log-schema.md`), but `RuleCompiler.parseTs(...)` parses
-into a `timestamp` type and the window's `orderBy` casts it `.cast("long")`
-— **truncated to whole seconds**. Two events 400ms apart within the same
-second are ordered arbitrarily relative to each other (tied order key),
-though both still correctly fall inside or outside a window based on
-which whole second they land in.
+**Duplicates.** Rows sharing an `event_id` collapse to one: the earliest instant, ties broken by the
+lexicographically smallest row content (other columns sorted by name, NULLs skipped, joined by U+0001). A
+collector that redelivers an event therefore cannot inflate a count or duplicate an alert. *(Streaming keeps the
+first-delivered copy instead; identical for exact redelivery, different for conflicting duplicates - see 5.)*
 
-Verified (case C): 3 failures within the same second, followed by a
-success 100ms into the next second, still alerts correctly. This is not
-a case where sub-second precision changes the *outcome* — the compiler's
-`timeWindowSeconds` granularity is already whole seconds by construction
-— but a future recipe using sub-second thresholds would need this fixed
-first. Documented, not currently a functional defect at the seconds
-granularity the compiler is designed for.
+**Schema.** A rule refuses to run - with a structured error naming every missing or mistyped column - if the
+data lacks a column the rule reads or emits, or has it with the wrong type (`mfa_used` as a string, say). A
+column that is present but entirely NULL is *unobserved*, not missing: its rows become `insufficient_context`.
 
-## Repeated incidents: alert cardinality is consistent across all 3 recipes (fixed, Phase D)
+## 2. Windows
 
-All 3 recipes now alert **once per qualifying incident** — this was not always true, and the
-inconsistency was the most consequential finding of the first pass of this document:
+Closed on both ends: an event at exactly `t - W` is inside a window ending at `t`. Comparison is in
+microseconds. Events with an **identical timestamp** are all inside each other's window regardless of their order.
+`W` is a whole number of seconds between 1 and 7 days (validated; `0.5 s` is rejected as unsupported precision).
 
-- **`SequenceThenTrigger`**: alerts once per qualifying trigger event. Two fully separate
-  incidents for the same account, a day apart, each meeting the threshold independently, produce
-  **2 alert rows** (case D). Always correct; not touched by this fix.
+## 3. Recipes
 
-- **`PolicyCompare`**: alerts once per qualifying event, with no deduplication at all. Two
-  separate non-compliant `login_success` events for the same account produce **2 alert rows**
-  (case H) — each event is its own policy violation. Always correct; not touched by this fix.
+**SequenceThenTrigger** (repeated failed logins, then success). For every trigger event (`login_success`), count the
+counting events (`login_failure`) of the same group inside `[t - W, t]`; alert if the count is `>= N`. One alert per
+trigger event. `matchedCount` and the evidence list are that count and those events.
 
-- **`DistinctCountWithinWindow`**: **CORRECTION (Phase D).** This used to alert at most once per
-  groupKey *ever*, regardless of how many separate incidents occurred — a final `.groupBy(groupKey)`
-  collapsed every qualifying row into one output row, taking `min(timestamp)` as `windowStart` and
-  `max(timestamp)` as `detectedAt`. Two fully separate password-spray bursts against the same
-  host, a day apart, produced **1 alert row** spanning the full day, falsely implying one
-  continuous incident.
+**DistinctCountWithinWindow** (failures across accounts from one host; successes from several hosts for one account).
+Among events of the filter type for one group, the distinct count of the distinct field inside `[t - W, t]` is
+computed **exactly** (never approximated). An alert fires at the first event, ordered by `(timestamp, event_id)`,
+at which the count reaches `N` after an event at which it did not: **one alert per incident** (a "rising edge").
+Two incidents for the same entity separated by a non-breaching event alert twice. `N >= 2` (a threshold of 1 is
+true of every event and makes "once per incident" meaningless; it is rejected at validation).
 
-  **The fix**: alert on the *rising edge* of the rolling distinct count — the instant it first
-  reaches the threshold, exactly the same per-trigger-event granularity `SequenceThenTrigger`
-  already had. `windowStart` is now the alert's own `detectedAt` minus the window duration (well
-  defined per alert, not `min()` over however many incidents happened to share a groupKey). This
-  is also exactly the "episode" semantics `scripts/datagen/refdetect.py`'s independent reference
-  implementation used from the start (it was written to the *intended* semantics, not the bug).
-  Re-verified with case E: the same two-incidents-a-day-apart scenario now produces **2 alert
-  rows**, each with its own `detectedAt` and a `windowStart` exactly `windowSecs` before it —
-  and every existing real-data result that depends on this recipe's output shape was re-run and
-  still passes (`ReplayCheck` 17/17, `EndToEndCheck` 11/11, `ManualBaselineCheck` 17/17,
-  `DistinctCountBoundaryCheck` all pass, plus the 10,900-label `GeneratedDataCheck` run — see
-  `docs/data-sources.md`).
+**PolicyCompare** (authentication method / MFA). One result per `login_success`:
 
-## Missing/malformed values: silent exclusion, not a structured error
+| Situation | status | reason |
+|---|---|---|
+| no policy record for the account | `insufficient_context` | `no_policy_record` |
+| policy rows for the account conflict | `insufficient_context` | `policy_conflict` |
+| the compared policy value is NULL | `insufficient_context` | `policy_value_null` |
+| the log value is NULL (unobserved) | `insufficient_context` | `log_value_null` |
+| the comparison holds | `alert` | `policy_violated` |
+| otherwise | `no_alert` | `compliant` |
 
-Two distinct "missing" cases were tested, with two distinct (both
-currently silent) outcomes:
+A NULL is never read as compliant. **Duplicate policy rows** for one account collapse when identical and make the
+account `policy_conflict` when they differ - a join is never multiplied by duplicate policy rows.
 
-- **Malformed timestamp value** (case F): an event with a
-  non-timestamp `timestamp` string is not rejected and does not crash —
-  `parseTs` (`to_timestamp` with an explicit format) returns `null` for
-  it, and the row's window frame is then keyed off that lost order
-  value. Observed effect: the malformed row's own contribution to
-  *other* rows' `recent_count` windows is silently dropped (a count that
-  should have been 3 was computed as 2, correctly *not* alerting for the
-  wrong reason — no timestamp to place it in range with). **This is a
-  real gap**: Stage 3 validates that a required field is *present in the
-  schema*, but nothing validates that a field's *value*, once it reaches
-  Spark, actually parses. A malformed timestamp degrades detection
-  silently rather than surfacing as a structured error the way a missing
-  *column* does (`RobustnessCheck`'s Test 2 — dropping the column
-  entirely fails loudly with a `AnalysisException`; a malformed *value*
-  inside a present column does not).
+**Versioned policy.** If the policy table has an `effective_from` column, the row in force *at the event's own
+timestamp* applies: the latest `effective_from <= event time`. A null `effective_from` means "always in force"; an
+unparseable one is ignored. A change is not retroactive and need not arrive before the events it governs (in
+batch). Each result records the `policyVersion` it used.
 
-- **Null value in a present field** (cases G, I): **CORRECTION (Phase D).** `PolicyCompare` used
-  to treat a `NULL` `logField` (e.g. `mfa_used` or `auth_method` present in the schema but null on
-  a specific event) the same as "condition not met" — three-valued SQL logic makes both
-  `NULL === false` (`falseWhenRequired`) and `NULL =!= x` (`notEqual`) evaluate to `NULL`, which
-  `.otherwise(...)` then read as `no_alert`. Only a missing *policy* row was caught as
-  `insufficient_context`; a null *log* field was silently treated as compliant, on **both**
-  comparison operators — case G originally tested only `falseWhenRequired`; case I, added in this
-  pass, confirms the same gap existed in `notEqual` too.
+## 4. What `matchedCount`, `windowStart` and `evidence` mean
 
-  **The fix**: `logField.isNull` is now checked explicitly, before the comparison ever runs, for
-  both operators — a genuinely unobserved log value now correctly degrades to
-  `insufficient_context` instead of being read as compliant. Re-verified: case G now observes
-  `status=insufficient_context` (was `no_alert`); case I (new) observes the same for `notEqual`.
-  `scripts/datagen/refdetect.py`'s independent reference implementation had the equivalent gap
-  (a null `mfa_used`/`auth_method` fell through to no alert being appended at all, and for
-  `auth_method` specifically, Python's plain `!=` on `None` would have produced a **false alert**,
-  not just a false negative) and was fixed the same way.
+`windowStart = t - W` rendered as `yyyy-MM-ddTHH:mm:ss.SSSZ` (UTC, milliseconds, truncated - not rounded);
+`matchedCount` is the count that met the threshold; `evidence` lists the events inside `[t - W, t]` that were
+counted, ordered by `(timestamp, event_id)`, each with its own timestamp and value.
 
-## Policy lookup failure: per-event, not per-rule
+## 5. Streaming (`RunStreaming`)
 
-`PolicyCompare` left-joins on `account_id` per event, so a policy lookup
-failure (account absent from the policy reference) affects only that
-account's own rows — it does not degrade or block evaluation for other
-accounts sharing the same rule. Already covered by
-`RobustnessCheck`'s Test 1 (whole policy table empty → all evaluated
-accounts correctly degrade to `insufficient_context`) and
-`ReplayCheck`'s `SA-NEG-NO-POLICY`/`MFA-NEG-NO-POLICY` scenarios (a
-specific account missing from an otherwise-populated policy table
-correctly resolves to `insufficient_context` while other accounts in the
-same run resolve normally).
+Streaming produces the batch answer under an explicit, testable policy - not "eventually correct":
 
-## What this document does and doesn't close
+* **Lateness.** Per key, an event is *finalised* (evaluated, in timestamp order) once it is at least `lateness`
+  older than the newest event that key has seen. An event at or before the key's finalised time cannot be placed in
+  order and is emitted as a `late` record - never silently dropped. **Agreement with batch is defined over the input
+  minus the events reported late** (`experiments/results/streaming_agreement.json`).
+* **Latency** is therefore at least `lateness` after a key's newest event, plus the trigger interval. Set
+  `lateness = 0` for in-order sources.
+* **Duplicates.** An id already buffered or inside the retained window is emitted as `duplicate`; an older
+  redelivery surfaces as `late`. Beyond state expiry a redelivery is undetectable.
+* **State expiry.** Requires `expiry >= window + lateness`. The Spark watermark is `max event time - expiry`; a key's
+  buffer is flushed and its state dropped when global event time is `expiry + lateness` past the key's newest event.
+  With that inequality an expired key holds nothing a later event could need, so expiry cannot change an alert;
+  violate it and it can (the runner refuses to start). Rows older than the global watermark are dropped **by
+  Spark** and only *counted* (`rowsDroppedByWatermark` in `stream.json`), not identified.
+* **Tail flush.** An idle stream holds back each key's last `lateness` of events until later events, or a
+  heartbeat row (`event_type = "__flush__"`, any valid timestamp), advance the watermark.
+* **Policy** is re-read every micro-batch and applied by event time (section 3); a policy update is never retroactive
+  to results already emitted.
+* **Output** is written from `foreachBatch`, one file per kind per batch id, atomically. Replaying a batch after a
+  crash overwrites the same file. That is *effectively-once output under conditions* - immutable, retained source
+  files; a deterministic state function; checkpoint and output directory preserved together; one query per
+  checkpoint - and **not** an unconditional exactly-once claim. Losing the checkpoint but not the output re-emits
+  alerts. See `experiments/results/streaming_recovery.json` for what was actually tested.
 
-This closes the "define exact detection semantics" requirement for the
-behavior that exists today — every claim above is pinned down by a
-permanent, real, executable check
-(`DetectionSemanticsCheck.scala`), not just prose. It does **not** claim
-the underlying behavior is already ideal: the `DistinctCountWithinWindow`
-cross-incident collapsing and the null-logField-as-compliant gap are both
-real, named limitations kept open as tracked follow-up rather than
-silently fixed or silently left undocumented.
+## 6. Where each rule is tested
 
-**Closed (Phase D).** `scripts/datagen/refdetect.py` is that independent,
-non-Spark reimplementation (written from this document's semantics,
-sharing no code with `RuleCompiler.scala`), and
-`compiler/test/differential_property_test.py` +
-`compiler/src/main/scala/sentinelforge/compiler/DifferentialCheck.scala`
-run it differentially against the real compiler over Hypothesis-generated
-random scenarios, batched into one JVM invocation per behaviour per test
-run. All 5 behaviours agreed across every scenario in the final run: 300
-scenarios each (1,500 total). Two real bugs were found and fixed by this
-process before it passed cleanly — both in the test harness, not the
-compiler: an empty `events` array (Hypothesis's shrinker found this
-immediately) and, once that was fixed, an empty `policy` array for the two
-`PolicyCompare` behaviours specifically, both cases where Spark cannot
-infer a struct type from a wholly-empty JSON array and the whole batch
-failed before any comparison could run. Re-runnable at any scale via
-`python compiler/test/differential_property_test.py --n-scenarios N
---max-examples M`.
+| Rule | Test |
+|---|---|
+| microsecond window edges, closed interval | `RuleCompilerSpec` "timestamp precision"; `test_refengine.py::TestSequenceThenTrigger`; differential |
+| quarantine reasons, zone normalisation | `RuleCompilerSpec` "malformed timestamps", "numeric UTC offset"; `TestTimestamps` |
+| duplicate `event_id` | `RuleCompilerSpec` "duplicate delivery"; metamorphic "redelivery changes no alert" |
+| duplicate / conflicting / versioned policy | `RuleCompilerSpec` "duplicate policy rows"; differential (policy scenarios) |
+| exact distinct counts, rising edge | `TestDistinctCount`; mutation check kills "events-not-distinct" and "no-rising-edge" |
+| schema mismatch | `RuleCompilerSpec` "structured schema error"; `tests/integration` |
+| batch = stream under the lateness policy | `scripts/verify/streaming_agreement.py` (8 regimes) |
+| crash recovery, retry | `scripts/verify/streaming_recovery.py` |

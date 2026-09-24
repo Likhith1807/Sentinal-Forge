@@ -81,19 +81,21 @@ def one_kill_point(bid: str, cases: int, seed: int, kill_after: int, work: Path)
     fed = 0
     for i, rows in enumerate(files):
         put(f"in-{i:05d}.json", rows)
+        if i == 1:
+            put("mid-retry-00000.json", files[0])                # collector retry while the keys' state is still retained
         fed += 1
         if wait_for_batches(out, kill_after, p1, timeout=1) and fed >= kill_after:
             break
         time.sleep(1.3)
     time.sleep(0.6)
-    p1.kill()                                                  # a crash: no shutdown hooks, no final commit
-    p1.wait()
+    streaming.kill(p1)                                         # a crash of the WHOLE process tree: no shutdown hooks, no final commit
     killed_at = streaming.batches_written(out, "alert")
     for i in range(fed, len(files)):                           # input that arrives during the outage
         put(f"in-{i:05d}.json", files[i])
     put("in-zz-heartbeat.json", [heartbeat(events)])
     p2 = streaming.start(spec_p, src, out, ckpt, None, log=d / "run2.log", idle_exit_s=25, **common)
     p2.wait(timeout=300)
+    streaming.kill(p2)
     alerts = streaming.read_kind(out, "alert")
     ids = [a["triggeringEventId"] for a in alerts]
     late = {x["triggeringEventId"] for x in streaming.read_kind(out, "late")}
@@ -112,12 +114,21 @@ def one_kill_point(bid: str, cases: int, seed: int, kill_after: int, work: Path)
         put(f"retry-{i:05d}.json", rows)
     p3 = streaming.start(spec_p, src, out, ckpt, None, log=d / "run3.log", idle_exit_s=20, **common)
     p3.wait(timeout=300)
+    streaming.kill(p3)
     after = streaming.read_kind(out, "alert")
     if len(after) != before:
         problems.append(f"re-delivery created {len(after) - before} new alert(s)")
     dups = len(streaming.read_kind(out, "duplicate")) + len(streaming.read_kind(out, "late"))
+    dup_ids = {x["triggeringEventId"] for x in streaming.read_kind(out, "duplicate")}
+    first_file_ids = {e["event_id"] for e in files[0]}
+    if not (dup_ids & first_file_ids):
+        problems.append("mid-stream redelivery of file 0 produced no `duplicate` record for its events")
+    dropped = 0
+    for f in (out / "progress").glob("batch-*.json"):
+        dropped += sum(o.get("numRowsDroppedByWatermark", 0) for o in json.loads(f.read_text(encoding="utf-8")).get("stateOperators", []))
     return {"killAfterBatches": kill_after, "batchesBeforeKill": killed_at, "filesFedBeforeKill": fed, "totalFiles": len(files),
-            "alerts": len(alerts), "expectedAlerts": len(ref_alerts), "duplicateOrLateRecordsAfterRetry": dups,
+            "alerts": len(alerts), "expectedAlerts": len(ref_alerts), "duplicateOrLateRecords": dups, "duplicateRecordsForMidStreamRetry": len(dup_ids & first_file_ids),
+            "rowsDroppedByWatermarkAfterHeartbeat": dropped,
             "batchFiles": len(nums), "problems": problems}
 
 
@@ -135,11 +146,15 @@ def main(argv=None) -> int:
         r = one_kill_point(a.behaviour, a.cases, a.seed, k, work)
         res.append(r)
         print(f"{'PASS' if not r['problems'] else 'FAIL'} kill after {k} batches: alerts={r['alerts']}/{r['expectedAlerts']} "
-              f"batch-files={r['batchFiles']} retry-records={r['duplicateOrLateRecordsAfterRetry']}", *r["problems"][:2])
+              f"batch-files={r['batchFiles']} mid-retry-dup-records={r['duplicateRecordsForMidStreamRetry']} late-retry-rows-dropped-by-watermark={r['rowsDroppedByWatermarkAfterHeartbeat']}", *r["problems"][:2])
     if a.out:
         a.out.write_text(json.dumps({"behaviour": a.behaviour, "seed": a.seed, "lateness": LATENESS, "expiry": EXPIRY, "runs": res}, indent=2), encoding="utf-8")
-    shutil.rmtree(work, ignore_errors=True)
-    return 0 if all(not r["problems"] for r in res) else 1
+    ok = all(not r["problems"] for r in res)
+    if ok:
+        shutil.rmtree(work, ignore_errors=True)
+    else:
+        print(f"work directory kept for inspection: {work}")
+    return 0 if ok else 1
 
 
 if __name__ == "__main__":

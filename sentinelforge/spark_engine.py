@@ -104,6 +104,32 @@ def jvm_command(java: Java, heap: str = "2g") -> list[str]:
     return cmd
 
 
+def popen_tree(cmd: list[str], **kw) -> subprocess.Popen:
+    """Start a child in its own process group so the WHOLE tree can be terminated. Needed because on Windows `java.exe`
+    can be a launcher stub that spawns the real JVM: killing only the stub leaves an orphan that keeps running (and
+    keeps writing to a streaming checkpoint)."""
+    if os.name != "nt":
+        kw.setdefault("start_new_session", True)
+    return subprocess.Popen(cmd, **kw)
+
+
+def kill_tree(proc: subprocess.Popen) -> None:
+    if proc.poll() is not None:
+        return
+    if os.name == "nt":
+        subprocess.run(["taskkill", "/F", "/T", "/PID", str(proc.pid)], capture_output=True)
+    else:
+        import signal
+        try:
+            os.killpg(os.getpgid(proc.pid), signal.SIGKILL)
+        except ProcessLookupError:
+            pass
+    try:
+        proc.wait(timeout=10)
+    except subprocess.TimeoutExpired:  # pragma: no cover
+        pass
+
+
 def child_env() -> dict:
     """Environment for the child JVM. On Windows Spark's Hadoop client needs winutils.exe / hadoop.dll (a repo-local
     toolchain under .tools/hadoop, see docs/spec/stage4-scala-toolchain.md); elsewhere nothing is added."""
@@ -128,10 +154,11 @@ def run_rule(spec_path: Path, events_path: Path, out_dir: Path, policy_path: Pat
         args += ["--policy", str(policy_path)]
     cmd = jvm_command(java, heap) + ["-cp", cp, "sentinelforge.compiler.RunRule"] + args + (extra or [])
     with open(out_dir / "engine.log", "wb") as log:
+        proc = popen_tree(cmd, cwd=REPO_ROOT, stdout=log, stderr=subprocess.STDOUT, env=child_env())
         try:
-            proc = subprocess.run(cmd, cwd=REPO_ROOT, stdout=log, stderr=subprocess.STDOUT, timeout=timeout, env=child_env())
-            code = proc.returncode
+            code = proc.wait(timeout=timeout)
         except subprocess.TimeoutExpired:
+            kill_tree(proc)
             code = -9
     run_json = out_dir / "run.json"
     if run_json.exists():

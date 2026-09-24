@@ -41,6 +41,9 @@ def sha(b: bytes) -> str:
 def main() -> None:
     (OUT / "reports").mkdir(parents=True, exist_ok=True)
     (OUT / "gold").mkdir(parents=True, exist_ok=True)
+    # start clean: a report dropped or renamed in the sources must not survive in the frozen set
+    for stale in list((OUT / "reports").glob("*")) + list((OUT / "gold").glob("*")):
+        stale.unlink()
     manifest, files = [], {}
 
     def emit(rid: str, text: str, gold: dict, meta: dict) -> None:

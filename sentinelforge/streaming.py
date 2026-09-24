@@ -24,7 +24,7 @@ def command(spec: Path, source: Path, out: Path, checkpoint: Path, policy: Path 
 def start(*a, log: Path | None = None, **kw) -> subprocess.Popen:
     cmd = command(*a, **kw)
     out = open(log, "wb") if log else subprocess.DEVNULL
-    return subprocess.Popen(cmd, cwd=se.REPO_ROOT, stdout=out, stderr=subprocess.STDOUT, env=se.child_env())
+    return se.popen_tree(cmd, cwd=se.REPO_ROOT, stdout=out, stderr=subprocess.STDOUT, env=se.child_env())
 
 
 def run_to_completion(*a, timeout: float = 600, **kw) -> int:
@@ -32,8 +32,13 @@ def run_to_completion(*a, timeout: float = 600, **kw) -> int:
     try:
         return p.wait(timeout=timeout)
     except subprocess.TimeoutExpired:
-        p.kill()
+        se.kill_tree(p)
         raise
+
+
+def kill(p: subprocess.Popen) -> None:
+    """Hard-kill the whole process tree (a crash: no shutdown hooks, no final commit)."""
+    se.kill_tree(p)
 
 
 def read_kind(out: Path, kind: str) -> list[dict]:
