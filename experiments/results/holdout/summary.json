@@ -1,0 +1,1125 @@
+{
+  "holdout": {
+    "reports": 112,
+    "frozen": "2026-09-24",
+    "tag": "holdout-v1-frozen"
+  },
+  "gitHead": "56f699b6f5eb390192a19a13dc025d81cf54bd03",
+  "ranAt": "2026-09-24T00:59:54Z",
+  "llmModel": "openai/gpt-oss-20b",
+  "note": "Single run on the frozen holdout. No extractor or parser change was made after seeing these numbers.",
+  "systems": {
+    "regex-raw": {
+      "supportedReports": 41,
+      "mustNotCompileReports": 71,
+      "unavailable": 0,
+      "coverage": 1.0,
+      "reportsRequested": 112,
+      "completeSpecCorrect": {
+        "value": 0.0,
+        "n": 41,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "wrongRuleSilently": {
+        "value": 0.0,
+        "n": 41,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "supportedNotCompiled": {
+        "value": 1.0,
+        "n": 41,
+        "ci95": [
+          1.0,
+          1.0
+        ]
+      },
+      "unsupportedAccepted": {
+        "value": 0.0,
+        "n": 71,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "behaviour": {
+        "value": 0.2439,
+        "n": 41,
+        "ci95": [
+          0.122,
+          0.3902
+        ]
+      },
+      "countSemantics": {
+        "value": 0.0,
+        "n": 25,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "countValue": {
+        "value": 0.0,
+        "n": 25,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "windowSeconds": {
+        "value": 0.0,
+        "n": 25,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "unitErrors": 0,
+      "evidenceCountSpan": null,
+      "evidenceWindowSpan": null,
+      "quoteVerificationRate": null,
+      "fieldPrecision": null,
+      "fieldRecall": {
+        "value": 0.0,
+        "n": 41,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "downstream": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 184,
+        "precision": null,
+        "recall": 0.0,
+        "f1": null
+      },
+      "falseAcceptByReasonClass": {
+        "ambiguous": {
+          "n": 22,
+          "accepted": 0
+        },
+        "contradictory": {
+          "n": 3,
+          "accepted": 0
+        },
+        "injection": {
+          "n": 1,
+          "accepted": 0
+        },
+        "not-a-rule": {
+          "n": 19,
+          "accepted": 0
+        },
+        "qualifier": {
+          "n": 7,
+          "accepted": 0
+        },
+        "unsupported-behaviour": {
+          "n": 16,
+          "accepted": 0
+        },
+        "unsupported-field": {
+          "n": 3,
+          "accepted": 0
+        }
+      },
+      "statusCounts": {
+        "rejected": 112
+      },
+      "firstAttemptFailures": 0
+    },
+    "regex+evidence": {
+      "supportedReports": 41,
+      "mustNotCompileReports": 71,
+      "unavailable": 0,
+      "coverage": 1.0,
+      "reportsRequested": 112,
+      "completeSpecCorrect": {
+        "value": 0.0732,
+        "n": 41,
+        "ci95": [
+          0.0,
+          0.1707
+        ]
+      },
+      "wrongRuleSilently": {
+        "value": 0.0,
+        "n": 41,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "supportedNotCompiled": {
+        "value": 0.9268,
+        "n": 41,
+        "ci95": [
+          0.8293,
+          1.0
+        ]
+      },
+      "unsupportedAccepted": {
+        "value": 0.0423,
+        "n": 71,
+        "ci95": [
+          0.0,
+          0.0986
+        ]
+      },
+      "behaviour": {
+        "value": 0.2439,
+        "n": 41,
+        "ci95": [
+          0.122,
+          0.3902
+        ]
+      },
+      "countSemantics": {
+        "value": 0.12,
+        "n": 25,
+        "ci95": [
+          0.0,
+          0.28
+        ]
+      },
+      "countValue": {
+        "value": 0.12,
+        "n": 25,
+        "ci95": [
+          0.0,
+          0.28
+        ]
+      },
+      "windowSeconds": {
+        "value": 0.64,
+        "n": 25,
+        "ci95": [
+          0.44,
+          0.84
+        ]
+      },
+      "unitErrors": 0,
+      "evidenceCountSpan": {
+        "value": 0.12,
+        "n": 25,
+        "ci95": [
+          0.0,
+          0.28
+        ]
+      },
+      "evidenceWindowSpan": {
+        "value": 0.6,
+        "n": 25,
+        "ci95": [
+          0.4,
+          0.8
+        ]
+      },
+      "quoteVerificationRate": {
+        "value": 1.0,
+        "n": 25,
+        "ci95": [
+          1.0,
+          1.0
+        ]
+      },
+      "fieldPrecision": null,
+      "fieldRecall": {
+        "value": 0.0,
+        "n": 41,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "downstream": {
+        "tp": 11,
+        "fp": 21,
+        "fn": 173,
+        "precision": 0.3438,
+        "recall": 0.0598,
+        "f1": 0.1019
+      },
+      "falseAcceptByReasonClass": {
+        "ambiguous": {
+          "n": 22,
+          "accepted": 2
+        },
+        "contradictory": {
+          "n": 3,
+          "accepted": 1
+        },
+        "injection": {
+          "n": 1,
+          "accepted": 0
+        },
+        "not-a-rule": {
+          "n": 19,
+          "accepted": 0
+        },
+        "qualifier": {
+          "n": 7,
+          "accepted": 0
+        },
+        "unsupported-behaviour": {
+          "n": 16,
+          "accepted": 0
+        },
+        "unsupported-field": {
+          "n": 3,
+          "accepted": 0
+        }
+      },
+      "statusCounts": {
+        "needs_review": 72,
+        "rejected": 34,
+        "compiled": 6
+      },
+      "firstAttemptFailures": 0
+    },
+    "prompted-raw": {
+      "supportedReports": 8,
+      "mustNotCompileReports": 31,
+      "unavailable": 73,
+      "coverage": 0.3482,
+      "reportsRequested": 112,
+      "completeSpecCorrect": {
+        "value": 1.0,
+        "n": 8,
+        "ci95": [
+          1.0,
+          1.0
+        ]
+      },
+      "wrongRuleSilently": {
+        "value": 0.0,
+        "n": 8,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "supportedNotCompiled": {
+        "value": 0.0,
+        "n": 8,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "unsupportedAccepted": {
+        "value": 0.5806,
+        "n": 31,
+        "ci95": [
+          0.4194,
+          0.7419
+        ]
+      },
+      "behaviour": {
+        "value": 1.0,
+        "n": 8,
+        "ci95": [
+          1.0,
+          1.0
+        ]
+      },
+      "countSemantics": {
+        "value": 1.0,
+        "n": 8,
+        "ci95": [
+          1.0,
+          1.0
+        ]
+      },
+      "countValue": {
+        "value": 1.0,
+        "n": 8,
+        "ci95": [
+          1.0,
+          1.0
+        ]
+      },
+      "windowSeconds": {
+        "value": 1.0,
+        "n": 8,
+        "ci95": [
+          1.0,
+          1.0
+        ]
+      },
+      "unitErrors": 0,
+      "evidenceCountSpan": null,
+      "evidenceWindowSpan": null,
+      "quoteVerificationRate": null,
+      "fieldPrecision": {
+        "value": 1.0,
+        "n": 8,
+        "ci95": [
+          1.0,
+          1.0
+        ]
+      },
+      "fieldRecall": {
+        "value": 1.0,
+        "n": 8,
+        "ci95": [
+          1.0,
+          1.0
+        ]
+      },
+      "downstream": {
+        "tp": 33,
+        "fp": 100,
+        "fn": 0,
+        "precision": 0.2481,
+        "recall": 1.0,
+        "f1": 0.3976
+      },
+      "falseAcceptByReasonClass": {
+        "ambiguous": {
+          "n": 14,
+          "accepted": 5
+        },
+        "contradictory": {
+          "n": 2,
+          "accepted": 2
+        },
+        "not-a-rule": {
+          "n": 14,
+          "accepted": 11
+        },
+        "unsupported-behaviour": {
+          "n": 1,
+          "accepted": 0
+        }
+      },
+      "statusCounts": {
+        "rejected": 11,
+        "compiled": 26,
+        "refused": 2
+      },
+      "firstAttemptFailures": 9
+    },
+    "prompted-abstain-raw": {
+      "supportedReports": 6,
+      "mustNotCompileReports": 35,
+      "unavailable": 71,
+      "coverage": 0.3661,
+      "reportsRequested": 112,
+      "completeSpecCorrect": {
+        "value": 1.0,
+        "n": 6,
+        "ci95": [
+          1.0,
+          1.0
+        ]
+      },
+      "wrongRuleSilently": {
+        "value": 0.0,
+        "n": 6,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "supportedNotCompiled": {
+        "value": 0.0,
+        "n": 6,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "unsupportedAccepted": {
+        "value": 0.2571,
+        "n": 35,
+        "ci95": [
+          0.1143,
+          0.4
+        ]
+      },
+      "behaviour": {
+        "value": 1.0,
+        "n": 6,
+        "ci95": [
+          1.0,
+          1.0
+        ]
+      },
+      "countSemantics": {
+        "value": 1.0,
+        "n": 6,
+        "ci95": [
+          1.0,
+          1.0
+        ]
+      },
+      "countValue": {
+        "value": 1.0,
+        "n": 6,
+        "ci95": [
+          1.0,
+          1.0
+        ]
+      },
+      "windowSeconds": {
+        "value": 1.0,
+        "n": 6,
+        "ci95": [
+          1.0,
+          1.0
+        ]
+      },
+      "unitErrors": 0,
+      "evidenceCountSpan": null,
+      "evidenceWindowSpan": null,
+      "quoteVerificationRate": null,
+      "fieldPrecision": {
+        "value": 1.0,
+        "n": 6,
+        "ci95": [
+          1.0,
+          1.0
+        ]
+      },
+      "fieldRecall": {
+        "value": 1.0,
+        "n": 6,
+        "ci95": [
+          1.0,
+          1.0
+        ]
+      },
+      "downstream": {
+        "tp": 23,
+        "fp": 49,
+        "fn": 0,
+        "precision": 0.3194,
+        "recall": 1.0,
+        "f1": 0.4842
+      },
+      "falseAcceptByReasonClass": {
+        "ambiguous": {
+          "n": 16,
+          "accepted": 3
+        },
+        "contradictory": {
+          "n": 2,
+          "accepted": 2
+        },
+        "not-a-rule": {
+          "n": 16,
+          "accepted": 4
+        },
+        "unsupported-behaviour": {
+          "n": 1,
+          "accepted": 0
+        }
+      },
+      "statusCounts": {
+        "rejected": 13,
+        "compiled": 15,
+        "refused": 13
+      },
+      "firstAttemptFailures": 6
+    },
+    "prompted-abstain+evidence": {
+      "supportedReports": 6,
+      "mustNotCompileReports": 35,
+      "unavailable": 71,
+      "coverage": 0.3661,
+      "reportsRequested": 112,
+      "completeSpecCorrect": {
+        "value": 0.1667,
+        "n": 6,
+        "ci95": [
+          0.0,
+          0.5
+        ]
+      },
+      "wrongRuleSilently": {
+        "value": 0.0,
+        "n": 6,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "supportedNotCompiled": {
+        "value": 0.8333,
+        "n": 6,
+        "ci95": [
+          0.5,
+          1.0
+        ]
+      },
+      "unsupportedAccepted": {
+        "value": 0.0286,
+        "n": 35,
+        "ci95": [
+          0.0,
+          0.0857
+        ]
+      },
+      "behaviour": {
+        "value": 1.0,
+        "n": 6,
+        "ci95": [
+          1.0,
+          1.0
+        ]
+      },
+      "countSemantics": {
+        "value": 0.1667,
+        "n": 6,
+        "ci95": [
+          0.0,
+          0.5
+        ]
+      },
+      "countValue": {
+        "value": 0.1667,
+        "n": 6,
+        "ci95": [
+          0.0,
+          0.5
+        ]
+      },
+      "windowSeconds": {
+        "value": 0.5,
+        "n": 6,
+        "ci95": [
+          0.1667,
+          0.8333
+        ]
+      },
+      "unitErrors": 0,
+      "evidenceCountSpan": {
+        "value": 0.1667,
+        "n": 6,
+        "ci95": [
+          0.0,
+          0.5
+        ]
+      },
+      "evidenceWindowSpan": {
+        "value": 0.5,
+        "n": 6,
+        "ci95": [
+          0.1667,
+          0.8333
+        ]
+      },
+      "quoteVerificationRate": {
+        "value": 1.0,
+        "n": 6,
+        "ci95": [
+          1.0,
+          1.0
+        ]
+      },
+      "fieldPrecision": {
+        "value": 1.0,
+        "n": 6,
+        "ci95": [
+          1.0,
+          1.0
+        ]
+      },
+      "fieldRecall": {
+        "value": 1.0,
+        "n": 6,
+        "ci95": [
+          1.0,
+          1.0
+        ]
+      },
+      "downstream": {
+        "tp": 6,
+        "fp": 8,
+        "fn": 17,
+        "precision": 0.4286,
+        "recall": 0.2609,
+        "f1": 0.3243
+      },
+      "falseAcceptByReasonClass": {
+        "ambiguous": {
+          "n": 16,
+          "accepted": 1
+        },
+        "contradictory": {
+          "n": 2,
+          "accepted": 0
+        },
+        "not-a-rule": {
+          "n": 16,
+          "accepted": 0
+        },
+        "unsupported-behaviour": {
+          "n": 1,
+          "accepted": 0
+        }
+      },
+      "statusCounts": {
+        "needs_review": 22,
+        "rejected": 17,
+        "compiled": 2
+      },
+      "firstAttemptFailures": 6
+    },
+    "finetuned-raw": {
+      "supportedReports": 41,
+      "mustNotCompileReports": 71,
+      "unavailable": 0,
+      "coverage": 1.0,
+      "reportsRequested": 112,
+      "completeSpecCorrect": {
+        "value": 0.6098,
+        "n": 41,
+        "ci95": [
+          0.4634,
+          0.7561
+        ]
+      },
+      "wrongRuleSilently": {
+        "value": 0.3171,
+        "n": 41,
+        "ci95": [
+          0.1951,
+          0.4634
+        ]
+      },
+      "supportedNotCompiled": {
+        "value": 0.0732,
+        "n": 41,
+        "ci95": [
+          0.0,
+          0.1707
+        ]
+      },
+      "unsupportedAccepted": {
+        "value": 0.5634,
+        "n": 71,
+        "ci95": [
+          0.4507,
+          0.6761
+        ]
+      },
+      "behaviour": {
+        "value": 0.7317,
+        "n": 41,
+        "ci95": [
+          0.5854,
+          0.8537
+        ]
+      },
+      "countSemantics": {
+        "value": 0.6,
+        "n": 25,
+        "ci95": [
+          0.4,
+          0.8
+        ]
+      },
+      "countValue": {
+        "value": 0.8,
+        "n": 25,
+        "ci95": [
+          0.64,
+          0.96
+        ]
+      },
+      "windowSeconds": {
+        "value": 0.76,
+        "n": 25,
+        "ci95": [
+          0.56,
+          0.92
+        ]
+      },
+      "unitErrors": 0,
+      "evidenceCountSpan": {
+        "value": 0.0455,
+        "n": 22,
+        "ci95": [
+          0.0,
+          0.1364
+        ]
+      },
+      "evidenceWindowSpan": {
+        "value": 0.7273,
+        "n": 22,
+        "ci95": [
+          0.5455,
+          0.9091
+        ]
+      },
+      "quoteVerificationRate": null,
+      "fieldPrecision": {
+        "value": 0.9837,
+        "n": 41,
+        "ci95": [
+          0.9593,
+          1.0
+        ]
+      },
+      "fieldRecall": {
+        "value": 0.8248,
+        "n": 41,
+        "ci95": [
+          0.7837,
+          0.8654
+        ]
+      },
+      "downstream": {
+        "tp": 134,
+        "fp": 299,
+        "fn": 50,
+        "precision": 0.3095,
+        "recall": 0.7283,
+        "f1": 0.4344
+      },
+      "falseAcceptByReasonClass": {
+        "ambiguous": {
+          "n": 22,
+          "accepted": 8
+        },
+        "contradictory": {
+          "n": 3,
+          "accepted": 3
+        },
+        "injection": {
+          "n": 1,
+          "accepted": 0
+        },
+        "not-a-rule": {
+          "n": 19,
+          "accepted": 13
+        },
+        "qualifier": {
+          "n": 7,
+          "accepted": 7
+        },
+        "unsupported-behaviour": {
+          "n": 16,
+          "accepted": 7
+        },
+        "unsupported-field": {
+          "n": 3,
+          "accepted": 2
+        }
+      },
+      "statusCounts": {
+        "rejected": 27,
+        "compiled": 78,
+        "refused": 7
+      },
+      "firstAttemptFailures": 0
+    },
+    "finetuned+evidence": {
+      "supportedReports": 41,
+      "mustNotCompileReports": 71,
+      "unavailable": 0,
+      "coverage": 1.0,
+      "reportsRequested": 112,
+      "completeSpecCorrect": {
+        "value": 0.3171,
+        "n": 41,
+        "ci95": [
+          0.1707,
+          0.4634
+        ]
+      },
+      "wrongRuleSilently": {
+        "value": 0.0,
+        "n": 41,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "supportedNotCompiled": {
+        "value": 0.6829,
+        "n": 41,
+        "ci95": [
+          0.5366,
+          0.8293
+        ]
+      },
+      "unsupportedAccepted": {
+        "value": 0.0563,
+        "n": 71,
+        "ci95": [
+          0.0141,
+          0.1127
+        ]
+      },
+      "behaviour": {
+        "value": 0.7317,
+        "n": 41,
+        "ci95": [
+          0.5854,
+          0.8537
+        ]
+      },
+      "countSemantics": {
+        "value": 0.24,
+        "n": 25,
+        "ci95": [
+          0.08,
+          0.44
+        ]
+      },
+      "countValue": {
+        "value": 0.24,
+        "n": 25,
+        "ci95": [
+          0.08,
+          0.44
+        ]
+      },
+      "windowSeconds": {
+        "value": 0.64,
+        "n": 25,
+        "ci95": [
+          0.44,
+          0.84
+        ]
+      },
+      "unitErrors": 0,
+      "evidenceCountSpan": {
+        "value": 0.12,
+        "n": 25,
+        "ci95": [
+          0.0,
+          0.28
+        ]
+      },
+      "evidenceWindowSpan": {
+        "value": 0.6,
+        "n": 25,
+        "ci95": [
+          0.4,
+          0.8
+        ]
+      },
+      "quoteVerificationRate": {
+        "value": 1.0,
+        "n": 25,
+        "ci95": [
+          1.0,
+          1.0
+        ]
+      },
+      "fieldPrecision": {
+        "value": 0.9837,
+        "n": 41,
+        "ci95": [
+          0.9593,
+          1.0
+        ]
+      },
+      "fieldRecall": {
+        "value": 0.8248,
+        "n": 41,
+        "ci95": [
+          0.7837,
+          0.8654
+        ]
+      },
+      "downstream": {
+        "tp": 71,
+        "fp": 26,
+        "fn": 113,
+        "precision": 0.732,
+        "recall": 0.3859,
+        "f1": 0.5053
+      },
+      "falseAcceptByReasonClass": {
+        "ambiguous": {
+          "n": 22,
+          "accepted": 2
+        },
+        "contradictory": {
+          "n": 3,
+          "accepted": 1
+        },
+        "injection": {
+          "n": 1,
+          "accepted": 0
+        },
+        "not-a-rule": {
+          "n": 19,
+          "accepted": 1
+        },
+        "qualifier": {
+          "n": 7,
+          "accepted": 0
+        },
+        "unsupported-behaviour": {
+          "n": 16,
+          "accepted": 0
+        },
+        "unsupported-field": {
+          "n": 3,
+          "accepted": 0
+        }
+      },
+      "statusCounts": {
+        "needs_review": 63,
+        "rejected": 32,
+        "compiled": 17
+      },
+      "firstAttemptFailures": 0
+    },
+    "evidence-only": {
+      "supportedReports": 41,
+      "mustNotCompileReports": 71,
+      "unavailable": 0,
+      "coverage": 1.0,
+      "reportsRequested": 112,
+      "completeSpecCorrect": {
+        "value": 0.439,
+        "n": 41,
+        "ci95": [
+          0.2927,
+          0.5854
+        ]
+      },
+      "wrongRuleSilently": {
+        "value": 0.0,
+        "n": 41,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "supportedNotCompiled": {
+        "value": 0.561,
+        "n": 41,
+        "ci95": [
+          0.4146,
+          0.7073
+        ]
+      },
+      "unsupportedAccepted": {
+        "value": 0.0563,
+        "n": 71,
+        "ci95": [
+          0.0141,
+          0.1127
+        ]
+      },
+      "behaviour": {
+        "value": 0.439,
+        "n": 41,
+        "ci95": [
+          0.2927,
+          0.5854
+        ]
+      },
+      "countSemantics": {
+        "value": 0.36,
+        "n": 25,
+        "ci95": [
+          0.2,
+          0.56
+        ]
+      },
+      "countValue": {
+        "value": 0.36,
+        "n": 25,
+        "ci95": [
+          0.2,
+          0.56
+        ]
+      },
+      "windowSeconds": {
+        "value": 0.36,
+        "n": 25,
+        "ci95": [
+          0.2,
+          0.56
+        ]
+      },
+      "unitErrors": 0,
+      "evidenceCountSpan": {
+        "value": 0.3333,
+        "n": 9,
+        "ci95": [
+          0.0,
+          0.6667
+        ]
+      },
+      "evidenceWindowSpan": {
+        "value": 1.0,
+        "n": 9,
+        "ci95": [
+          1.0,
+          1.0
+        ]
+      },
+      "quoteVerificationRate": {
+        "value": 1.0,
+        "n": 9,
+        "ci95": [
+          1.0,
+          1.0
+        ]
+      },
+      "fieldPrecision": null,
+      "fieldRecall": null,
+      "downstream": {
+        "tp": 89,
+        "fp": 26,
+        "fn": 95,
+        "precision": 0.7739,
+        "recall": 0.4837,
+        "f1": 0.5953
+      },
+      "falseAcceptByReasonClass": {
+        "ambiguous": {
+          "n": 22,
+          "accepted": 2
+        },
+        "contradictory": {
+          "n": 3,
+          "accepted": 1
+        },
+        "injection": {
+          "n": 1,
+          "accepted": 0
+        },
+        "not-a-rule": {
+          "n": 19,
+          "accepted": 1
+        },
+        "qualifier": {
+          "n": 7,
+          "accepted": 0
+        },
+        "unsupported-behaviour": {
+          "n": 16,
+          "accepted": 0
+        },
+        "unsupported-field": {
+          "n": 3,
+          "accepted": 0
+        }
+      },
+      "statusCounts": {
+        "needs_review": 30,
+        "rejected": 60,
+        "compiled": 22
+      },
+      "firstAttemptFailures": 0
+    }
+  }
+}

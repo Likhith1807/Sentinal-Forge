@@ -65,11 +65,25 @@ def git_head() -> str:
 
 # ----------------------------------------------------------------------------------------- extractors
 class LLM:
+    """Prompted-LLM extractor with a durable response cache and quota awareness.
+
+    Every API attempt (first tries and retries, successes and errors) is appended to attempts.jsonl. A successful raw
+    response is remembered per (report, variant, model) in llm_cache.jsonl, so a later run - e.g. after a daily token
+    quota resets - resumes instead of repeating calls. Once a "tokens per day" error appears no further calls are made
+    in this run; the remaining reports are reported as UNAVAILABLE, never scored as wrong answers."""
+
     def __init__(self, log_path: Path, model: str):
         import transformer_extractor as te
-        self.te = te
-        self.model = model
+        self.te, self.model = te, model
         self.log = open(log_path, "a", encoding="utf-8")
+        self.cache_path = log_path.with_name("llm_cache.jsonl")
+        self.cache: dict = {}
+        if self.cache_path.exists():
+            for line in self.cache_path.read_text(encoding="utf-8").splitlines():
+                if line.strip():
+                    r = json.loads(line)
+                    self.cache[(r["reportId"], r["variant"], r["model"])] = r
+        self.exhausted = False
 
     def _parse(self, raw: str) -> dict:
         import re
@@ -82,10 +96,24 @@ class LLM:
                 raise ValueError("unparseable JSON")
             return json.loads(m.group(0))
 
-    def extract(self, rid: str, text: str, variant: str, max_attempts: int = 4) -> dict:
+    def _to_proposal(self, result: dict) -> dict:
+        te = self.te
+        b = result.get("behaviourId")
+        return {"behaviourId": None if b in (None, "none", "None", "null") else (b if b in B.BEHAVIOUR_IDS else "unrecognized:" + str(b)),
+                "requiredFields": [f for f in (result.get("requiredFields") or []) if f in te.LOG_FIELDS],
+                "policyFields": [f for f in (result.get("policyFields") or []) if f in te.POLICY_FIELDS],
+                "threshold": result.get("threshold"), "timeWindow": result.get("timeWindow"), "provenance": {}}
+
+    def extract(self, rid: str, text: str, variant: str, max_attempts: int = 3) -> dict:
+        key = (rid, variant, self.model)
+        if key in self.cache:
+            c = self.cache[key]
+            return {"proposal": self._to_proposal(self._parse(c["raw"])), "firstAttemptOk": c["firstAttemptOk"], "fromCache": True}
+        if self.exhausted:
+            return {"unavailable": True, "firstAttemptOk": None, "reason": "daily token quota exhausted earlier in this run"}
         te = self.te
         prompt = te.build_prompt(text) + (ABSTAIN_NOTE if variant == "prompted-abstain" else "")
-        first_ok, result = None, None
+        first_ok = None
         for attempt in range(1, max_attempts + 1):
             rec = {"reportId": rid, "variant": variant, "model": self.model, "attempt": attempt, "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
             try:
@@ -95,20 +123,22 @@ class LLM:
                 rec["ok"] = True
                 first_ok = True if first_ok is None else first_ok
                 self.log.write(json.dumps(rec) + "\n"), self.log.flush()
-                break
+                entry = {"reportId": rid, "variant": variant, "model": self.model, "raw": raw, "firstAttemptOk": bool(first_ok)}
+                self.cache[key] = entry
+                with open(self.cache_path, "a", encoding="utf-8") as fh:
+                    fh.write(json.dumps(entry) + "\n")
+                return {"proposal": self._to_proposal(result), "firstAttemptOk": bool(first_ok)}
             except (Exception, SystemExit) as exc:  # noqa: BLE001 - every failure is logged, never scored as an answer
-                rec["ok"], rec["error"] = False, f"{type(exc).__name__}: {str(exc)[:200]}"
+                msg = f"{type(exc).__name__}: {str(exc)[:400]}"
+                rec["ok"], rec["error"] = False, msg
                 first_ok = False if first_ok is None else first_ok
                 self.log.write(json.dumps(rec) + "\n"), self.log.flush()
+                if "per day" in msg or "TPD" in msg:
+                    self.exhausted = True
+                    print(f"[llm] daily token quota exhausted at {rid}; remaining LLM rows will be UNAVAILABLE", flush=True)
+                    break
                 time.sleep(3.0 * attempt)
-        if result is None:
-            return {"unavailable": True, "firstAttemptOk": False}
-        b = result.get("behaviourId")
-        prop = {"behaviourId": None if b in (None, "none", "None", "null") else (b if b in B.BEHAVIOUR_IDS else "unrecognized:" + str(b)),
-                "requiredFields": [f for f in (result.get("requiredFields") or []) if f in te.LOG_FIELDS],
-                "policyFields": [f for f in (result.get("policyFields") or []) if f in te.POLICY_FIELDS],
-                "threshold": result.get("threshold"), "timeWindow": result.get("timeWindow"), "provenance": {}}
-        return {"proposal": prop, "firstAttemptOk": bool(first_ok)}
+        return {"unavailable": True, "firstAttemptOk": False}
 
 
 def make_extractors(skip_llm: bool, llm_model: str):
@@ -296,6 +326,7 @@ def summarise(rows: list[dict]) -> dict:
         by_reason[r["reasonClass"]][1] += int(r.get("falseAccept", False))
     return {
         "supportedReports": len(sup), "mustNotCompileReports": len(nos), "unavailable": sum(1 for r in rows if r["unavailable"]),
+        "coverage": round(1 - sum(1 for r in rows if r["unavailable"]) / max(1, len(rows)), 4), "reportsRequested": len(rows),
         "completeSpecCorrect": boot(sup, "completeCorrectF"), "wrongRuleSilently": boot(sup, "wrongSilentF"),
         "supportedNotCompiled": boot(sup, "notCompiledF"), "unsupportedAccepted": boot(nos, "falseAcceptF"),
         "behaviour": boot(sup, "behaviourF"), "countSemantics": boot(sup, "semF"), "countValue": boot(sup, "countF"),

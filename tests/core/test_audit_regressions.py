@@ -367,5 +367,6 @@ class TestAccurateNaming:
         bad = ("concurrent-sessions-different-hosts", "service-account-interactive-auth", "mfa-bypass-on-required-account")
         out = subprocess.run(["git", "grep", "-l", "-e", bad[0], "-e", bad[1], "-e", bad[2], "--", "sentinelforge", "dashboard",
                               "compiler/src", "scripts/datagen", "spark"], cwd=REPO, capture_output=True, text=True).stdout.split()
-        allowed = {"sentinelforge/behaviours.py", "tests/core/test_audit_regressions.py"}
+        allowed = {"sentinelforge/behaviours.py", "tests/core/test_audit_regressions.py",
+               "compiler/src/main/scala/sentinelforge/compiler/CompiledSpec.scala"}   # LegacyIds: the Scala twin of LEGACY_IDS
         assert [f for f in out if f not in allowed] == []
