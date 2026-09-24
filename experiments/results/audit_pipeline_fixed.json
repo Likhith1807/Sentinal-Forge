@@ -9,13 +9,15 @@
       "silently-accepted": 2
     },
     "finetuned+evidence": {
-      "correct": 39,
+      "correct": 38,
+      "rejected-supported": 1,
       "needs-review": 1,
       "correctly-refused": 4
     },
     "evidence-only": {
-      "correct": 39,
+      "correct": 38,
       "rejected-supported": 1,
+      "needs-review": 1,
       "correctly-refused": 4
     },
     "classical": {
@@ -145,12 +147,19 @@
       "supported": true,
       "outcomes": {
         "finetuned-raw": "correct",
-        "finetuned+evidence": "correct",
-        "evidence-only": "correct",
+        "finetuned+evidence": "rejected-supported",
+        "evidence-only": "rejected-supported",
         "classical": "rejected-supported"
       },
       "codes": {
+        "finetuned+evidence": [
+          "UNSUPPORTED_QUALIFIER"
+        ],
+        "evidence-only": [
+          "UNSUPPORTED_QUALIFIER"
+        ],
         "classical": [
+          "UNSUPPORTED_QUALIFIER",
           "BEHAVIOUR_CONFLICT",
           "COUNT_SEMANTICS_MISMATCH"
         ]
@@ -384,7 +393,7 @@
       "outcomes": {
         "finetuned-raw": "correct",
         "finetuned+evidence": "needs-review",
-        "evidence-only": "rejected-supported",
+        "evidence-only": "needs-review",
         "classical": "rejected-supported"
       },
       "codes": {
@@ -392,7 +401,7 @@
           "RECIPE_CONDITIONS_NOT_FOUND"
         ],
         "evidence-only": [
-          "UNSUPPORTED_BEHAVIOUR"
+          "UNDERSPECIFIED_BEHAVIOUR"
         ],
         "classical": [
           "RECIPE_CONDITIONS_NOT_FOUND",
