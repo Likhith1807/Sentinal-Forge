@@ -1,0 +1,149 @@
+{
+  "environment" : {
+    "sparkVersion" : "3.5.3",
+    "scalaVersion" : "2.13.12",
+    "java" : "1.8.0_491 Java HotSpot(TM) 64-Bit Server VM",
+    "maxHeapMB" : 2731,
+    "master" : "local[8]",
+    "defaultParallelism" : 8,
+    "availableProcessors" : 16,
+    "shufflePartitions" : "64",
+    "jvmArgs" : "-Xmx3g -Dhadoop.home.dir=D:\\SENTINEL_Forge\\.tools\\hadoop"
+  },
+  "dataset" : "data/generated/bench_small",
+  "datasetShape" : {
+    "events" : 1317332,
+    "account_id" : {
+      "distinctApprox" : 61142,
+      "largestGroupEvents" : 102,
+      "largestGroupShare" : 7.742922816723499E-5,
+      "groupSizeP50" : 17,
+      "groupSizeP99" : 79
+    },
+    "source_host" : {
+      "distinctApprox" : 30828,
+      "largestGroupEvents" : 169,
+      "largestGroupShare" : 1.2828960353198737E-4,
+      "groupSizeP50" : 35,
+      "groupSizeP99" : 114
+    }
+  },
+  "mode" : "reads Parquet on every repetition",
+  "coldStart" : {
+    "jvmToSessionReadySeconds" : 4.782,
+    "firstFullScanSeconds" : 0.8467243
+  },
+  "repetitionsPerBehaviour" : 10,
+  "warmupPerBehaviour" : 1,
+  "observations" : [ {
+    "behaviourId" : "password-spray-across-accounts",
+    "rep" : 0,
+    "warmup" : true,
+    "coldProcessFirstQuery" : true,
+    "seconds" : 6.6935159,
+    "resultRows" : 30,
+    "failed" : false,
+    "peakHeapMB" : 1541,
+    "gcSeconds" : 0.561
+  }, {
+    "behaviourId" : "password-spray-across-accounts",
+    "rep" : 1,
+    "warmup" : false,
+    "coldProcessFirstQuery" : false,
+    "seconds" : 4.2829095,
+    "resultRows" : 30,
+    "failed" : false,
+    "peakHeapMB" : 1553,
+    "gcSeconds" : 0.537
+  }, {
+    "behaviourId" : "password-spray-across-accounts",
+    "rep" : 2,
+    "warmup" : false,
+    "coldProcessFirstQuery" : false,
+    "seconds" : 4.5893709,
+    "resultRows" : 30,
+    "failed" : false,
+    "peakHeapMB" : 1485,
+    "gcSeconds" : 0.913
+  }, {
+    "behaviourId" : "password-spray-across-accounts",
+    "rep" : 3,
+    "warmup" : false,
+    "coldProcessFirstQuery" : false,
+    "seconds" : 3.7755605,
+    "resultRows" : 30,
+    "failed" : false,
+    "peakHeapMB" : 1539,
+    "gcSeconds" : 0.261
+  }, {
+    "behaviourId" : "password-spray-across-accounts",
+    "rep" : 4,
+    "warmup" : false,
+    "coldProcessFirstQuery" : false,
+    "seconds" : 4.0083475,
+    "resultRows" : 30,
+    "failed" : false,
+    "peakHeapMB" : 1687,
+    "gcSeconds" : 0.446
+  }, {
+    "behaviourId" : "password-spray-across-accounts",
+    "rep" : 5,
+    "warmup" : false,
+    "coldProcessFirstQuery" : false,
+    "seconds" : 3.7174576,
+    "resultRows" : 30,
+    "failed" : false,
+    "peakHeapMB" : 1537,
+    "gcSeconds" : 0.266
+  }, {
+    "behaviourId" : "password-spray-across-accounts",
+    "rep" : 6,
+    "warmup" : false,
+    "coldProcessFirstQuery" : false,
+    "seconds" : 4.0685362,
+    "resultRows" : 30,
+    "failed" : false,
+    "peakHeapMB" : 1479,
+    "gcSeconds" : 0.511
+  }, {
+    "behaviourId" : "password-spray-across-accounts",
+    "rep" : 7,
+    "warmup" : false,
+    "coldProcessFirstQuery" : false,
+    "seconds" : 4.0124062,
+    "resultRows" : 30,
+    "failed" : false,
+    "peakHeapMB" : 1478,
+    "gcSeconds" : 0.522
+  }, {
+    "behaviourId" : "password-spray-across-accounts",
+    "rep" : 8,
+    "warmup" : false,
+    "coldProcessFirstQuery" : false,
+    "seconds" : 3.7224982,
+    "resultRows" : 30,
+    "failed" : false,
+    "peakHeapMB" : 1570,
+    "gcSeconds" : 0.236
+  }, {
+    "behaviourId" : "password-spray-across-accounts",
+    "rep" : 9,
+    "warmup" : false,
+    "coldProcessFirstQuery" : false,
+    "seconds" : 4.25749,
+    "resultRows" : 30,
+    "failed" : false,
+    "peakHeapMB" : 1658,
+    "gcSeconds" : 0.517
+  }, {
+    "behaviourId" : "password-spray-across-accounts",
+    "rep" : 10,
+    "warmup" : false,
+    "coldProcessFirstQuery" : false,
+    "seconds" : 3.801507,
+    "resultRows" : 30,
+    "failed" : false,
+    "peakHeapMB" : 1690,
+    "gcSeconds" : 0.241
+  } ]
+}

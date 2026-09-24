@@ -1,0 +1,123 @@
+{
+  "kind": "service-run-latency",
+  "hardware": {
+    "os": "Windows 10 (10.0.26200)",
+    "machine": "AMD64",
+    "python": "3.10.11",
+    "logicalCpus": 16,
+    "cpuModel": "13th Gen Intel(R) Core(TM) i7-13620H",
+    "physicalCores": 10,
+    "ramGB": 15.6,
+    "storage": "SSD NVMe WD PC SN740 SDDPNQD-512G-1002",
+    "machinesUsed": 1,
+    "note": "single machine; no cluster was used",
+    "gitCommit": "d514f577607ec37ca556d5c8e274851c624f56a0",
+    "gitDirty": true
+  },
+  "method": "What an analyst waits for: the service's run job on the committed demonstration dataset, cold JVM per run versus the reference engine.\n\n    python scripts/bench/service_latency.py --spark-reps 8 --reference-reps 30 --out experiments/results/benchmarks/service_latency.json\n\nEach Spark run starts a fresh JVM (that is how the service isolates runs), so this is the *cold* per-run latency a person sees on a\nsmall dataset; it is dominated by JVM and Spark session start-up, not by the data. The reference engine is pure Python and is used for\nsmall datasets. Both are measured through `Workspace.submit_run` (job queue, run directory, result files, summary), on the same\n725-event dataset. One machine, one process, no concurrent load.",
+  "dataset": "data/demo (725 events)",
+  "results": [
+    {
+      "engine": "reference",
+      "attempted": 30,
+      "failed": 0,
+      "seconds": {
+        "n": 30,
+        "min": 0.02481818199157715,
+        "median": 0.028632283210754395,
+        "mean": 0.0320451021194458,
+        "max": 0.10667657852172852,
+        "stdev": 0.015090846125860678,
+        "iqr": [
+          0.02798008918762207,
+          0.02954554557800293
+        ],
+        "p95": 0.05729198455810547,
+        "p95Bootstrap95CI": [
+          0.029645919799804688,
+          0.10667657852172852
+        ],
+        "p99": null,
+        "notReported": [
+          "p99: needs n>=100, have 30"
+        ]
+      },
+      "rawSeconds": [
+        0.031,
+        0.029,
+        0.027,
+        0.028,
+        0.027,
+        0.03,
+        0.057,
+        0.107,
+        0.028,
+        0.029,
+        0.03,
+        0.029,
+        0.025,
+        0.028,
+        0.029,
+        0.028,
+        0.029,
+        0.03,
+        0.029,
+        0.028,
+        0.029,
+        0.029,
+        0.027,
+        0.03,
+        0.028,
+        0.028,
+        0.027,
+        0.03,
+        0.028,
+        0.028
+      ],
+      "alertsPerRun": [
+        5
+      ]
+    },
+    {
+      "engine": "spark",
+      "attempted": 8,
+      "failed": 0,
+      "seconds": {
+        "n": 8,
+        "min": 17.79109811782837,
+        "median": 18.01382279396057,
+        "mean": 18.005672872066498,
+        "max": 18.23469853401184,
+        "stdev": 0.17314143557033676,
+        "iqr": [
+          17.800292015075684,
+          18.108418226242065
+        ],
+        "p95": null,
+        "notReported": [
+          "p95: needs n>=20, have 8",
+          "p99: needs n>=100, have 8"
+        ],
+        "p99": null
+      },
+      "rawSeconds": [
+        18.108,
+        17.791,
+        17.8,
+        17.874,
+        18.009,
+        18.018,
+        18.235,
+        18.209
+      ],
+      "alertsPerRun": [
+        5
+      ]
+    }
+  ],
+  "limits": [
+    "single machine, no concurrent load",
+    "Spark run = fresh local JVM per run (cold)",
+    "small dataset: measures overhead, not data-size scaling"
+  ]
+}

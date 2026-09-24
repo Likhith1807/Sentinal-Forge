@@ -1,0 +1,45 @@
+{
+  "kind": "streaming-stress",
+  "hardware": {
+    "os": "Windows 10 (10.0.26200)",
+    "machine": "AMD64",
+    "python": "3.10.11",
+    "logicalCpus": 16,
+    "cpuModel": "13th Gen Intel(R) Core(TM) i7-13620H",
+    "physicalCores": 10,
+    "ramGB": 15.6,
+    "storage": "SSD NVMe WD PC SN740 SDDPNQD-512G-1002",
+    "machinesUsed": 1,
+    "note": "single machine; no cluster was used",
+    "gitCommit": "22b017c08b0bed63b66bbcb9551eb9b265e92ea9",
+    "gitDirty": true
+  },
+  "method": "Streaming stress: high key cardinality and a skewed hot key.\n\n    python scripts/bench/streaming_stress.py --out experiments/results/benchmarks/streaming_stress.json\n\nTwo shapes, each run to completion (available-now) on one local JVM and each checked against the exact alert count it must produce:\n\n  high-cardinality   many distinct accounts, most with a partial pattern that must NOT alert, a known number with a full pattern\n  hot-key skew       one source host failing against very many distinct accounts inside one window, plus ordinary hosts\n\nThe hot key is the honest limit of the design: a windowed key's retained history is proportional to the events inside its window\n(O(H) for a hot key), and that key is processed by one task. The result records the state size Spark reports so the limit is visible,\nnot asserted. There is no distributed measurement here: one machine, `local[*]`.",
+  "results": [
+    {
+      "name": "hot-key-skew-200000",
+      "behaviourId": "password-spray-across-accounts",
+      "events": 205000,
+      "inputFiles": 5,
+      "heapSetting": "3g",
+      "exitCode": 0,
+      "elapsedSecondsIncludingJvmStart": 147.9,
+      "eventsPerSecondEndToEnd": 1386,
+      "expectedAlerts": 1001,
+      "alerts": 1001,
+      "alertCountMatches": true,
+      "duplicateAlertIds": 0,
+      "lateRecords": 0,
+      "duplicateRecords": 0,
+      "peakStateMemoryMB": 25.2,
+      "peakStateRows": 1001,
+      "rowsDroppedByWatermark": 0,
+      "microBatches": 3
+    }
+  ],
+  "limits": [
+    "single machine, local[*] Spark",
+    "synthetic events",
+    "a hot key's state is O(events in its window) and runs on one task"
+  ]
+}

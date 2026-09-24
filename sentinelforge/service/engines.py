@@ -36,9 +36,23 @@ def spark_available() -> tuple[bool, str]:
         return False, str(exc)
 
 
-def choose(preference: str = "auto") -> str:
+def _path_bytes(path: Path) -> int:
+    path = Path(path)
+    if path.is_file():
+        return path.stat().st_size
+    return sum(f.stat().st_size for f in path.rglob("*") if f.is_file()) if path.exists() else 0
+
+
+def choose(preference: str = "auto", events_path: Path | None = None, reference_max_bytes: int = 5_000_000) -> str:
+    """`auto` picks the engine by what it costs. Spark starts a fresh JVM per run (about 18 s on the 725-event demo dataset, see
+    docs/benchmarks.md) while the reference engine answers in tens of milliseconds, and the two are compared for equality by the
+    differential suite - so a small JSONL dataset runs on the reference engine, and anything larger (or Parquet) on Spark when a
+    JVM is available. Every run record says which engine produced it."""
     if preference in ("spark", "reference"):
         return preference
+    small_jsonl = events_path is not None and Path(events_path).is_file() and Path(events_path).suffix in (".jsonl", ".json", ".ndjson")         and _path_bytes(events_path) <= reference_max_bytes
+    if small_jsonl:
+        return "reference"
     return "spark" if spark_available()[0] else "reference"
 
 

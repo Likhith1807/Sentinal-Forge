@@ -1,0 +1,339 @@
+{
+  "environment" : {
+    "sparkVersion" : "3.5.3",
+    "scalaVersion" : "2.13.12",
+    "java" : "1.8.0_491 Java HotSpot(TM) 64-Bit Server VM",
+    "maxHeapMB" : 5716,
+    "master" : "local[*]",
+    "defaultParallelism" : 16,
+    "availableProcessors" : 16,
+    "shufflePartitions" : "64",
+    "jvmArgs" : "-Xmx6g -Dhadoop.home.dir=D:\\SENTINEL_Forge\\.tools\\hadoop"
+  },
+  "dataset" : "data/generated/scale_1gb",
+  "datasetShape" : {
+    "events" : 36684108,
+    "account_id" : {
+      "distinctApprox" : 418310,
+      "largestGroupEvents" : 373,
+      "largestGroupShare" : 1.0167890684434797E-5,
+      "groupSizeP50" : 71,
+      "groupSizeP99" : 306
+    },
+    "source_host" : {
+      "distinctApprox" : 211460,
+      "largestGroupEvents" : 674,
+      "largestGroupShare" : 1.8373078609407647E-5,
+      "groupSizeP50" : 143,
+      "groupSizeP99" : 408
+    }
+  },
+  "mode" : "reads Parquet on every repetition",
+  "coldStart" : {
+    "jvmToSessionReadySeconds" : 4.753,
+    "firstFullScanSeconds" : 1.2654844
+  },
+  "repetitionsPerBehaviour" : 5,
+  "warmupPerBehaviour" : 1,
+  "observations" : [ {
+    "behaviourId" : "repeated-failed-login-then-success",
+    "rep" : 0,
+    "warmup" : true,
+    "coldProcessFirstQuery" : true,
+    "seconds" : 97.77095,
+    "resultRows" : 500,
+    "failed" : false,
+    "peakHeapMB" : 5502,
+    "gcSeconds" : 25.897
+  }, {
+    "behaviourId" : "repeated-failed-login-then-success",
+    "rep" : 1,
+    "warmup" : false,
+    "coldProcessFirstQuery" : false,
+    "seconds" : 96.5769885,
+    "resultRows" : 500,
+    "failed" : false,
+    "peakHeapMB" : 4993,
+    "gcSeconds" : 27.868
+  }, {
+    "behaviourId" : "repeated-failed-login-then-success",
+    "rep" : 2,
+    "warmup" : false,
+    "coldProcessFirstQuery" : false,
+    "seconds" : 99.2437427,
+    "resultRows" : 500,
+    "failed" : false,
+    "peakHeapMB" : 4934,
+    "gcSeconds" : 29.458
+  }, {
+    "behaviourId" : "repeated-failed-login-then-success",
+    "rep" : 3,
+    "warmup" : false,
+    "coldProcessFirstQuery" : false,
+    "seconds" : 98.0008527,
+    "resultRows" : 500,
+    "failed" : false,
+    "peakHeapMB" : 5328,
+    "gcSeconds" : 30.752
+  }, {
+    "behaviourId" : "repeated-failed-login-then-success",
+    "rep" : 4,
+    "warmup" : false,
+    "coldProcessFirstQuery" : false,
+    "seconds" : 95.5956959,
+    "resultRows" : 500,
+    "failed" : false,
+    "peakHeapMB" : 5039,
+    "gcSeconds" : 27.402
+  }, {
+    "behaviourId" : "repeated-failed-login-then-success",
+    "rep" : 5,
+    "warmup" : false,
+    "coldProcessFirstQuery" : false,
+    "seconds" : 97.5068315,
+    "resultRows" : 500,
+    "failed" : false,
+    "peakHeapMB" : 5358,
+    "gcSeconds" : 29.629
+  }, {
+    "behaviourId" : "password-spray-across-accounts",
+    "rep" : 0,
+    "warmup" : true,
+    "coldProcessFirstQuery" : false,
+    "seconds" : 73.3733355,
+    "resultRows" : 572,
+    "failed" : false,
+    "peakHeapMB" : 5402,
+    "gcSeconds" : 15.26
+  }, {
+    "behaviourId" : "password-spray-across-accounts",
+    "rep" : 1,
+    "warmup" : false,
+    "coldProcessFirstQuery" : false,
+    "seconds" : 68.3414079,
+    "resultRows" : 572,
+    "failed" : false,
+    "peakHeapMB" : 5637,
+    "gcSeconds" : 12.083
+  }, {
+    "behaviourId" : "password-spray-across-accounts",
+    "rep" : 2,
+    "warmup" : false,
+    "coldProcessFirstQuery" : false,
+    "seconds" : 70.1330056,
+    "resultRows" : 572,
+    "failed" : false,
+    "peakHeapMB" : 5807,
+    "gcSeconds" : 13.632
+  }, {
+    "behaviourId" : "password-spray-across-accounts",
+    "rep" : 3,
+    "warmup" : false,
+    "coldProcessFirstQuery" : false,
+    "seconds" : 69.3288874,
+    "resultRows" : 572,
+    "failed" : false,
+    "peakHeapMB" : 5661,
+    "gcSeconds" : 12.535
+  }, {
+    "behaviourId" : "password-spray-across-accounts",
+    "rep" : 4,
+    "warmup" : false,
+    "coldProcessFirstQuery" : false,
+    "seconds" : 68.8350993,
+    "resultRows" : 572,
+    "failed" : false,
+    "peakHeapMB" : 5712,
+    "gcSeconds" : 12.847
+  }, {
+    "behaviourId" : "password-spray-across-accounts",
+    "rep" : 5,
+    "warmup" : false,
+    "coldProcessFirstQuery" : false,
+    "seconds" : 66.801817,
+    "resultRows" : 572,
+    "failed" : false,
+    "peakHeapMB" : 5739,
+    "gcSeconds" : 11.561
+  }, {
+    "behaviourId" : "multi-host-authentication",
+    "rep" : 0,
+    "warmup" : true,
+    "coldProcessFirstQuery" : false,
+    "seconds" : 87.9371859,
+    "resultRows" : 668,
+    "failed" : false,
+    "peakHeapMB" : 5458,
+    "gcSeconds" : 12.772
+  }, {
+    "behaviourId" : "multi-host-authentication",
+    "rep" : 1,
+    "warmup" : false,
+    "coldProcessFirstQuery" : false,
+    "seconds" : 85.6204037,
+    "resultRows" : 668,
+    "failed" : false,
+    "peakHeapMB" : 5719,
+    "gcSeconds" : 12.516
+  }, {
+    "behaviourId" : "multi-host-authentication",
+    "rep" : 2,
+    "warmup" : false,
+    "coldProcessFirstQuery" : false,
+    "seconds" : 85.1952465,
+    "resultRows" : 668,
+    "failed" : false,
+    "peakHeapMB" : 5604,
+    "gcSeconds" : 12.486
+  }, {
+    "behaviourId" : "multi-host-authentication",
+    "rep" : 3,
+    "warmup" : false,
+    "coldProcessFirstQuery" : false,
+    "seconds" : 86.3031741,
+    "resultRows" : 668,
+    "failed" : false,
+    "peakHeapMB" : 5358,
+    "gcSeconds" : 14.16
+  }, {
+    "behaviourId" : "multi-host-authentication",
+    "rep" : 4,
+    "warmup" : false,
+    "coldProcessFirstQuery" : false,
+    "seconds" : 87.7256801,
+    "resultRows" : 668,
+    "failed" : false,
+    "peakHeapMB" : 5576,
+    "gcSeconds" : 14.197
+  }, {
+    "behaviourId" : "multi-host-authentication",
+    "rep" : 5,
+    "warmup" : false,
+    "coldProcessFirstQuery" : false,
+    "seconds" : 84.7361293,
+    "resultRows" : 668,
+    "failed" : false,
+    "peakHeapMB" : 5488,
+    "gcSeconds" : 12.238
+  }, {
+    "behaviourId" : "auth-method-policy-violation",
+    "rep" : 0,
+    "warmup" : true,
+    "coldProcessFirstQuery" : false,
+    "seconds" : 75.297329,
+    "resultRows" : 32734324,
+    "failed" : false,
+    "peakHeapMB" : 5221,
+    "gcSeconds" : 24.787
+  }, {
+    "behaviourId" : "auth-method-policy-violation",
+    "rep" : 1,
+    "warmup" : false,
+    "coldProcessFirstQuery" : false,
+    "seconds" : 65.0932079,
+    "resultRows" : 32734324,
+    "failed" : false,
+    "peakHeapMB" : 5332,
+    "gcSeconds" : 15.12
+  }, {
+    "behaviourId" : "auth-method-policy-violation",
+    "rep" : 2,
+    "warmup" : false,
+    "coldProcessFirstQuery" : false,
+    "seconds" : 64.1447783,
+    "resultRows" : 32734324,
+    "failed" : false,
+    "peakHeapMB" : 5565,
+    "gcSeconds" : 14.533
+  }, {
+    "behaviourId" : "auth-method-policy-violation",
+    "rep" : 3,
+    "warmup" : false,
+    "coldProcessFirstQuery" : false,
+    "seconds" : 65.2307744,
+    "resultRows" : 32734324,
+    "failed" : false,
+    "peakHeapMB" : 5218,
+    "gcSeconds" : 15.243
+  }, {
+    "behaviourId" : "auth-method-policy-violation",
+    "rep" : 4,
+    "warmup" : false,
+    "coldProcessFirstQuery" : false,
+    "seconds" : 74.7545134,
+    "resultRows" : 32734324,
+    "failed" : false,
+    "peakHeapMB" : 5786,
+    "gcSeconds" : 25.231
+  }, {
+    "behaviourId" : "auth-method-policy-violation",
+    "rep" : 5,
+    "warmup" : false,
+    "coldProcessFirstQuery" : false,
+    "seconds" : 65.8856369,
+    "resultRows" : 32734324,
+    "failed" : false,
+    "peakHeapMB" : 5414,
+    "gcSeconds" : 14.933
+  }, {
+    "behaviourId" : "mfa-missing-on-required-account",
+    "rep" : 0,
+    "warmup" : true,
+    "coldProcessFirstQuery" : false,
+    "seconds" : 67.567222,
+    "resultRows" : 32734324,
+    "failed" : false,
+    "peakHeapMB" : 5270,
+    "gcSeconds" : 17.452
+  }, {
+    "behaviourId" : "mfa-missing-on-required-account",
+    "rep" : 1,
+    "warmup" : false,
+    "coldProcessFirstQuery" : false,
+    "seconds" : 65.7302881,
+    "resultRows" : 32734324,
+    "failed" : false,
+    "peakHeapMB" : 5432,
+    "gcSeconds" : 15.764
+  }, {
+    "behaviourId" : "mfa-missing-on-required-account",
+    "rep" : 2,
+    "warmup" : false,
+    "coldProcessFirstQuery" : false,
+    "seconds" : 74.9413687,
+    "resultRows" : 32734324,
+    "failed" : false,
+    "peakHeapMB" : 5303,
+    "gcSeconds" : 25.03
+  }, {
+    "behaviourId" : "mfa-missing-on-required-account",
+    "rep" : 3,
+    "warmup" : false,
+    "coldProcessFirstQuery" : false,
+    "seconds" : 74.9723816,
+    "resultRows" : 32734324,
+    "failed" : false,
+    "peakHeapMB" : 5697,
+    "gcSeconds" : 24.774
+  }, {
+    "behaviourId" : "mfa-missing-on-required-account",
+    "rep" : 4,
+    "warmup" : false,
+    "coldProcessFirstQuery" : false,
+    "seconds" : 66.8109087,
+    "resultRows" : 32734324,
+    "failed" : false,
+    "peakHeapMB" : 5374,
+    "gcSeconds" : 16.435
+  }, {
+    "behaviourId" : "mfa-missing-on-required-account",
+    "rep" : 5,
+    "warmup" : false,
+    "coldProcessFirstQuery" : false,
+    "seconds" : 65.0698256,
+    "resultRows" : 32734324,
+    "failed" : false,
+    "peakHeapMB" : 5364,
+    "gcSeconds" : 14.857
+  } ]
+}

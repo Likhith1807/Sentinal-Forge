@@ -1,0 +1,58 @@
+{
+  "kind": "heap-sweep",
+  "dataset": "data/generated/scale_1gb (36,684,108 events)",
+  "behaviour": "password-spray-across-accounts",
+  "reps": "3 warm + 1 warmup (6g row: 5 warm + 1 warmup)",
+  "master": "local[*] (16 logical CPUs)",
+  "runs": [
+    {
+      "heapSetting": "2g",
+      "outcome": "failed: JVM exited with code 52 (java.lang.OutOfMemoryError); no repetition completed"
+    },
+    {
+      "heapSetting": "3g",
+      "outcome": "failed: JVM exited with code 52 (java.lang.OutOfMemoryError); no repetition completed"
+    },
+    {
+      "heapSetting": "4g",
+      "maxHeapMB": 3643,
+      "outcome": "completed",
+      "medianSeconds": 175.1,
+      "rangeSeconds": [
+        163.0,
+        181.7
+      ],
+      "gcSecondsMedian": 112.5,
+      "failed": 0,
+      "attempted": 4
+    },
+    {
+      "heapSetting": "6g",
+      "maxHeapMB": 5716,
+      "outcome": "completed",
+      "medianSeconds": 68.8,
+      "rangeSeconds": [
+        66.8,
+        70.1
+      ],
+      "gcSecondsMedian": 12.7,
+      "failed": 0,
+      "attempted": 6,
+      "note": "from the main scale_1gb run"
+    },
+    {
+      "heapSetting": "8g",
+      "maxHeapMB": 7781,
+      "outcome": "completed",
+      "medianSeconds": 68.1,
+      "rangeSeconds": [
+        68.0,
+        72.6
+      ],
+      "gcSecondsMedian": 13.3,
+      "failed": 0,
+      "attempted": 4
+    }
+  ],
+  "reading": "On this dataset the workload is memory-bound below about 5 GB of heap: 2g and 3g fail with OutOfMemoryError, 4g completes but is dominated by garbage collection; 6g and 8g are equivalent."
+}

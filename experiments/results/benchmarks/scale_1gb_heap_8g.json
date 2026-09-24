@@ -1,0 +1,79 @@
+{
+  "environment" : {
+    "sparkVersion" : "3.5.3",
+    "scalaVersion" : "2.13.12",
+    "java" : "1.8.0_491 Java HotSpot(TM) 64-Bit Server VM",
+    "maxHeapMB" : 7781,
+    "master" : "local[*]",
+    "defaultParallelism" : 16,
+    "availableProcessors" : 16,
+    "shufflePartitions" : "64",
+    "jvmArgs" : "-Xmx8g -Dhadoop.home.dir=D:\\SENTINEL_Forge\\.tools\\hadoop"
+  },
+  "dataset" : "data/generated/scale_1gb",
+  "datasetShape" : {
+    "events" : 36684108,
+    "account_id" : {
+      "distinctApprox" : 418310,
+      "largestGroupEvents" : 373,
+      "largestGroupShare" : 1.0167890684434797E-5,
+      "groupSizeP50" : 71,
+      "groupSizeP99" : 306
+    },
+    "source_host" : {
+      "distinctApprox" : 211460,
+      "largestGroupEvents" : 674,
+      "largestGroupShare" : 1.8373078609407647E-5,
+      "groupSizeP50" : 143,
+      "groupSizeP99" : 408
+    }
+  },
+  "mode" : "reads Parquet on every repetition",
+  "coldStart" : {
+    "jvmToSessionReadySeconds" : 5.478,
+    "firstFullScanSeconds" : 1.2107994
+  },
+  "repetitionsPerBehaviour" : 3,
+  "warmupPerBehaviour" : 1,
+  "observations" : [ {
+    "behaviourId" : "password-spray-across-accounts",
+    "rep" : 0,
+    "warmup" : true,
+    "coldProcessFirstQuery" : true,
+    "seconds" : 79.2881956,
+    "resultRows" : 572,
+    "failed" : false,
+    "peakHeapMB" : 6798,
+    "gcSeconds" : 18.06
+  }, {
+    "behaviourId" : "password-spray-across-accounts",
+    "rep" : 1,
+    "warmup" : false,
+    "coldProcessFirstQuery" : false,
+    "seconds" : 72.6358708,
+    "resultRows" : 572,
+    "failed" : false,
+    "peakHeapMB" : 6929,
+    "gcSeconds" : 14.726
+  }, {
+    "behaviourId" : "password-spray-across-accounts",
+    "rep" : 2,
+    "warmup" : false,
+    "coldProcessFirstQuery" : false,
+    "seconds" : 68.0056173,
+    "resultRows" : 572,
+    "failed" : false,
+    "peakHeapMB" : 7407,
+    "gcSeconds" : 11.799
+  }, {
+    "behaviourId" : "password-spray-across-accounts",
+    "rep" : 3,
+    "warmup" : false,
+    "coldProcessFirstQuery" : false,
+    "seconds" : 68.1311563,
+    "resultRows" : 572,
+    "failed" : false,
+    "peakHeapMB" : 7440,
+    "gcSeconds" : 10.902
+  } ]
+}

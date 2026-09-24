@@ -1,0 +1,377 @@
+{
+  "name": "scale_1gb",
+  "hardware": {
+    "os": "Windows 10 (10.0.26200)",
+    "machine": "AMD64",
+    "python": "3.10.11",
+    "logicalCpus": 16,
+    "cpuModel": "13th Gen Intel(R) Core(TM) i7-13620H",
+    "physicalCores": 10,
+    "ramGB": 15.6,
+    "storage": "SSD NVMe WD PC SN740 SDDPNQD-512G-1002",
+    "machinesUsed": 1,
+    "note": "single machine; no cluster was used",
+    "gitCommit": "d514f577607ec37ca556d5c8e274851c624f56a0",
+    "gitDirty": true
+  },
+  "jvm": {
+    "sparkVersion": "3.5.3",
+    "scalaVersion": "2.13.12",
+    "java": "1.8.0_491 Java HotSpot(TM) 64-Bit Server VM",
+    "maxHeapMB": 5716,
+    "master": "local[*]",
+    "defaultParallelism": 16,
+    "availableProcessors": 16,
+    "shufflePartitions": "64",
+    "jvmArgs": "-Xmx6g -Dhadoop.home.dir=D:\\SENTINEL_Forge\\.tools\\hadoop"
+  },
+  "mode": "reads Parquet on every repetition",
+  "dataset": "data/generated/scale_1gb",
+  "datasetShape": {
+    "events": 36684108,
+    "account_id": {
+      "distinctApprox": 418310,
+      "largestGroupEvents": 373,
+      "largestGroupShare": 1.0167890684434797e-05,
+      "groupSizeP50": 71,
+      "groupSizeP99": 306
+    },
+    "source_host": {
+      "distinctApprox": 211460,
+      "largestGroupEvents": 674,
+      "largestGroupShare": 1.8373078609407647e-05,
+      "groupSizeP50": 143,
+      "groupSizeP99": 408
+    }
+  },
+  "coldStart": {
+    "jvmToSessionReadySeconds": 4.753,
+    "firstFullScanSeconds": 1.2654844
+  },
+  "repetitionsPerBehaviour": 5,
+  "warmupPerBehaviour": 1,
+  "driverWallSeconds": 2389.3,
+  "perBehaviour": {
+    "repeated-failed-login-then-success": {
+      "warmSeconds": {
+        "n": 5,
+        "min": 95.5956959,
+        "median": 97.5068315,
+        "mean": 97.38482225999999,
+        "max": 99.2437427,
+        "stdev": 1.3877620001052378,
+        "iqr": [
+          96.5769885,
+          98.0008527
+        ],
+        "p95": null,
+        "notReported": [
+          "p95: needs n>=20, have 5",
+          "p99: needs n>=100, have 5"
+        ],
+        "p99": null
+      },
+      "warmupSeconds": [
+        97.77095
+      ],
+      "attempted": 6,
+      "failed": 0,
+      "failureRate": 0.0,
+      "eventsPerSecondAtMedian": 376220.90099399857,
+      "peakHeapMB": {
+        "n": 6,
+        "min": 4934,
+        "median": 5183.5,
+        "mean": 5192.333333333333,
+        "max": 5502,
+        "stdev": 233.12028368777064,
+        "iqr": [
+          4993,
+          5358
+        ],
+        "p95": null,
+        "notReported": [
+          "p95: needs n>=20, have 6",
+          "p99: needs n>=100, have 6"
+        ],
+        "p99": null
+      },
+      "gcSeconds": {
+        "n": 6,
+        "min": 25.897,
+        "median": 28.662999999999997,
+        "mean": 28.501,
+        "max": 30.752,
+        "stdev": 1.7688719569262215,
+        "iqr": [
+          27.402,
+          29.629
+        ],
+        "p95": null,
+        "notReported": [
+          "p95: needs n>=20, have 6",
+          "p99: needs n>=100, have 6"
+        ],
+        "p99": null
+      },
+      "resultRowsConsistentAcrossRuns": true
+    },
+    "password-spray-across-accounts": {
+      "warmSeconds": {
+        "n": 5,
+        "min": 66.801817,
+        "median": 68.8350993,
+        "mean": 68.68804344,
+        "max": 70.1330056,
+        "stdev": 1.24481207732401,
+        "iqr": [
+          68.3414079,
+          69.3288874
+        ],
+        "p95": null,
+        "notReported": [
+          "p95: needs n>=20, have 5",
+          "p99: needs n>=100, have 5"
+        ],
+        "p99": null
+      },
+      "warmupSeconds": [
+        73.3733355
+      ],
+      "attempted": 6,
+      "failed": 0,
+      "failureRate": 0.0,
+      "eventsPerSecondAtMedian": 532927.3637003383,
+      "peakHeapMB": {
+        "n": 6,
+        "min": 5402,
+        "median": 5686.5,
+        "mean": 5659.666666666667,
+        "max": 5807,
+        "stdev": 139.74786820079464,
+        "iqr": [
+          5637,
+          5739
+        ],
+        "p95": null,
+        "notReported": [
+          "p95: needs n>=20, have 6",
+          "p99: needs n>=100, have 6"
+        ],
+        "p99": null
+      },
+      "gcSeconds": {
+        "n": 6,
+        "min": 11.561,
+        "median": 12.690999999999999,
+        "mean": 12.986333333333334,
+        "max": 15.26,
+        "stdev": 1.3158379332830719,
+        "iqr": [
+          12.083,
+          13.632
+        ],
+        "p95": null,
+        "notReported": [
+          "p95: needs n>=20, have 6",
+          "p99: needs n>=100, have 6"
+        ],
+        "p99": null
+      },
+      "resultRowsConsistentAcrossRuns": true
+    },
+    "multi-host-authentication": {
+      "warmSeconds": {
+        "n": 5,
+        "min": 84.7361293,
+        "median": 85.6204037,
+        "mean": 85.91612674000001,
+        "max": 87.7256801,
+        "stdev": 1.1644530279047476,
+        "iqr": [
+          85.1952465,
+          86.3031741
+        ],
+        "p95": null,
+        "notReported": [
+          "p95: needs n>=20, have 5",
+          "p99: needs n>=100, have 5"
+        ],
+        "p99": null
+      },
+      "warmupSeconds": [
+        87.9371859
+      ],
+      "attempted": 6,
+      "failed": 0,
+      "failureRate": 0.0,
+      "eventsPerSecondAtMedian": 428450.53766080295,
+      "peakHeapMB": {
+        "n": 6,
+        "min": 5358,
+        "median": 5532.0,
+        "mean": 5533.833333333333,
+        "max": 5719,
+        "stdev": 126.29871997239982,
+        "iqr": [
+          5458,
+          5604
+        ],
+        "p95": null,
+        "notReported": [
+          "p95: needs n>=20, have 6",
+          "p99: needs n>=100, have 6"
+        ],
+        "p99": null
+      },
+      "gcSeconds": {
+        "n": 6,
+        "min": 12.238,
+        "median": 12.644,
+        "mean": 13.0615,
+        "max": 14.197,
+        "stdev": 0.8816797037473414,
+        "iqr": [
+          12.486,
+          14.16
+        ],
+        "p95": null,
+        "notReported": [
+          "p95: needs n>=20, have 6",
+          "p99: needs n>=100, have 6"
+        ],
+        "p99": null
+      },
+      "resultRowsConsistentAcrossRuns": true
+    },
+    "auth-method-policy-violation": {
+      "warmSeconds": {
+        "n": 5,
+        "min": 64.1447783,
+        "median": 65.2307744,
+        "mean": 67.02178218,
+        "max": 74.7545134,
+        "stdev": 4.3672135614445855,
+        "iqr": [
+          65.0932079,
+          65.8856369
+        ],
+        "p95": null,
+        "notReported": [
+          "p95: needs n>=20, have 5",
+          "p99: needs n>=100, have 5"
+        ],
+        "p99": null
+      },
+      "warmupSeconds": [
+        75.297329
+      ],
+      "attempted": 6,
+      "failed": 0,
+      "failureRate": 0.0,
+      "eventsPerSecondAtMedian": 562374.2526043045,
+      "peakHeapMB": {
+        "n": 6,
+        "min": 5218,
+        "median": 5373.0,
+        "mean": 5422.666666666667,
+        "max": 5786,
+        "stdev": 220.51001488972483,
+        "iqr": [
+          5221,
+          5565
+        ],
+        "p95": null,
+        "notReported": [
+          "p95: needs n>=20, have 6",
+          "p99: needs n>=100, have 6"
+        ],
+        "p99": null
+      },
+      "gcSeconds": {
+        "n": 6,
+        "min": 14.533,
+        "median": 15.1815,
+        "mean": 18.307833333333335,
+        "max": 25.231,
+        "stdev": 5.198157151016759,
+        "iqr": [
+          14.933,
+          24.787
+        ],
+        "p95": null,
+        "notReported": [
+          "p95: needs n>=20, have 6",
+          "p99: needs n>=100, have 6"
+        ],
+        "p99": null
+      },
+      "resultRowsConsistentAcrossRuns": true
+    },
+    "mfa-missing-on-required-account": {
+      "warmSeconds": {
+        "n": 5,
+        "min": 65.0698256,
+        "median": 66.8109087,
+        "mean": 69.50495454,
+        "max": 74.9723816,
+        "stdev": 5.015568661955938,
+        "iqr": [
+          65.7302881,
+          74.9413687
+        ],
+        "p95": null,
+        "notReported": [
+          "p95: needs n>=20, have 5",
+          "p99: needs n>=100, have 5"
+        ],
+        "p99": null
+      },
+      "warmupSeconds": [
+        67.567222
+      ],
+      "attempted": 6,
+      "failed": 0,
+      "failureRate": 0.0,
+      "eventsPerSecondAtMedian": 549073.6275526814,
+      "peakHeapMB": {
+        "n": 6,
+        "min": 5270,
+        "median": 5369.0,
+        "mean": 5406.666666666667,
+        "max": 5697,
+        "stdev": 153.13218690617157,
+        "iqr": [
+          5303,
+          5432
+        ],
+        "p95": null,
+        "notReported": [
+          "p95: needs n>=20, have 6",
+          "p99: needs n>=100, have 6"
+        ],
+        "p99": null
+      },
+      "gcSeconds": {
+        "n": 6,
+        "min": 14.857,
+        "median": 16.9435,
+        "mean": 19.052,
+        "max": 25.03,
+        "stdev": 4.610757551639428,
+        "iqr": [
+          15.764,
+          24.774
+        ],
+        "p95": null,
+        "notReported": [
+          "p95: needs n>=20, have 6",
+          "p99: needs n>=100, have 6"
+        ],
+        "p99": null
+      },
+      "resultRowsConsistentAcrossRuns": true
+    }
+  },
+  "readingGuide": "Statistics use only warm, non-failed repetitions. Percentiles appear only when n supports them (p95 needs n>=20, p99 n>=100); otherwise use median / IQR / range. Throughput is events per second at the median and includes Parquet I/O when mode says so. Single machine: this is local Spark, not evidence of horizontal scalability."
+}

@@ -345,7 +345,7 @@ class Workspace:
             raise NotFound(f"dataset {dataset_id}")
         d = ds.get(self.store, dataset_id)
         self.preflight(rv, d)                                       # never run what the data cannot evaluate
-        engine = engines.choose(self.settings.engine)
+        engine = engines.choose(self.settings.engine, Path(d["eventsPath"]), self.settings.reference_max_bytes)
         run_id = new_id()
         with self.store.tx() as c:
             c.execute("INSERT INTO runs(id, rule_version_id, dataset_id, dataset_version, dataset_fingerprint, purpose, engine, state, created_by, created_at) VALUES (?,?,?,?,?,?,?,?,?,?)",

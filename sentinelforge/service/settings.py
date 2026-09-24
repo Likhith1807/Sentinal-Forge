@@ -25,6 +25,7 @@ class Settings:
     max_upload_bytes: int = field(default_factory=lambda: _int("SF_MAX_UPLOAD_BYTES", 20_000_000))
     max_alerts_shown: int = field(default_factory=lambda: _int("SF_MAX_ALERTS_SHOWN", 5000))
     run_timeout_s: int = field(default_factory=lambda: _int("SF_RUN_TIMEOUT", 900))
+    reference_max_bytes: int = field(default_factory=lambda: _int("SF_REFERENCE_MAX_BYTES", 5_000_000))   # `auto` runs JSONL datasets up to this size on the reference engine
     spark_heap: str = field(default_factory=lambda: os.environ.get("SF_SPARK_HEAP", "2g"))
     # "name:token,name2:token2". When empty and auth is required, a random token is generated and printed once.
     api_tokens: str = field(default_factory=lambda: os.environ.get("SF_API_TOKENS", ""))

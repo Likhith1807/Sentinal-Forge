@@ -1,0 +1,121 @@
+{
+  "name": "bench_small_local8",
+  "hardware": {
+    "os": "Windows 10 (10.0.26200)",
+    "machine": "AMD64",
+    "python": "3.10.11",
+    "logicalCpus": 16,
+    "cpuModel": "13th Gen Intel(R) Core(TM) i7-13620H",
+    "physicalCores": 10,
+    "ramGB": 15.6,
+    "storage": "SSD NVMe WD PC SN740 SDDPNQD-512G-1002",
+    "machinesUsed": 1,
+    "note": "single machine; no cluster was used",
+    "gitCommit": "d514f577607ec37ca556d5c8e274851c624f56a0",
+    "gitDirty": true
+  },
+  "jvm": {
+    "sparkVersion": "3.5.3",
+    "scalaVersion": "2.13.12",
+    "java": "1.8.0_491 Java HotSpot(TM) 64-Bit Server VM",
+    "maxHeapMB": 2731,
+    "master": "local[8]",
+    "defaultParallelism": 8,
+    "availableProcessors": 16,
+    "shufflePartitions": "64",
+    "jvmArgs": "-Xmx3g -Dhadoop.home.dir=D:\\SENTINEL_Forge\\.tools\\hadoop"
+  },
+  "mode": "reads Parquet on every repetition",
+  "dataset": "data/generated/bench_small",
+  "datasetShape": {
+    "events": 1317332,
+    "account_id": {
+      "distinctApprox": 61142,
+      "largestGroupEvents": 102,
+      "largestGroupShare": 7.742922816723499e-05,
+      "groupSizeP50": 17,
+      "groupSizeP99": 79
+    },
+    "source_host": {
+      "distinctApprox": 30828,
+      "largestGroupEvents": 169,
+      "largestGroupShare": 0.00012828960353198737,
+      "groupSizeP50": 35,
+      "groupSizeP99": 114
+    }
+  },
+  "coldStart": {
+    "jvmToSessionReadySeconds": 4.782,
+    "firstFullScanSeconds": 0.8467243
+  },
+  "repetitionsPerBehaviour": 10,
+  "warmupPerBehaviour": 1,
+  "driverWallSeconds": 71.8,
+  "perBehaviour": {
+    "password-spray-across-accounts": {
+      "warmSeconds": {
+        "n": 10,
+        "min": 3.7174576,
+        "median": 4.01037685,
+        "mean": 4.02360836,
+        "max": 4.5893709,
+        "stdev": 0.286677173976727,
+        "iqr": [
+          3.7755605,
+          4.25749
+        ],
+        "p95": null,
+        "notReported": [
+          "p95: needs n>=20, have 10",
+          "p99: needs n>=100, have 10"
+        ],
+        "p99": null
+      },
+      "warmupSeconds": [
+        6.6935159
+      ],
+      "attempted": 11,
+      "failed": 0,
+      "failureRate": 0.0,
+      "eventsPerSecondAtMedian": 328480.8508706607,
+      "peakHeapMB": {
+        "n": 11,
+        "min": 1478,
+        "median": 1541,
+        "mean": 1565.1818181818182,
+        "max": 1690,
+        "stdev": 79.20078052875259,
+        "iqr": [
+          1485,
+          1658
+        ],
+        "p95": null,
+        "notReported": [
+          "p95: needs n>=20, have 11",
+          "p99: needs n>=100, have 11"
+        ],
+        "p99": null
+      },
+      "gcSeconds": {
+        "n": 11,
+        "min": 0.236,
+        "median": 0.511,
+        "mean": 0.45554545454545453,
+        "max": 0.913,
+        "stdev": 0.20158986265998777,
+        "iqr": [
+          0.261,
+          0.537
+        ],
+        "p95": null,
+        "notReported": [
+          "p95: needs n>=20, have 11",
+          "p99: needs n>=100, have 11"
+        ],
+        "p99": null
+      },
+      "resultRowsConsistentAcrossRuns": true
+    }
+  },
+  "readingGuide": "Statistics use only warm, non-failed repetitions. Percentiles appear only when n supports them (p95 needs n>=20, p99 n>=100); otherwise use median / IQR / range. Throughput is events per second at the median and includes Parquet I/O when mode says so. Single machine: this is local Spark, not evidence of horizontal scalability."
+}
